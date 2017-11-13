@@ -1,2 +1,2 @@
 # cli-proton-ruby
-A proton ruby client used for testing a publisher:subscriber broker set up.
+cli-proton-ruby is a collection of commandline messaging clients suitable for interacting with Message Oriented Middleware.
