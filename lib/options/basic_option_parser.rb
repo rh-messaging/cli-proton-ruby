@@ -17,50 +17,54 @@
 require 'optparse'
 require 'ostruct'
 
-# Option parser of basic options for all clients
-# ==== Basic client options
-# broker:: URL of broker in format IP:PORT (default: 127.0.0.1:5672)
-# help:: show help message and exit
-class Options::BasicOptionParser
+module Options
 
-  # Client options
-  attr_accessor :options
+  # Option parser of basic options for all clients
+  # ==== Basic client options
+  # broker:: URL of broker in format IP:PORT (default: 127.0.0.1:5672)
+  # help:: show help message and exit
+  class BasicOptionParser
 
-  # Initialization of basic client options
-  def initialize()
-    @options = OpenStruct.new
-    # Basic client's options with default values
+    # Client options
+    attr_accessor :options
 
-    # Broker in format IP:PORT option
-    @options.broker = "127.0.0.1:5672"
+    # Initialization of basic client options
+    def initialize()
+      @options = OpenStruct.new
+      # Basic client's options with default values
 
-    @opt_parser = OptionParser.new
-    # Basic usage
-    @opt_parser.banner = "Usage: <basic_program> [OPTIONS]"
+      # Broker in format IP:PORT option
+      @options.broker = "127.0.0.1:5672"
 
-    @opt_parser.separator ""
-    # Broker
-    @opt_parser.on("-b", "--broker BROKER", String,
-                   "URL of broker in format IP:PORT "\
-                   "(default: 127.0.0.1:5672)") do |broker|
-      @options.broker = broker
-    end
+      @opt_parser = OptionParser.new
+      # Basic usage
+      @opt_parser.banner = "Usage: <basic_program> [OPTIONS]"
 
-    # Help
-    @opt_parser.on_tail("-h", "--help",
-                 "show help message and exit") do
-      puts @opt_parser
-      exit
-    end
-  end # initialize()
+      @opt_parser.separator ""
+      # Broker
+      @opt_parser.on("-b", "--broker BROKER", String,
+                     "URL of broker in format IP:PORT "\
+                     "(default: 127.0.0.1:5672)") do |broker|
+        @options.broker = broker
+      end
 
-  # Parsing of basic options for all clients
-  # ==== Parameters
-  # args:: arguments to parse
-  def parse(args)
-    @opt_parser.parse(args)
-  end # parse(args)
+      # Help
+      @opt_parser.on_tail("-h", "--help",
+                   "show help message and exit") do
+        puts @opt_parser
+        exit
+      end
+    end # initialize()
 
-end # class Options::BasicOptionParser
+    # Parsing of basic options for all clients
+    # ==== Parameters
+    # args:: arguments to parse
+    def parse(args)
+      @opt_parser.parse(args)
+    end # parse(args)
+
+  end # class BasicOptionParser
+
+end # module Options
 
 # eof

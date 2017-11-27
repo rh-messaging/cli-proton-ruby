@@ -16,36 +16,40 @@
 
 require_relative 'basic_option_parser'
 
-# Option parser of basic (see Options::BasicOptionParser) and specific options
-# for connector client
-# ==== Specific connector options
-# count:: number of connections to create (default: 1)
-class Options::ConnectorOptionParser < Options::BasicOptionParser
+module Options
 
-  # Initialization and parsing of basic and specific connector options
-  # ==== Parameters
-  # args:: arguments to parse
-  def initialize(args)
-    # Initialization of basic options
-    super()
-    # Connector usage
-    @opt_parser.banner = "Usage: <connector_program> [OPTIONS]"
+  # Option parser of basic (see Options::BasicOptionParser) and specific options
+  # for connector client
+  # ==== Specific connector options
+  # count:: number of connections to create (default: 1)
+  class ConnectorOptionParser < Options::BasicOptionParser
 
-    # Connector specific options with default values
+    # Initialization and parsing of basic and specific connector options
+    # ==== Parameters
+    # args:: arguments to parse
+    def initialize(args)
+      # Initialization of basic options
+      super()
+      # Connector usage
+      @opt_parser.banner = "Usage: <connector_program> [OPTIONS]"
 
-    # Number of connections option
-    @options.count = 1
+      # Connector specific options with default values
 
-    # Number of messages
-    @opt_parser.on("-c", "--count COUNT", Integer,
-            "number of connections to create (default: 1)") do |count|
-      @options.count = count
-    end
+      # Number of connections option
+      @options.count = 1
 
-    # Parse basic and specific options for connector client
-    parse(args)
-  end # initialize(args)
+      # Number of messages
+      @opt_parser.on("-c", "--count COUNT", Integer,
+              "number of connections to create (default: 1)") do |count|
+        @options.count = count
+      end
 
-end # class Options::ConnectorOptionParser
+      # Parse basic and specific options for connector client
+      parse(args)
+    end # initialize(args)
+
+  end # class ConnectorOptionParser
+
+end # module Options
 
 # eof

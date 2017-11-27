@@ -16,47 +16,51 @@
 
 require_relative 'basic_option_parser'
 
-# Option parser of basic (see Options::BasicOptionParser) and common options
-# for sender and receiver client
-# ==== Common sender and receiver options
-# address:: address of queue/topic (default: examples)
-# log-msgs:: format of message(s) log (none/dict, default: none)
-class Options::SRCommonOptionParser < Options::BasicOptionParser
+module Options
 
-  # Initialization of basic and common sender and receiver options
-  def initialize()
-    # Initialization of basic options
-    super()
-    # SR usage
-    @opt_parser.banner = "Usage: <sr_program> [OPTIONS]"
+  # Option parser of basic (see Options::BasicOptionParser) and common options
+  # for sender and receiver client
+  # ==== Common sender and receiver options
+  # address:: address of queue/topic (default: examples)
+  # log-msgs:: format of message(s) log (none/dict, default: none)
+  class SRCommonOptionParser < Options::BasicOptionParser
 
-    # SR specific options with default values
+    # Initialization of basic and common sender and receiver options
+    def initialize()
+      # Initialization of basic options
+      super()
+      # SR usage
+      @opt_parser.banner = "Usage: <sr_program> [OPTIONS]"
 
-    # Address option
-    @options.address = "examples"
-    # Format of message log option
-    @options.log_msgs = "none"
+      # SR specific options with default values
 
-    # Address
-    @opt_parser.on("-a", "--address ADDRESS", String,
-            "address of queue/topic (default: examples)") do |address|
-      @options.address = address
-    end
+      # Address option
+      @options.address = "examples"
+      # Format of message log option
+      @options.log_msgs = "none"
 
-    # Format of message log
-    @opt_parser.on("--log-msgs FORMAT", String,
-            "format of message(s) log (none/dict, default: none)") do |log_msgs|
-      @options.log_msgs = log_msgs
-    end
-  end # initialize(args)
+      # Address
+      @opt_parser.on("-a", "--address ADDRESS", String,
+              "address of queue/topic (default: examples)") do |address|
+        @options.address = address
+      end
 
-  # Parsing of basic and common options for sender and receiver client
-  # ==== Parameters
-  # args:: arguments to parse
-  def parse(args)
-    @opt_parser.parse(args)
-  end # parse(args)
+      # Format of message log
+      @opt_parser.on("--log-msgs FORMAT", String,
+              "format of message(s) log (none/dict, default: none)") do |log_msgs|
+        @options.log_msgs = log_msgs
+      end
+    end # initialize(args)
 
-end # class Options::SRCommonOptionParser
+    # Parsing of basic and common options for sender and receiver client
+    # ==== Parameters
+    # args:: arguments to parse
+    def parse(args)
+      @opt_parser.parse(args)
+    end # parse(args)
+
+  end # class SRCommonOptionParser
+
+end # module Options
 
 # eof

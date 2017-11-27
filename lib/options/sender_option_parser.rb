@@ -16,46 +16,50 @@
 
 require_relative 'sr_common_option_parser'
 
-# Option parser of basic (see Options::BasicOptionParser),
-# common (see Options::SRCommonOptionParser)
-# and specific options for sender client
-# ==== Specific sender options
-# count:: number of messages to send (default: 1)
-# msg-content:: message content
-class Options::SenderOptionParser < Options::SRCommonOptionParser
+module Options
 
-  # Initialization and parsing of basic, common and specific sender options
-  # ==== Parameters
-  # args:: arguments to parse
-  def initialize(args)
-    # Initialization of basic and common options
-    super()
-    # Sender usage
-    @opt_parser.banner = "Usage: <sender_program> [OPTIONS]"
+  # Option parser of basic (see Options::BasicOptionParser),
+  # common (see Options::SRCommonOptionParser)
+  # and specific options for sender client
+  # ==== Specific sender options
+  # count:: number of messages to send (default: 1)
+  # msg-content:: message content
+  class SenderOptionParser < Options::SRCommonOptionParser
 
-    # Sender specific options with default values
- 
-    # Number of messages option
-    @options.count = 1
-    # Message content option
-    @options.msg_content = ""
+    # Initialization and parsing of basic, common and specific sender options
+    # ==== Parameters
+    # args:: arguments to parse
+    def initialize(args)
+      # Initialization of basic and common options
+      super()
+      # Sender usage
+      @opt_parser.banner = "Usage: <sender_program> [OPTIONS]"
 
-    # Number of messages
-    @opt_parser.on("-c", "--count COUNT", Integer,
-            "number of messages to send (default: 1)") do |count|
-      @options.count = count
-    end
+      # Sender specific options with default values
+   
+      # Number of messages option
+      @options.count = 1
+      # Message content option
+      @options.msg_content = ""
 
-    # Message content
-    @opt_parser.on("-m", "--msg-content CONTENT", String,
-                  "message content") do |msg_content|
-      @options.msg_content = msg_content
-    end
+      # Number of messages
+      @opt_parser.on("-c", "--count COUNT", Integer,
+              "number of messages to send (default: 1)") do |count|
+        @options.count = count
+      end
 
-    # Parse basic, common and specific options for sender client
-    parse(args)
-  end # initialize(args)
+      # Message content
+      @opt_parser.on("-m", "--msg-content CONTENT", String,
+                    "message content") do |msg_content|
+        @options.msg_content = msg_content
+      end
 
-end # class Options::SenderOptionParser
+      # Parse basic, common and specific options for sender client
+      parse(args)
+    end # initialize(args)
+
+  end # class SenderOptionParser
+
+end # module Options
 
 # eof

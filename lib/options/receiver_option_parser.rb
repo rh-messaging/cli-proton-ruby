@@ -16,37 +16,41 @@
 
 require_relative 'sr_common_option_parser'
 
-# Option parser of basic (see Options::BasicOptionParser),
-# common (see Options::SRCommonOptionParser)
-# and specific options for receiver client
-# ==== Specific receiver options
-# count:: number of messages to receiver (default: 1)
-class Options::ReceiverOptionParser < Options::SRCommonOptionParser
+module Options
 
-  # Initialization and parsing of basic, common and specific receiver options
-  # ==== Parameters
-  # args:: arguments to parse
-  def initialize(args)
-    # Initialization of basic and common options
-    super()
-    # Receiver usage
-    @opt_parser.banner = "Usage: <receiver_program> [OPTIONS]"
+  # Option parser of basic (see Options::BasicOptionParser),
+  # common (see Options::SRCommonOptionParser)
+  # and specific options for receiver client
+  # ==== Specific receiver options
+  # count:: number of messages to receiver (default: 1)
+  class ReceiverOptionParser < Options::SRCommonOptionParser
 
-    # Receiver specific options with default values
+    # Initialization and parsing of basic, common and specific receiver options
+    # ==== Parameters
+    # args:: arguments to parse
+    def initialize(args)
+      # Initialization of basic and common options
+      super()
+      # Receiver usage
+      @opt_parser.banner = "Usage: <receiver_program> [OPTIONS]"
 
-    # Number of messages option
-    @options.count = 1
+      # Receiver specific options with default values
 
-    # Number of messages
-    @opt_parser.on("-c", "--count COUNT", Integer,
-            "number of messages to receiver (default: 1)") do |count|
-      @options.count = count
-    end
+      # Number of messages option
+      @options.count = 1
 
-    # Parse basic, common and specific options for receiver client
-    parse(args)
-  end # initialize(args)
+      # Number of messages
+      @opt_parser.on("-c", "--count COUNT", Integer,
+              "number of messages to receiver (default: 1)") do |count|
+        @options.count = count
+      end
 
-end # class Options::ReceiverOptionParser
+      # Parse basic, common and specific options for receiver client
+      parse(args)
+    end # initialize(args)
+
+  end # class ReceiverOptionParser
+
+end # module Options
 
 # eof
