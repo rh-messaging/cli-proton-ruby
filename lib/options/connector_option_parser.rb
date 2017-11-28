@@ -18,8 +18,8 @@ require_relative 'basic_option_parser'
 
 module Options
 
-  # Option parser of basic (see Options::BasicOptionParser) and specific options
-  # for connector client
+  # Option parser of basic (see Options::BasicOptionParser) and specific
+  # options for connector client
   # ==== Specific connector options
   # count:: number of connections to create (default: 1)
   class ConnectorOptionParser < Options::BasicOptionParser
@@ -39,8 +39,12 @@ module Options
       @options.count = 1
 
       # Number of messages
-      @opt_parser.on("-c", "--count COUNT", Integer,
-              "number of connections to create (default: 1)") do |count|
+      @opt_parser.on(
+        "-c",
+        "--count COUNT",
+        Integer,
+        "number of connections to create (default: 1)"
+      ) do |count|
         @options.count = count
       end
 

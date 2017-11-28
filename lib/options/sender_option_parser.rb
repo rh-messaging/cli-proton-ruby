@@ -43,14 +43,22 @@ module Options
       @options.msg_content = ""
 
       # Number of messages
-      @opt_parser.on("-c", "--count COUNT", Integer,
-              "number of messages to send (default: 1)") do |count|
+      @opt_parser.on(
+        "-c",
+        "--count COUNT",
+        Integer,
+        "number of messages to send (default: 1)"
+      ) do |count|
         @options.count = count
       end
 
       # Message content
-      @opt_parser.on("-m", "--msg-content CONTENT", String,
-                    "message content") do |msg_content|
+      @opt_parser.on(
+        "-m",
+        "--msg-content CONTENT",
+        String,
+        "message content"
+      ) do |msg_content|
         @options.msg_content = msg_content
       end
 

@@ -18,8 +18,8 @@ require_relative 'basic_option_parser'
 
 module Options
 
-  # Option parser of basic (see Options::BasicOptionParser) and common options
-  # for sender and receiver client
+  # Option parser of basic (see Options::BasicOptionParser) and common
+  # options for sender and receiver client
   # ==== Common sender and receiver options
   # address:: address of queue/topic (default: examples)
   # log-msgs:: format of message(s) log (none/dict, default: none)
@@ -40,14 +40,21 @@ module Options
       @options.log_msgs = "none"
 
       # Address
-      @opt_parser.on("-a", "--address ADDRESS", String,
-              "address of queue/topic (default: examples)") do |address|
+      @opt_parser.on(
+        "-a",
+        "--address ADDRESS",
+        String,
+        "address of queue/topic (default: examples)"
+      ) do |address|
         @options.address = address
       end
 
       # Format of message log
-      @opt_parser.on("--log-msgs FORMAT", String,
-              "format of message(s) log (none/dict, default: none)") do |log_msgs|
+      @opt_parser.on(
+        "--log-msgs FORMAT",
+        String,
+        "format of message(s) log (none/dict, default: none)"
+      ) do |log_msgs|
         @options.log_msgs = log_msgs
       end
     end # initialize(args)

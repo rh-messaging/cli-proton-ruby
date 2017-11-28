@@ -42,15 +42,21 @@ module Options
 
       @opt_parser.separator ""
       # Broker
-      @opt_parser.on("-b", "--broker BROKER", String,
-                     "URL of broker in format IP:PORT "\
-                     "(default: 127.0.0.1:5672)") do |broker|
+      @opt_parser.on(
+        "-b",
+        "--broker BROKER",
+        String,
+        "URL of broker in format IP:PORT (default: 127.0.0.1:5672)"
+      ) do |broker|
         @options.broker = broker
       end
 
       # Help
-      @opt_parser.on_tail("-h", "--help",
-                   "show help message and exit") do
+      @opt_parser.on_tail(
+        "-h",
+        "--help",
+        "show help message and exit"
+      ) do
         puts @opt_parser
         exit
       end
