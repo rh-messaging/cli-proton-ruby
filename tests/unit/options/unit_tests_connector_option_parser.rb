@@ -24,17 +24,30 @@ class UnitTestsConnectorOptionParser < Minitest::Test
 
   def test_connector_option_parser_default_broker_value
     connector_options_default_broker = Options::ConnectorOptionParser.new([])
-    assert_equal("127.0.0.1:5672", connector_options_default_broker.options.broker)
+    assert_equal(
+      "127.0.0.1:5672",
+      connector_options_default_broker.options.broker
+    )
   end # test_connector_option_parser_default_broker_value
 
   def test_connector_option_parser_user_broker_value_short
-    connector_options_user_broker_short = Options::ConnectorOptionParser.new(["-b", "127.0.0.2:5672"])
-    assert_equal("127.0.0.2:5672", connector_options_user_broker_short.options.broker)
+    connector_options_user_broker_short = Options::ConnectorOptionParser.new(
+      ["-b", "127.0.0.2:5672"]
+    )
+    assert_equal(
+      "127.0.0.2:5672",
+      connector_options_user_broker_short.options.broker
+    )
   end # test_connector_option_parser_user_broker_value_short
 
   def test_connector_option_parser_user_broker_value_long
-    connector_options_user_broker_long = Options::ConnectorOptionParser.new(["--broker", "127.0.0.3:5672"])
-    assert_equal("127.0.0.3:5672", connector_options_user_broker_long.options.broker)
+    connector_options_user_broker_long = Options::ConnectorOptionParser.new(
+      ["--broker", "127.0.0.3:5672"]
+    )
+    assert_equal(
+      "127.0.0.3:5672",
+      connector_options_user_broker_long.options.broker
+    )
   end # test_connector_option_parser_user_broker_value_long
 
   def test_connector_option_parser_default_count_value
@@ -43,12 +56,16 @@ class UnitTestsConnectorOptionParser < Minitest::Test
   end # test_connector_option_parser_default_count_value
 
   def test_connector_option_parser_user_count_value_short
-    connector_options_user_count_short = Options::ConnectorOptionParser.new(["-c", "2"])
+    connector_options_user_count_short = Options::ConnectorOptionParser.new(
+      ["-c", "2"]
+    )
     assert_equal(2, connector_options_user_count_short.options.count)
   end # test_connector_option_parser_user_count_value_short
 
   def test_connector_option_parser_user_count_value_long
-    connector_options_user_count_long = Options::ConnectorOptionParser.new(["--count", "3"])
+    connector_options_user_count_long = Options::ConnectorOptionParser.new(
+      ["--count", "3"]
+    )
     assert_equal(3, connector_options_user_count_long.options.count)
   end # test_connector_option_parser_user_count_value_long
 

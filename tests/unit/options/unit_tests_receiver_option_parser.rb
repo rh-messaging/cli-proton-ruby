@@ -24,17 +24,30 @@ class UnitTestsReceiverOptionParser < Minitest::Test
 
   def test_receiver_option_parser_default_broker_value
     receiver_options_default_broker = Options::ReceiverOptionParser.new([])
-    assert_equal("127.0.0.1:5672", receiver_options_default_broker.options.broker)
+    assert_equal(
+      "127.0.0.1:5672",
+      receiver_options_default_broker.options.broker
+    )
   end # test_receiver_option_parser_default_broker_value
 
   def test_receiver_option_parser_user_broker_value_short
-    receiver_options_user_broker_short = Options::ReceiverOptionParser.new(["-b", "127.0.0.2:5672"])
-    assert_equal("127.0.0.2:5672", receiver_options_user_broker_short.options.broker)
+    receiver_options_user_broker_short = Options::ReceiverOptionParser.new(
+      ["-b", "127.0.0.2:5672"]
+    )
+    assert_equal(
+      "127.0.0.2:5672",
+      receiver_options_user_broker_short.options.broker
+    )
   end # test_receiver_option_parser_user_broker_value_short
 
   def test_receiver_option_parser_user_broker_value_long
-    receiver_options_user_broker_long = Options::ReceiverOptionParser.new(["--broker", "127.0.0.3:5672"])
-    assert_equal("127.0.0.3:5672", receiver_options_user_broker_long.options.broker)
+    receiver_options_user_broker_long = Options::ReceiverOptionParser.new(
+      ["--broker", "127.0.0.3:5672"]
+    )
+    assert_equal(
+      "127.0.0.3:5672",
+      receiver_options_user_broker_long.options.broker
+    )
   end # test_receiver_option_parser_user_broker_value_long
 
   def test_receiver_option_parser_default_address_value
@@ -43,13 +56,23 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   end # test_receiver_option_parser_default_address_value
 
   def test_receiver_option_parser_user_address_value_short
-    receiver_options_user_address_short = Options::ReceiverOptionParser.new(["-a", "address_short"])
-    assert_equal("address_short", receiver_options_user_address_short.options.address)
+    receiver_options_user_address_short = Options::ReceiverOptionParser.new(
+      ["-a", "address_short"]
+    )
+    assert_equal(
+      "address_short",
+      receiver_options_user_address_short.options.address
+    )
   end # test_receiver_option_parser_user_address_value_short
 
   def test_receiver_option_parser_user_address_value_long
-    receiver_options_user_address_long = Options::ReceiverOptionParser.new(["--address", "address_long"])
-    assert_equal("address_long", receiver_options_user_address_long.options.address)
+    receiver_options_user_address_long = Options::ReceiverOptionParser.new(
+      ["--address", "address_long"]
+    )
+    assert_equal(
+      "address_long",
+      receiver_options_user_address_long.options.address
+    )
   end # test_receiver_option_parser_user_address_value_long
 
   def test_receiver_option_parser_default_log_msgs_value
@@ -58,7 +81,9 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   end # test_receiver_option_parser_default_log_msgs_value
 
   def test_receiver_option_parser_user_log_msgs_value_long
-    receiver_options_user_log_msgs_long = Options::ReceiverOptionParser.new(["--log-msgs", "dict"])
+    receiver_options_user_log_msgs_long = Options::ReceiverOptionParser.new(
+      ["--log-msgs", "dict"]
+    )
     assert_equal("dict", receiver_options_user_log_msgs_long.options.log_msgs)
   end # test_receiver_option_parser_user_log_msgs_value_long
 
@@ -68,12 +93,16 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   end # test_receiver_option_parser_default_count_value
 
   def test_receiver_option_parser_user_count_value_short
-    receiver_options_user_count_short = Options::ReceiverOptionParser.new(["-c", "2"])
+    receiver_options_user_count_short = Options::ReceiverOptionParser.new(
+      ["-c", "2"]
+    )
     assert_equal(2, receiver_options_user_count_short.options.count)
   end # test_receiver_option_parser_user_count_value_short
 
   def test_receiver_option_parser_user_count_value_long
-    receiver_options_user_count_long = Options::ReceiverOptionParser.new(["--count", "3"])
+    receiver_options_user_count_long = Options::ReceiverOptionParser.new(
+      ["--count", "3"]
+    )
     assert_equal(3, receiver_options_user_count_long.options.count)
   end # test_receiver_option_parser_user_count_value_long
 

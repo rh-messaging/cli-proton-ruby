@@ -24,17 +24,30 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_default_broker_value
     sender_options_default_broker = Options::SenderOptionParser.new([])
-    assert_equal("127.0.0.1:5672", sender_options_default_broker.options.broker)
+    assert_equal(
+      "127.0.0.1:5672",
+      sender_options_default_broker.options.broker
+    )
   end # test_sender_option_parser_default_broker_value
 
   def test_sender_option_parser_user_broker_value_short
-    sender_options_user_broker_short = Options::SenderOptionParser.new(["-b", "127.0.0.2:5672"])
-    assert_equal("127.0.0.2:5672", sender_options_user_broker_short.options.broker)
+    sender_options_user_broker_short = Options::SenderOptionParser.new(
+      ["-b", "127.0.0.2:5672"]
+    )
+    assert_equal(
+      "127.0.0.2:5672",
+      sender_options_user_broker_short.options.broker
+    )
   end # test_sender_option_parser_user_broker_value_short
 
   def test_sender_option_parser_user_broker_value_long
-    sender_options_user_broker_long = Options::SenderOptionParser.new(["--broker", "127.0.0.3:5672"])
-    assert_equal("127.0.0.3:5672", sender_options_user_broker_long.options.broker)
+    sender_options_user_broker_long = Options::SenderOptionParser.new(
+      ["--broker", "127.0.0.3:5672"]
+    )
+    assert_equal(
+      "127.0.0.3:5672",
+      sender_options_user_broker_long.options.broker
+    )
   end # test_sender_option_parser_user_broker_value_long
 
   def test_sender_option_parser_default_address_value
@@ -43,13 +56,23 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_default_address_value
 
   def test_sender_option_parser_user_address_value_short
-    sender_options_user_address_short = Options::SenderOptionParser.new(["-a", "address_short"])
-    assert_equal("address_short", sender_options_user_address_short.options.address)
+    sender_options_user_address_short = Options::SenderOptionParser.new(
+      ["-a", "address_short"]
+    )
+    assert_equal(
+      "address_short",
+      sender_options_user_address_short.options.address
+    )
   end # test_sender_option_parser_user_address_value_short
 
   def test_sender_option_parser_user_address_value_long
-    sender_options_user_address_long = Options::SenderOptionParser.new(["--address", "address_long"])
-    assert_equal("address_long", sender_options_user_address_long.options.address)
+    sender_options_user_address_long = Options::SenderOptionParser.new(
+      ["--address", "address_long"]
+    )
+    assert_equal(
+      "address_long",
+      sender_options_user_address_long.options.address
+    )
   end # test_sender_option_parser_user_address_value_long
 
   def test_sender_option_parser_default_log_msgs_value
@@ -58,7 +81,9 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_default_log_msgs_value
 
   def test_sender_option_parser_user_log_msgs_value_long
-    sender_options_user_log_msgs_long = Options::SenderOptionParser.new(["--log-msgs", "dict"])
+    sender_options_user_log_msgs_long = Options::SenderOptionParser.new(
+      ["--log-msgs", "dict"]
+    )
     assert_equal("dict", sender_options_user_log_msgs_long.options.log_msgs)
   end # test_sender_option_parser_user_log_msgs_value_long
 
@@ -68,12 +93,16 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_default_count_value
 
   def test_sender_option_parser_user_count_value_short
-    sender_options_user_count_short = Options::SenderOptionParser.new(["-c", "2"])
+    sender_options_user_count_short = Options::SenderOptionParser.new(
+      ["-c", "2"]
+    )
     assert_equal(2, sender_options_user_count_short.options.count)
   end # test_sender_option_parser_user_count_value_short
 
   def test_sender_option_parser_user_count_value_long
-    sender_options_user_count_long = Options::SenderOptionParser.new(["--count", "3"])
+    sender_options_user_count_long = Options::SenderOptionParser.new(
+      ["--count", "3"]
+    )
     assert_equal(3, sender_options_user_count_long.options.count)
   end # test_sender_option_parser_user_count_value_long
 
@@ -83,8 +112,13 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_default_msg_content_value
 
   def test_sender_option_parser_user_msg_content_value_long
-    sender_options_user_msg_content_long = Options::SenderOptionParser.new(["--msg-content", "hello"])
-    assert_equal("hello", sender_options_user_msg_content_long.options.msg_content)
+    sender_options_user_msg_content_long = Options::SenderOptionParser.new(
+      ["--msg-content", "hello"]
+    )
+    assert_equal(
+      "hello",
+      sender_options_user_msg_content_long.options.msg_content
+    )
   end # test_sender_option_parser_user_msg_content_value_long
 
 end # class UnitTestsSenderOptionParser

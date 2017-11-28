@@ -25,19 +25,28 @@ class UnitTestsBasicOptionParser < Minitest::Test
   def test_basic_option_parser_default_broker_value
     default_basic_options_broker = Options::BasicOptionParser.new()
     default_basic_options_broker.parse([])
-    assert_equal("127.0.0.1:5672", default_basic_options_broker.options.broker)
+    assert_equal(
+      "127.0.0.1:5672",
+      default_basic_options_broker.options.broker
+    )
   end # test_basic_option_parser_default_broker_value
 
   def test_basic_option_parser_user_broker_value_short
     user_basic_options_broker_short = Options::BasicOptionParser.new()
     user_basic_options_broker_short.parse(["-b", "127.0.0.2:5672"])
-    assert_equal("127.0.0.2:5672", user_basic_options_broker_short.options.broker)
+    assert_equal(
+      "127.0.0.2:5672",
+      user_basic_options_broker_short.options.broker
+    )
   end # test_basic_option_parser_user_broker_value_short
 
   def test_basic_option_parser_user_broker_value_long
     user_basic_options_broker_long = Options::BasicOptionParser.new()
     user_basic_options_broker_long.parse(["--broker", "127.0.0.3:5672"])
-    assert_equal("127.0.0.3:5672", user_basic_options_broker_long.options.broker)
+    assert_equal(
+      "127.0.0.3:5672",
+      user_basic_options_broker_long.options.broker
+    )
   end # test_basic_option_parser_user_broker_value_long
 
 end # class UnitTestsBasicOptionParser
