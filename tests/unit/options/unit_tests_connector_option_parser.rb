@@ -18,6 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/connector_option_parser'
+require_relative '../../../lib/constants'
 
 # ConnectorOptionParser unit tests class
 class UnitTestsConnectorOptionParser < Minitest::Test
@@ -25,7 +26,7 @@ class UnitTestsConnectorOptionParser < Minitest::Test
   def test_connector_option_parser_default_broker_value
     connector_options_default_broker = Options::ConnectorOptionParser.new([])
     assert_equal(
-      "127.0.0.1:5672",
+      Constants::DEFAULT_BROKER,
       connector_options_default_broker.options.broker
     )
   end # test_connector_option_parser_default_broker_value
@@ -52,7 +53,10 @@ class UnitTestsConnectorOptionParser < Minitest::Test
 
   def test_connector_option_parser_default_count_value
     connector_options_default_count = Options::ConnectorOptionParser.new([])
-    assert_equal(1, connector_options_default_count.options.count)
+    assert_equal(
+      Constants::DEFAULT_COUNT,
+      connector_options_default_count.options.count
+    )
   end # test_connector_option_parser_default_count_value
 
   def test_connector_option_parser_user_count_value_short

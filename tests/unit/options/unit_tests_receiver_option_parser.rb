@@ -18,6 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/receiver_option_parser'
+require_relative '../../../lib/constants'
 
 # ReceiverOptionParser unit tests class
 class UnitTestsReceiverOptionParser < Minitest::Test
@@ -25,7 +26,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   def test_receiver_option_parser_default_broker_value
     receiver_options_default_broker = Options::ReceiverOptionParser.new([])
     assert_equal(
-      "127.0.0.1:5672",
+      Constants::DEFAULT_BROKER,
       receiver_options_default_broker.options.broker
     )
   end # test_receiver_option_parser_default_broker_value
@@ -52,7 +53,10 @@ class UnitTestsReceiverOptionParser < Minitest::Test
 
   def test_receiver_option_parser_default_address_value
     receiver_options_default_address = Options::ReceiverOptionParser.new([])
-    assert_equal("examples", receiver_options_default_address.options.address)
+    assert_equal(
+      Constants::DEFAULT_ADDRESS,
+      receiver_options_default_address.options.address
+    )
   end # test_receiver_option_parser_default_address_value
 
   def test_receiver_option_parser_user_address_value_short
@@ -77,7 +81,10 @@ class UnitTestsReceiverOptionParser < Minitest::Test
 
   def test_receiver_option_parser_default_log_msgs_value
     receiver_options_default_log_msgs = Options::ReceiverOptionParser.new([])
-    assert_equal("none", receiver_options_default_log_msgs.options.log_msgs)
+    assert_equal(
+      Constants::DEFAULT_LOG_MSGS,
+      receiver_options_default_log_msgs.options.log_msgs
+    )
   end # test_receiver_option_parser_default_log_msgs_value
 
   def test_receiver_option_parser_user_log_msgs_value_long
@@ -89,7 +96,10 @@ class UnitTestsReceiverOptionParser < Minitest::Test
 
   def test_receiver_option_parser_default_count_value
     receiver_options_default_count = Options::ReceiverOptionParser.new([])
-    assert_equal(1, receiver_options_default_count.options.count)
+    assert_equal(
+      Constants::DEFAULT_COUNT,
+      receiver_options_default_count.options.count
+    )
   end # test_receiver_option_parser_default_count_value
 
   def test_receiver_option_parser_user_count_value_short

@@ -18,6 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/basic_option_parser'
+require_relative '../../../lib/constants'
 
 # BasicOptionParser unit tests class
 class UnitTestsBasicOptionParser < Minitest::Test
@@ -26,7 +27,7 @@ class UnitTestsBasicOptionParser < Minitest::Test
     default_basic_options_broker = Options::BasicOptionParser.new()
     default_basic_options_broker.parse([])
     assert_equal(
-      "127.0.0.1:5672",
+      Constants::DEFAULT_BROKER,
       default_basic_options_broker.options.broker
     )
   end # test_basic_option_parser_default_broker_value

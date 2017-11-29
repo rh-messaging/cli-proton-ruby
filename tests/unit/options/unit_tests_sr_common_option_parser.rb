@@ -18,6 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/sr_common_option_parser'
+require_relative '../../../lib/constants'
 
 # SRCommonOptionParser unit tests class
 class UnitTestsSRCommonOptionParser < Minitest::Test
@@ -26,7 +27,7 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     sr_common_options_default_broker = Options::SRCommonOptionParser.new()
     sr_common_options_default_broker.parse([])
     assert_equal(
-      "127.0.0.1:5672",
+      Constants::DEFAULT_BROKER,
       sr_common_options_default_broker.options.broker
     )
   end # test_sr_common_option_parser_default_broker_value
@@ -53,7 +54,7 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     sr_common_options_default_address = Options::SRCommonOptionParser.new()
     sr_common_options_default_address.parse([])
     assert_equal(
-      "examples",
+      Constants::DEFAULT_ADDRESS,
       sr_common_options_default_address.options.address
     )
   end # test_sr_common_option_parser_default_address_value
@@ -79,7 +80,10 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
   def test_sr_common_option_parser_default_log_msgs_value
     sr_common_options_default_log_msgs = Options::SRCommonOptionParser.new()
     sr_common_options_default_log_msgs.parse([])
-    assert_equal("none", sr_common_options_default_log_msgs.options.log_msgs)
+    assert_equal(
+      Constants::DEFAULT_LOG_MSGS,
+      sr_common_options_default_log_msgs.options.log_msgs
+    )
   end # test_sr_common_option_parser_default_log_msgs_value
 
   def test_sr_common_option_parser_user_log_msgs_value_long

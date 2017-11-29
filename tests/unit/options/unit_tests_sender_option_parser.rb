@@ -18,6 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/sender_option_parser'
+require_relative '../../../lib/constants'
 
 # SenderOptionParser unit tests class
 class UnitTestsSenderOptionParser < Minitest::Test
@@ -25,7 +26,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_broker_value
     sender_options_default_broker = Options::SenderOptionParser.new([])
     assert_equal(
-      "127.0.0.1:5672",
+      Constants::DEFAULT_BROKER,
       sender_options_default_broker.options.broker
     )
   end # test_sender_option_parser_default_broker_value
@@ -52,7 +53,10 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_default_address_value
     sender_options_default_address = Options::SenderOptionParser.new([])
-    assert_equal("examples", sender_options_default_address.options.address)
+    assert_equal(
+      Constants::DEFAULT_ADDRESS,
+      sender_options_default_address.options.address
+    )
   end # test_sender_option_parser_default_address_value
 
   def test_sender_option_parser_user_address_value_short
@@ -77,7 +81,10 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_default_log_msgs_value
     sender_options_default_log_msgs = Options::SenderOptionParser.new([])
-    assert_equal("none", sender_options_default_log_msgs.options.log_msgs)
+    assert_equal(
+      Constants::DEFAULT_LOG_MSGS,
+      sender_options_default_log_msgs.options.log_msgs
+    )
   end # test_sender_option_parser_default_log_msgs_value
 
   def test_sender_option_parser_user_log_msgs_value_long
@@ -89,7 +96,10 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_default_count_value
     sender_options_default_count = Options::SenderOptionParser.new([])
-    assert_equal(1, sender_options_default_count.options.count)
+    assert_equal(
+      Constants::DEFAULT_COUNT,
+      sender_options_default_count.options.count
+    )
   end # test_sender_option_parser_default_count_value
 
   def test_sender_option_parser_user_count_value_short
@@ -108,7 +118,10 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_default_msg_content_value
     sender_options_default_msg_content = Options::SenderOptionParser.new([])
-    assert_equal("", sender_options_default_msg_content.options.msg_content)
+    assert_nil(
+      Constants::DEFAULT_MSG_CONTENT,
+      sender_options_default_msg_content.options.msg_content
+    )
   end # test_sender_option_parser_default_msg_content_value
 
   def test_sender_option_parser_user_msg_content_value_long
