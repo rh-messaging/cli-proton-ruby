@@ -22,7 +22,8 @@ module Options
   # common (see Options::SRCommonOptionParser)
   # and specific options for receiver client
   # ==== Specific receiver options
-  # count:: number of messages to receiver (default: 1)
+  # count:: number of messages to receiver
+  #         (default: DEFAULT_COUNT, see Constants)
   class ReceiverOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific receiver
@@ -38,14 +39,15 @@ module Options
       # Receiver specific options with default values
 
       # Number of messages option
-      @options.count = 1
+      @options.count = Constants::DEFAULT_COUNT
 
       # Number of messages
       @opt_parser.on(
         "-c",
         "--count COUNT",
         Integer,
-        "number of messages to receiver (default: 1)"
+        "number of messages to receiver "+
+        "(default: #{Constants::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
       end

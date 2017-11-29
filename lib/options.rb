@@ -32,6 +32,7 @@ require 'options/receiver_option_parser'
 # * Options::ReceiverOptionParser of basic, common and specific options
 #   for receiver client
 module Options
+
 end # module Options
 
 # eof

@@ -22,8 +22,9 @@ module Options
   # common (see Options::SRCommonOptionParser)
   # and specific options for sender client
   # ==== Specific sender options
-  # count:: number of messages to send (default: 1)
-  # msg-content:: message content
+  # count:: number of messages to send (default: DEFAULT_COUNT, see Constants)
+  # msg-content:: message content (default: DEFAULT_MSG_CONTENT,
+  #               see Constants)
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
@@ -38,16 +39,16 @@ module Options
       # Sender specific options with default values
    
       # Number of messages option
-      @options.count = 1
+      @options.count = Constants::DEFAULT_COUNT
       # Message content option
-      @options.msg_content = ""
+      @options.msg_content = Constants::DEFAULT_MSG_CONTENT
 
       # Number of messages
       @opt_parser.on(
         "-c",
         "--count COUNT",
         Integer,
-        "number of messages to send (default: 1)"
+        "number of messages to send (default: #{Constants::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
       end
@@ -57,7 +58,13 @@ module Options
         "-m",
         "--msg-content CONTENT",
         String,
-        "message content"
+        "message content (default: "+(
+          if Constants::DEFAULT_MSG_CONTENT.nil? then
+            "nil"
+          else
+            Constants::DEFAULT_MSG_CONTENT
+          end
+        )+")"
       ) do |msg_content|
         @options.msg_content = msg_content
       end
