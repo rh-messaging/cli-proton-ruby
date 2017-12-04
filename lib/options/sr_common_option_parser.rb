@@ -22,8 +22,8 @@ module Options
   # options for sender and receiver client
   # ==== Common sender and receiver options
   # address:: name of queue/topic (default: DEFAULT_ADDRESS, see Constants)
-  # log-msgs:: format of message(s) log (none/dict, default: DEFAULT_LOG_MSGS,
-  #            see Constants)
+  # log-msgs:: format of message(s) log (none/body/dict,
+  #            default: DEFAULT_LOG_MSGS, see Constants)
   class SRCommonOptionParser < Options::BasicOptionParser
 
     # Initialization of basic and common sender and receiver options
@@ -54,7 +54,7 @@ module Options
       @opt_parser.on(
         "--log-msgs FORMAT",
         String,
-        "format of message(s) log (none/dict, "+
+        "format of message(s) log (none/body/dict, "+
         "default: #{Constants::DEFAULT_LOG_MSGS})"
       ) do |log_msgs|
         @options.log_msgs = log_msgs
