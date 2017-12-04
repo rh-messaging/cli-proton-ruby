@@ -14,6 +14,7 @@
 # limitations under the License.
 #++
 
+require_relative '../formatters/basic_formatter'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -71,7 +72,9 @@ module Handlers
         event.sender.send(msg)
         # Increase number of sent messages
         @sent = @sent + 1
-        puts "Sent message with body: '#{@msg_content}'"
+        if @log_msgs == "body"
+          Formatters::BasicFormatter.new(msg).print
+        end
       end # while
     end # on_sendable(event)
 

@@ -14,6 +14,7 @@
 # limitations under the License.
 #++
 
+require_relative '../formatters/basic_formatter'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -50,7 +51,9 @@ module Handlers
     # receiving ReceiverHandler#count messages
     def on_message(event)
       # Print received message
-      puts "Received message with body: '#{event.message.body}'"
+      if @log_msgs == "body"
+        Formatters::BasicFormatter.new(event.message).print
+      end
       # Increase number of received messages
       @received = @received + 1
       # If all messages are received
