@@ -51,7 +51,9 @@ module Handlers
     # and creates sender connected to SRCommonHandler#address
     def on_start(event)
       # Connecting to broker and creating sender
-      @connection = event.container.create_sender([@broker, @address].join("/"))
+      @connection = event.container.create_sender(
+        [@broker, @address].join("/")
+      )
     end # on_start(event)
 
     # Called when the sender link has credit
