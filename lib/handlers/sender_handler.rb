@@ -15,6 +15,7 @@
 #++
 
 require_relative '../formatters/basic_formatter'
+require_relative '../formatters/dict_formatter'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -76,6 +77,8 @@ module Handlers
         @sent = @sent + 1
         if @log_msgs == "body"
           Formatters::BasicFormatter.new(msg).print
+        elsif @log_msgs == "dict"
+          Formatters::DictFormatter.new(msg).print
         end
       end # while
     end # on_sendable(event)

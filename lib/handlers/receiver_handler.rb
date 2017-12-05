@@ -15,6 +15,7 @@
 #++
 
 require_relative '../formatters/basic_formatter'
+require_relative '../formatters/dict_formatter'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -55,6 +56,8 @@ module Handlers
       # Print received message
       if @log_msgs == "body"
         Formatters::BasicFormatter.new(event.message).print
+      elsif @log_msgs == "dict"
+        Formatters::DictFormatter.new(event.message).print
       end
       # Increase number of received messages
       @received = @received + 1

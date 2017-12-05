@@ -15,10 +15,12 @@
 #++
 
 require 'formatter/basic_formatter'
+require 'formatter/dict_formatter'
 
 # Module containing formatters for cli-proton-ruby clients
 # ==== Formatters
 # * Formatters::BasicFormatter for formatting message body
+# * Formatters::DictFormatter for formatting message into dictionary
 module Formatters
 
 end # module Formatters
