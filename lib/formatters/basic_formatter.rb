@@ -35,7 +35,7 @@ module Formatters
     # value:: value to format
     # ==== Returns
     # value formatted as string
-    def formatValue(value)
+    def format_value(value)
       # Switch by class of value
       case value
       # Boolean value
@@ -47,26 +47,26 @@ module Formatters
       # Array value
       when Array
         # Array for formatted items of array
-        helpArray = []
+        help_array = []
         # Each item in array needs to be formatted
         value.each do |item|
           # Format array item
-          helpArray.push(formatValue(item))
+          help_array.push(format_value(item))
         end
-        return "[#{helpArray.join(", ")}]"
+        return "[#{help_array.join(", ")}]"
       # Dictionary/hash value
       when Hash
         # Array for formatted items of hash
-        helpArray = []
+        help_array = []
         # Each key-value pair needs to be formatted
         value.each do |key, value|
           # Format key-value pair of item
-          helpArray.push("#{formatValue(key)}: #{formatValue(value)}")
+          help_array.push("#{format_value(key)}: #{format_value(value)}")
         end
-        return "{#{helpArray.join(", ")}}"
+        return "{#{help_array.join(", ")}}"
       # String or symbol value
       when String, Symbol
-        return "\"#{value}\""
+        return value.size > 0 ? "\"#{value}\"" : "None"
       # Nil value
       when NilClass
         return "None"
@@ -74,12 +74,12 @@ module Formatters
       else
         raise TypeError, "Unknown value type"
       end # case
-    end # formatValue(value)
+    end # format_value(value)
 
-    # Prints formatted message body
+    # Prints formatted message body to stdout
     def print()
-      # Print formatted body
-      puts formatValue(@message.body)
+      # Print formatted body to stdout
+      puts format_value(@message.body)
     end # print()
 
   end # class BasicFormatter
