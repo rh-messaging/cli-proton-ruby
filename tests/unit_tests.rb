@@ -44,5 +44,7 @@ load 'unit/options/unit_tests_receiver_option_parser.rb'
 # Formatters unit tests
 # BasicFormatter unit tests
 load 'unit/formatters/unit_tests_basic_formatter.rb'
+# DictFormatter unit tests
+load 'unit/formatters/unit_tests_dict_formatter.rb'
 
 # eof

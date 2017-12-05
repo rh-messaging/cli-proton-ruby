@@ -19,5 +19,7 @@ require 'minitest/autorun'
 
 # BasicFormatter unit tests
 load 'formatters/unit_tests_basic_formatter.rb'
+# DictFormatter unit tests
+load 'formatters/unit_tests_dict_formatter.rb'
 
 # eof
