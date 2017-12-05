@@ -17,6 +17,8 @@
 require 'optparse'
 require 'ostruct'
 
+require_relative '../constants'
+
 module Options
 
   # Option parser of basic options for all clients
