@@ -15,6 +15,6 @@
 # limitations under the License.
 #
 
-cd .. && rdoc --main README.md -x scripts/ -x tests/ -x AUTHORS -x CONTRIBUTORS -x LICENSE -V
+cd .. && rdoc --main README.md -x scripts/ -x tests/ -x AUTHORS -x CONTRIBUTORS -x LICENSE -V -x bin/
 
 # eof
