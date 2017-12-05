@@ -64,16 +64,34 @@ class UnitTestsBasicFormatter < Minitest::Test
     assert_equal(1..10, basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_range_format
 
+  def test_basic_formatter_empty_array_format
+    message_object = Qpid::Proton::Message.new([])
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("[]", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_empty_array_format
+
   def test_basic_formatter_basic_array_format
     message_object = Qpid::Proton::Message.new(["A", "B", "C"])
     basic_formatter = Formatters::BasicFormatter.new(message_object)
-    assert_equal("[\"A\", \"B\", \"C\"]", basic_formatter.format_value(message_object.body))
+    assert_equal(
+      "[\"A\", \"B\", \"C\"]",
+      basic_formatter.format_value(message_object.body)
+    )
   end # test_basic_formatter_basic_array_format
+
+  def test_basic_formatter_empty_hash_format
+    message_object = Qpid::Proton::Message.new({})
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("{}", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_empty_hash_format
 
   def test_basic_formatter_basic_hash_format
     message_object = Qpid::Proton::Message.new({1=>"A", 2=>"B", 3=>"C"})
     basic_formatter = Formatters::BasicFormatter.new(message_object)
-    assert_equal("{1: \"A\", 2: \"B\", 3: \"C\"}", basic_formatter.format_value(message_object.body))
+    assert_equal(
+      "{1: \"A\", 2: \"B\", 3: \"C\"}",
+      basic_formatter.format_value(message_object.body)
+    )
   end # test_basic_formatter_basic_hash_format
 
   def test_basic_formatter_empty_string_format
@@ -85,13 +103,19 @@ class UnitTestsBasicFormatter < Minitest::Test
   def test_basic_formatter_basic_string_format
     message_object = Qpid::Proton::Message.new("unit_test")
     basic_formatter = Formatters::BasicFormatter.new(message_object)
-    assert_equal("\"unit_test\"", basic_formatter.format_value(message_object.body))
+    assert_equal(
+      "\"unit_test\"",
+      basic_formatter.format_value(message_object.body)
+    )
   end # test_basic_formatter_basic_string_format
 
   def test_basic_formatter_symbol_format
     message_object = Qpid::Proton::Message.new(:ruby_symbol)
     basic_formatter = Formatters::BasicFormatter.new(message_object)
-    assert_equal("\"ruby_symbol\"", basic_formatter.format_value(message_object.body))
+    assert_equal(
+      "\"ruby_symbol\"",
+      basic_formatter.format_value(message_object.body)
+    )
   end # test_basic_formatter_symbol_format
 
   def test_basic_formatter_nil_format
