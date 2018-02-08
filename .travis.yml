@@ -1,13 +1,25 @@
 sudo: required
-language: ruby
+language: generic
 # https://docs.travis-ci.com/user/docker/
 services:
   - docker
 before_install:
-  - "docker pull jdanekrh/docker-qpid-proton-clients:devel"
-  - "docker pull jdanekrh/docker-alpine-openjdk-artemis-snapshot"
-  - "docker run -v `pwd`:/mnt -p 5672:5672 -p 61616:61616 -p 5673:5673 -p 61617:61617 --entrypoint ash --rm jdanekrh/docker-alpine-openjdk-artemis-snapshot /mnt/scripts/entrypoint.sh amq7-server &"
-  - "sleep 10"
+  # https://docs.docker.com/engine/swarm/swarm-tutorial/
+  - docker swarm init
+  # https://docs.docker.com/network/overlay/#create-an-overlay-network
+  - docker network create -d overlay --attachable swarmnet
+  - docker pull jdanekrh/docker-qpid-proton-clients:devel
+  - docker pull jdanekrh/docker-alpine-openjdk-artemis-snapshot
+  # The broker is running as a Docker Swarm Mode service. This is not strictly necessary (we would get service discovery
+  # just from using user defined network, but well, why not.
+  # The client cannot run as a service, because that runs in the background, does not block for exit and hides logs
+  - docker service create --replicas 1 --name broker --mount type=bind,source=`pwd`/scripts/broker,destination=/mnt --network swarmnet -p 5672:5672 -p 61616:61616 -p 5673:5673 -p 61617:61617 --entrypoint ash jdanekrh/docker-alpine-openjdk-artemis-snapshot /mnt/entrypoint.sh amq7-server &
+  - sleep 10
 script:
-  - "docker run -v `pwd`:/mnt --rm jdanekrh/docker-qpid-proton-clients:devel /mnt/scripts/docker-tests.sh"
-  - "ip a"
+  # The tests are running inside a container (which provides installation of qpid-proton and qpid-proton-ruby).
+  # The container is based on centos7, which means it is affected by PROTON-1738 [ruby-binding] incompatible with ruby 2.0.0
+  # The current tests do pass, but in the future they would not, the moment we start creating connections to broker.
+  # We want to get some useful testing done, so it installs newer ruby from SCL as the first thing.
+  - docker run -v `pwd`:/mnt --rm --network swarmnet jdanekrh/docker-qpid-proton-clients:devel /mnt/scripts/docker-tests.sh
+  # print broker logs as the last thing
+  - docker service logs broker
