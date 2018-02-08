@@ -1,0 +1,9 @@
+sudo: required
+language: ruby
+# https://docs.travis-ci.com/user/docker/
+services:
+  - docker
+before_install:
+  - "docker pull jdanekrh/docker-qpid-proton-clients:devel"
+script:
+  - "docker run -v `pwd`:/mnt --rm -it jdanekrh/docker-qpid-proton-clients:devel /mnt/scripts/docker-tests.sh"
