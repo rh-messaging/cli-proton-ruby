@@ -5,5 +5,9 @@ services:
   - docker
 before_install:
   - "docker pull jdanekrh/docker-qpid-proton-clients:devel"
+  - "docker pull jdanekrh/docker-alpine-openjdk-artemis-snapshot"
+  - "docker run -v `pwd`:/mnt -p 5672:5672 -p 61616:61616 -p 5673:5673 -p 61617:61617 --entrypoint ash --rm jdanekrh/docker-alpine-openjdk-artemis-snapshot /mnt/scripts/entrypoint.sh amq7-server &"
+  - "sleep 10"
 script:
-  - "docker run -v `pwd`:/mnt --rm -it jdanekrh/docker-qpid-proton-clients:devel /mnt/scripts/docker-tests.sh"
+  - "docker run -v `pwd`:/mnt --rm jdanekrh/docker-qpid-proton-clients:devel /mnt/scripts/docker-tests.sh"
+  - "ip a"
