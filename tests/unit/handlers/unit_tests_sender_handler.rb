@@ -27,13 +27,15 @@ class UnitTestsSenderHandler < Minitest::Test
     @log_msgs_value = "dict"
     @count_value = 1
     @msg_content_value = "hello"
+    @msg_correlation_id = "corr-id-0123456789"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
       @address_value,
       @log_msgs_value,
       @count_value,
-      @msg_content_value
+      @msg_content_value,
+      @msg_correlation_id
     )
   end # setup
 
@@ -59,6 +61,13 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.msg_content
     )
   end # test_sender_handler_msg_content_argument_initialization
+
+  def test_sender_handler_msg_correlation_id_argument_initialization
+    assert_equal(
+      @msg_correlation_id,
+      @sender_handler_initialization.msg_correlation_id
+    )
+  end # test_sender_handler_msg_correlation_id_argument_initialization
 
 end # class UnitTestsSenderHandler
 
