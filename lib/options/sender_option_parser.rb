@@ -25,6 +25,7 @@ module Options
   # count:: number of messages to send (default: DEFAULT_COUNT, see Constants)
   # msg-content:: message content (default: DEFAULT_MSG_CONTENT,
   #               see Constants)
+  # msg-correlation-id:: message correlation ID
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
@@ -67,6 +68,15 @@ module Options
         )+")"
       ) do |msg_content|
         @options.msg_content = msg_content
+      end
+
+      # Message correlation id
+      @opt_parser.on(
+        "--msg-correlation-id ID",
+        String,
+        "message correlation ID"
+      ) do |msg_correlation_id|
+        @options.msg_correlation_id = msg_correlation_id
       end
 
       # Parse basic, common and specific options for sender client

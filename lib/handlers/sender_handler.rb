@@ -35,17 +35,20 @@ module Handlers
     # log_msgs:: format of message(s) log
     # count:: number of messages to send
     # msg_content:: message content
-    def initialize(broker, address, log_msgs, count, msg_content)
+    # msg_correlation_id:: message correlation ID
+    def initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id)
       super(broker, address, log_msgs)
       # Save count of messages
       @count = count
       # Save message content
       @msg_content = msg_content
+      # Save message correlation ID
+      @msg_correlation_id = msg_correlation_id
       # Number of sent messages
       @sent = 0
       # Number of accepted messages
       @accepted = 0
-    end # initialize(broker, address, log_msgs, count, msg_content)
+    end # initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id)
 
     # Called when the event loop starts,
     # connects sender client to SRCommonHandler#broker
@@ -70,6 +73,10 @@ module Handlers
         if @msg_content
           # Set message content
           msg.body = msg_content
+        end # if
+        # If message correlation ID is set
+        if @msg_correlation_id
+          msg.correlation_id = @msg_correlation_id
         end # if
         # Send message
         event.sender.send(msg)
