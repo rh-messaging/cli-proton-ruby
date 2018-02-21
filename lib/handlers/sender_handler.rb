@@ -27,6 +27,8 @@ module Handlers
     attr_accessor :count
     # Message content
     attr_accessor :msg_content
+    # Message correlation ID
+    attr_accessor :msg_correlation_id
 
     # Initialization of sender events handler
     # ==== Sender events handler arguments
