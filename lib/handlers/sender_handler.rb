@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :msg_content
     # Message correlation ID
     attr_accessor :msg_correlation_id
+    # Message group ID
+    attr_accessor :msg_group_id
 
     # Initialization of sender events handler
     # ==== Sender events handler arguments
@@ -38,7 +40,8 @@ module Handlers
     # count:: number of messages to send
     # msg_content:: message content
     # msg_correlation_id:: message correlation ID
-    def initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id)
+    # msg_group_id:: message group ID
+    def initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
       super(broker, address, log_msgs)
       # Save count of messages
       @count = count
@@ -46,11 +49,13 @@ module Handlers
       @msg_content = msg_content
       # Save message correlation ID
       @msg_correlation_id = msg_correlation_id
+      # Save message group ID
+      @msg_group_id = msg_group_id
       # Number of sent messages
       @sent = 0
       # Number of accepted messages
       @accepted = 0
-    end # initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id)
+    end # initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
 
     # Called when the event loop starts,
     # connects sender client to SRCommonHandler#broker
@@ -80,6 +85,10 @@ module Handlers
         if @msg_correlation_id
           msg.correlation_id = @msg_correlation_id
         end # if
+        # If message group ID is set
+        if @msg_group_id
+          msg.group_id = @msg_group_id
+        end
         # Send message
         event.sender.send(msg)
         # Increase number of sent messages
