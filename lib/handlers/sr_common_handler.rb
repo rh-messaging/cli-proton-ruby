@@ -39,6 +39,11 @@ module Handlers
       @log_msgs = log_msgs
     end # initialize(broker, address, log_msgs)
 
+    # Default for un-handled errors is to raise an exception
+    def on_error(condition)
+      raise condition
+    end
+
   end # class SRCommonHandler
 
 end # module Handlers
