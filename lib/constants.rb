@@ -27,6 +27,8 @@ module Constants
   DEFAULT_LOG_MSGS    = "none"
   # Default value for message content
   DEFAULT_MSG_CONTENT = nil
+  # Default value for message correlation ID
+  DEFAULT_CORR_ID     = nil
 
 end # module Constants
 
