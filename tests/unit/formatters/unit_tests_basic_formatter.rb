@@ -74,7 +74,7 @@ class UnitTestsBasicFormatter < Minitest::Test
     message_object = Qpid::Proton::Message.new(["A", "B", "C"])
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(
-      "[\"A\", \"B\", \"C\"]",
+      "['A', 'B', 'C']",
       basic_formatter.format_value(message_object.body)
     )
   end # test_basic_formatter_basic_array_format
@@ -89,7 +89,7 @@ class UnitTestsBasicFormatter < Minitest::Test
     message_object = Qpid::Proton::Message.new({1=>"A", 2=>"B", 3=>"C"})
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(
-      "{1: \"A\", 2: \"B\", 3: \"C\"}",
+      "{1: 'A', 2: 'B', 3: 'C'}",
       basic_formatter.format_value(message_object.body)
     )
   end # test_basic_formatter_basic_hash_format
@@ -104,7 +104,7 @@ class UnitTestsBasicFormatter < Minitest::Test
     message_object = Qpid::Proton::Message.new("unit_test")
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(
-      "\"unit_test\"",
+      "'unit_test'",
       basic_formatter.format_value(message_object.body)
     )
   end # test_basic_formatter_basic_string_format
@@ -113,7 +113,7 @@ class UnitTestsBasicFormatter < Minitest::Test
     message_object = Qpid::Proton::Message.new(:ruby_symbol)
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(
-      "\"ruby_symbol\"",
+      "'ruby_symbol'",
       basic_formatter.format_value(message_object.body)
     )
   end # test_basic_formatter_symbol_format

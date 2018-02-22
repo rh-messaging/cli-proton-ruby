@@ -66,7 +66,7 @@ module Formatters
         return "{#{help_array.join(", ")}}"
       # String or symbol value
       when String, Symbol
-        return value.size > 0 ? "\"#{value}\"" : "None"
+        return value.size > 0 ? "\'#{value}\'" : "None"
       # Nil value
       when NilClass
         return "None"
