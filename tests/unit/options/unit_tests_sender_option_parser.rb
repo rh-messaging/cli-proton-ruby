@@ -134,6 +134,24 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_content_value_long
 
+  def test_sender_option_parser_default_msg_corr_id_value
+    sender_options_default_msg_content = Options::SenderOptionParser.new([])
+    assert_nil(
+      Constants::DEFAULT_CORR_ID,
+      sender_options_default_msg_content.options.msg_correlation_id
+    )
+  end # test_sender_option_parser_default_msg_corr_id_value
+
+  def test_sender_option_parser_user_msg_corr_id_value_long
+    sender_options_default_msg_content = Options::SenderOptionParser.new(
+      ["--msg-correlation-id", "corr-id-0123456789"]
+    )
+    assert_equal(
+      "corr-id-0123456789",
+      sender_options_default_msg_content.options.msg_correlation_id
+    )
+  end # test_sender_option_parser_user_msg_corr_id_value_long
+
 end # class UnitTestsSenderOptionParser
 
 # eof
