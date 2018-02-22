@@ -8,7 +8,8 @@ yum install -y rh-ruby24 rh-ruby24-ruby-devel
 source scl_source enable rh-ruby24
 
 cd /
+gem install rake
 gem install minitest
 gem install qpid-proton/proton-c/bindings/ruby/gem/qpid_proton-*.gem
 cd $PROJECT/tests
-ruby unit_tests.rb
+rake test
