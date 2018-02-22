@@ -22,13 +22,13 @@ require_relative '../../../lib/handlers/sender_handler'
 class UnitTestsSenderHandler < Minitest::Test
 
   def setup
-    @broker_value = "127.0.0.1:5672"
-    @address_value = "examples"
+    @broker_value = "127.0.0.4:5672"
+    @address_value = "examples_queue"
     @log_msgs_value = "dict"
-    @count_value = 1
+    @count_value = 7
     @msg_content_value = "hello"
     @msg_correlation_id = "corr-id-0123456789"
-    @msg_group_id = "group-id-1234567890"
+    @msg_group_id = "group-id-0987654321"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
