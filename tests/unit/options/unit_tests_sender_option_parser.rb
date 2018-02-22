@@ -135,20 +135,20 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_user_msg_content_value_long
 
   def test_sender_option_parser_default_msg_corr_id_value
-    sender_options_default_msg_content = Options::SenderOptionParser.new([])
+    sender_options_default_msg_corr_id = Options::SenderOptionParser.new([])
     assert_nil(
       Constants::DEFAULT_CORR_ID,
-      sender_options_default_msg_content.options.msg_correlation_id
+      sender_options_default_msg_corr_id.options.msg_correlation_id
     )
   end # test_sender_option_parser_default_msg_corr_id_value
 
   def test_sender_option_parser_user_msg_corr_id_value_long
-    sender_options_default_msg_content = Options::SenderOptionParser.new(
+    sender_options_user_msg_corr_id = Options::SenderOptionParser.new(
       ["--msg-correlation-id", "corr-id-0123456789"]
     )
     assert_equal(
       "corr-id-0123456789",
-      sender_options_default_msg_content.options.msg_correlation_id
+      sender_options_user_msg_corr_id.options.msg_correlation_id
     )
   end # test_sender_option_parser_user_msg_corr_id_value_long
 
@@ -171,7 +171,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_user_msg_group_id_value_long
 
   def test_sender_option_parser_user_msg_content_map_item_value_short
-    sender_options_default_msg_content = Options::SenderOptionParser.new([
+    sender_options_user_msg_content_map_item_short = Options::SenderOptionParser.new([
       "-M", "string=String",
       "-M", "int~1",
       "-M", "float~1.0",
@@ -196,12 +196,12 @@ class UnitTestsSenderOptionParser < Minitest::Test
         "string_float" => '1.0',
         "string_retype_operator" => '~1'
       },
-      sender_options_default_msg_content.options.msg_content
+      sender_options_user_msg_content_map_item_short.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_map_item_value_short
 
   def test_sender_option_parser_user_msg_content_map_item_value_long
-    sender_options_default_msg_content = Options::SenderOptionParser.new([
+    sender_options_user_msg_content_map_item_long = Options::SenderOptionParser.new([
       "--msg-content-map-item", "string=String",
       "--msg-content-map-item", "int~1",
       "--msg-content-map-item", "float~1.0",
@@ -226,7 +226,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
         "string_float" => '1.0',
         "string_retype_operator" => '~1'
       },
-      sender_options_default_msg_content.options.msg_content
+      sender_options_user_msg_content_map_item_long.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_map_item_value_long
 
