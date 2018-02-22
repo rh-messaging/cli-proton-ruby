@@ -21,13 +21,12 @@ require 'sender_client'
 require 'receiver_client'
 
 BIN_DIR = File.absolute_path("../../bin", File.dirname(__FILE__))
-RUBY_OPTS = [ "-W0" ]           # FIXME aconway 2018-02-22: temporarily suppress warnings
 
 class TestClients < Minitest::Test
 
   def run_client(prog, *args)
     prog = File.join(BIN_DIR, prog)
-    return IO.popen([ RbConfig.ruby, *RUBY_OPTS, prog ] + args.map { |a| a.to_s },
+    return IO.popen([ RbConfig.ruby, prog ] + args.map { |a| a.to_s },
                    :err=>[:child, :out]) # Include stderr in output
   end
 

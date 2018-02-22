@@ -48,11 +48,11 @@ module Handlers
     # Called when the event loop starts,
     # connects receiver client to SRCommonHandler#broker
     # and creates receiver connected to SRCommonHandler#address
-    def on_start(event)
+    def on_container_start(container)
       # Connecting to broker
-      @connection = event.container.connect(@broker)
+      @connection = container.connect(@broker)
       # Creating receiver
-      @receiver = event.container.create_receiver(@connection, source: @address)
+      @receiver = @connection.open_receiver(@address)
       # If browse messages instead of reading
       if browse
         # Set browsing mode
@@ -62,21 +62,21 @@ module Handlers
 
     # Called when a message is received,
     # receiving ReceiverHandler#count messages
-    def on_message(event)
+    def on_message(delivery, message)
       # Print received message
       if @log_msgs == "body"
-        Formatters::BasicFormatter.new(event.message).print
+        Formatters::BasicFormatter.new(message).print
       elsif @log_msgs == "dict"
-        Formatters::DictFormatter.new(event.message).print
+        Formatters::DictFormatter.new(message).print
       end
       # Increase number of received messages
       @received = @received + 1
       # If all messages are received
       if @received == @count
         # Close receiver
-        event.receiver.close
+        delivery.receiver.close
         # Close connection
-        event.connection.close
+        delivery.receiver.connection.close
       end # if
     end # on_message(event)
 

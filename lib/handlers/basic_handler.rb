@@ -19,7 +19,7 @@ require 'qpid_proton'
 module Handlers
 
   # Basic events handler for all clients
-  class BasicHandler < Qpid::Proton::Handler::MessagingHandler
+  class BasicHandler < Qpid::Proton::MessagingHandler
 
     # URL of broker
     attr_accessor :broker
