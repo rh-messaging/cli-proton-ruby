@@ -59,9 +59,9 @@ module Formatters
         # Array for formatted items of hash
         help_array = []
         # Each key-value pair needs to be formatted
-        value.each do |key, value|
+        value.each do |key, val|
           # Format key-value pair of item
-          help_array.push("#{format_value(key)}: #{format_value(value)}")
+          help_array.push("#{format_value(key)}: #{format_value(val)}")
         end
         return "{#{help_array.join(", ")}}"
       # String or symbol value
