@@ -38,6 +38,7 @@ class UnitTestsDictFormatter < Minitest::Test
       + "'subject': None, "\
       + "'content_type': None, "\
       + "'id': None, "\
+      + "'group_id': None, "\
       + "'user_id': None, "\
       + "'correlation_id': None, "\
       + "'priority': 4, "\
