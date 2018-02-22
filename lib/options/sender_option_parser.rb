@@ -26,6 +26,7 @@ module Options
   # msg-content:: message content (default: DEFAULT_MSG_CONTENT,
   #               see Constants)
   # msg-correlation-id:: message correlation ID
+  # msg-content-map-item:: message content map item
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
