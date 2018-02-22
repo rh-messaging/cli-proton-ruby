@@ -66,7 +66,7 @@ module Options
         "--msg-content CONTENT",
         String,
         "message content (default: "+(
-          if Constants::DEFAULT_MSG_CONTENT.nil? then
+          if Constants::DEFAULT_MSG_CONTENT.nil?
             "nil"
           else
             Constants::DEFAULT_MSG_CONTENT
