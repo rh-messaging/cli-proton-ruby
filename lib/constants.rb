@@ -29,6 +29,8 @@ module Constants
   DEFAULT_MSG_CONTENT = nil
   # Default value for message correlation ID
   DEFAULT_CORR_ID     = nil
+  # Default value for message group ID
+  DEFAULT_GROUP_ID    = nil
 
 end # module Constants
 
