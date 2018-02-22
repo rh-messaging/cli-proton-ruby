@@ -27,6 +27,7 @@ module Options
   #               see Constants)
   # msg-correlation-id:: message correlation ID
   # msg-content-map-item:: message content map item
+  # msg-group-id:: message group ID
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
@@ -46,6 +47,8 @@ module Options
       @options.msg_content = Constants::DEFAULT_MSG_CONTENT
       # Message correlation ID option
       @options.msg_correlation_id = Constants::DEFAULT_CORR_ID
+      # Message group ID option
+      @options.msg_group_id = Constants::DEFAULT_GROUP_ID
 
       # Number of messages
       @opt_parser.on(
@@ -108,6 +111,15 @@ module Options
         "message correlation ID"
       ) do |msg_correlation_id|
         @options.msg_correlation_id = msg_correlation_id
+      end
+
+      # Message group id
+      @opt_parser.on(
+        "--msg-group-id ID",
+        String,
+        "message group ID"
+      ) do |msg_group_id|
+        @options.msg_group_id = msg_group_id
       end
 
       # Parse basic, common and specific options for sender client
