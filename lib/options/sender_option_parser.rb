@@ -72,6 +72,34 @@ module Options
         @options.msg_content = msg_content
       end
 
+      # Message map content
+      @opt_parser.on(
+        "-M",
+        "--msg-content-map-item KEY=VALUE",
+        String,
+        "map item specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
+      ) do |msg_content_map_item|
+        if @options.msg_content.nil?
+          @options.msg_content = {}
+        end
+
+        if msg_content_map_item.include? "="
+          key, value = msg_content_map_item.split("=")
+
+          @options.msg_content[key] = value.nil? ? "" : value
+        elsif msg_content_map_item.include? "~"
+          key, value = msg_content_map_item.split("~")
+
+          if value.include? "."
+            value = value.to_f
+          else
+            value = value.to_i
+          end
+
+          @options.msg_content[key] = value
+        end
+      end
+
       # Message correlation id
       @opt_parser.on(
         "--msg-correlation-id ID",
