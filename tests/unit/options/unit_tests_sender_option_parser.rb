@@ -152,6 +152,66 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_corr_id_value_long
 
+  def test_sender_option_parser_user_msg_content_map_item_value_short
+    sender_options_default_msg_content = Options::SenderOptionParser.new([
+      "-M", "string=String",
+      "-M", "int~1",
+      "-M", "float~1.0",
+      "-M", "empty_string=",
+      "-M", "negative_float~-1.3",
+      "-M", "string_int=1",
+      "-M", "string_negative_int=-1",
+      "-M", "negative_int~-1",
+      "-M", "string_float=1.0",
+      "-M", "string_retype_operator=~1"
+    ])
+    assert_equal(
+      {
+        "string" => 'String',
+        "int" => 1,
+        "float" => 1.0,
+        "empty_string" => '',
+        "negative_float" => -1.3,
+        "string_int" => '1',
+        "string_negative_int" => '-1',
+        "negative_int" => -1,
+        "string_float" => '1.0',
+        "string_retype_operator" => '~1'
+      },
+      sender_options_default_msg_content.options.msg_content
+    )
+  end # test_sender_option_parser_user_msg_content_map_item_value_short
+
+  def test_sender_option_parser_user_msg_content_map_item_value_long
+    sender_options_default_msg_content = Options::SenderOptionParser.new([
+      "--msg-content-map-item", "string=String",
+      "--msg-content-map-item", "int~1",
+      "--msg-content-map-item", "float~1.0",
+      "--msg-content-map-item", "empty_string=",
+      "--msg-content-map-item", "negative_float~-1.3",
+      "--msg-content-map-item", "string_int=1",
+      "--msg-content-map-item", "string_negative_int=-1",
+      "--msg-content-map-item", "negative_int~-1",
+      "--msg-content-map-item", "string_float=1.0",
+      "--msg-content-map-item", "string_retype_operator=~1"
+    ])
+    assert_equal(
+      {
+        "string" => 'String',
+        "int" => 1,
+        "float" => 1.0,
+        "empty_string" => '',
+        "negative_float" => -1.3,
+        "string_int" => '1',
+        "string_negative_int" => '-1',
+        "negative_int" => -1,
+        "string_float" => '1.0',
+        "string_retype_operator" => '~1'
+      },
+      sender_options_default_msg_content.options.msg_content
+    )
+  end # test_sender_option_parser_user_msg_content_map_item_value_long
+
 end # class UnitTestsSenderOptionParser
 
 # eof
