@@ -43,6 +43,8 @@ module Options
       @options.count = Constants::DEFAULT_COUNT
       # Message content option
       @options.msg_content = Constants::DEFAULT_MSG_CONTENT
+      # Message correlation ID option
+      @options.msg_correlation_id = Constants::DEFAULT_CORR_ID
 
       # Number of messages
       @opt_parser.on(
