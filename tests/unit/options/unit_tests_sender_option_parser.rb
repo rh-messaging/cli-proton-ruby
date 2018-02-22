@@ -152,6 +152,24 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_corr_id_value_long
 
+  def test_sender_option_parser_default_msg_group_id_value
+    sender_options_default_msg_group_id = Options::SenderOptionParser.new([])
+    assert_nil(
+      Constants::DEFAULT_GROUP_ID,
+      sender_options_default_msg_group_id.options.msg_group_id
+    )
+  end # test_sender_option_parser_default_msg_group_id_value
+
+  def test_sender_option_parser_user_msg_group_id_value_long
+    sender_options_user_msg_group_id_long = Options::SenderOptionParser.new(
+      ["--msg-group-id", "group-id-0987654321"]
+    )
+    assert_equal(
+      "group-id-0987654321",
+      sender_options_user_msg_group_id_long.options.msg_group_id
+    )
+  end # test_sender_option_parser_user_msg_group_id_value_long
+
   def test_sender_option_parser_user_msg_content_map_item_value_short
     sender_options_default_msg_content = Options::SenderOptionParser.new([
       "-M", "string=String",
