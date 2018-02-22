@@ -40,6 +40,7 @@ module Formatters
       + "'subject': #{format_value(@message.subject)}, "\
       + "'content_type': #{format_value(@message.content_type)}, "\
       + "'id': #{format_value(@message.id)}, "\
+      + "'group_id': #{format_value(@message.group_id)}, "\
       + "'user_id': #{format_value(@message.user_id)}, "\
       + "'correlation_id': #{format_value(@message.correlation_id)}, "\
       + "'priority': #{format_value(@message.priority)}, "\
