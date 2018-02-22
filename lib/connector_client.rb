@@ -36,7 +36,7 @@ class ConnectorClient
       connector_options_parser.options.count
     )
     # Run connector client
-    Qpid::Proton::Reactor::Container.new(connector_handler).run
+    Qpid::Proton::Container.new(connector_handler).run
   end # initialize(args)
 
 end # class ConnectorClient

@@ -40,13 +40,13 @@ module Handlers
 
     # Called when the event loop starts,
     # connecting ConnectorHandler#count number of connections
-    def on_start(event)
+    def on_container_start(container)
       # Connecting count number of connections
       @count.times do
         # Save created connection(s) into array
-        @connections.push(event.container.connect(@broker))
+        @connections.push(container.connect(@broker))
       end
-    end # on_start(event)
+    end
 
   end # class ConnectorHandler
 

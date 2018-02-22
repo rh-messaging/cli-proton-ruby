@@ -60,20 +60,18 @@ module Handlers
     # Called when the event loop starts,
     # connects sender client to SRCommonHandler#broker
     # and creates sender connected to SRCommonHandler#address
-    def on_start(event)
+    def on_container_start(container)
       # Connecting to broker and creating sender
-      @connection = event.container.create_sender(
-        [@broker, @address].join("/")
-      )
-    end # on_start(event)
+      @connection = container.connect(@broker).open_sender(@address)
+    end
 
     # Called when the sender link has credit
     # and messages can therefore be transferred,
     # sending SenderHandler#count messages
-    def on_sendable(event)
+    def on_sendable(sender)
       # While sender credit is available
       # and number of sent messages is less than count
-      while (event.sender.credit > 0) && (@sent < @count)
+      while (sender.credit > 0) && (@sent < @count)
         # Create new message
         msg = Qpid::Proton::Message.new
         # If message content is set
@@ -90,7 +88,7 @@ module Handlers
           msg.group_id = @msg_group_id
         end
         # Send message
-        event.sender.send(msg)
+        sender.send(msg)
         # Increase number of sent messages
         @sent = @sent + 1
         if @log_msgs == "body"
@@ -103,13 +101,13 @@ module Handlers
 
     # Called when the remote peer accepts an outgoing message,
     # accepting SenderHandler#count messages
-    def on_accepted(event)
+    def on_tracker_accept(tracker)
       # Increase number of accepted messages
       @accepted = @accepted + 1
       # If all messages are accepted
       if @accepted == @count
         # Close connection
-        event.connection.close
+        tracker.sender.connection.close
       end # if
     end # on_accepted(event)
 

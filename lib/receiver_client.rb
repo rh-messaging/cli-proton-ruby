@@ -39,7 +39,7 @@ class ReceiverClient
       receiver_options_parser.options.browse
     )
     # Run receiver client
-    Qpid::Proton::Reactor::Container.new(receiver_handler).run
+    Qpid::Proton::Container.new(receiver_handler).run
   end # initialize(args)
 
 end # class ReceiverClient
