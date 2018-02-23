@@ -116,6 +116,21 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     assert_equal(3, receiver_options_user_count_long.options.count)
   end # test_receiver_option_parser_user_count_value_long
 
+  def test_receiver_option_parser_default_recv_browse_value
+    receiver_options_default_recv_browse = Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Constants::DEFAULT_BROWSE,
+      receiver_options_default_recv_browse.options.browse
+    )
+  end # test_receiver_option_parser_default_recv_browse_value
+
+  def test_receiver_option_parser_user_recv_browse_value_long
+    receiver_options_user_recv_browse_long = Options::ReceiverOptionParser.new(
+      ["--recv-browse"]
+    )
+    assert_equal(true, receiver_options_user_recv_browse_long.options.browse)
+  end # test_receiver_option_parser_user_recv_browse_value_long
+
 end # class UnitTestsReceiverOptionParser
 
 # eof

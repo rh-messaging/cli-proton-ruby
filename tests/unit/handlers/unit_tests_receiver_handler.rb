@@ -26,12 +26,14 @@ class UnitTestsReceiverHandler < Minitest::Test
     @address_value = "examples"
     @log_msgs_value = "dict"
     @count_value = 1
+    @browse_value = true
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
       @broker_value,
       @address_value,
       @log_msgs_value,
-      @count_value
+      @count_value,
+      @browse_value
     )
   end # setup
 
@@ -50,6 +52,10 @@ class UnitTestsReceiverHandler < Minitest::Test
   def test_receiver_handler_count_argument_initialization
     assert_equal(@count_value, @receiver_handler_initialization.count)
   end # test_receiver_handler_count_argument_initialization
+
+  def test_receiver_handler_browse_argument_initialization
+    assert_equal(@browse_value, @receiver_handler_initialization.browse)
+  end # test_receiver_handler_browse_argument_initialization
 
 end # class UnitTestsReceiverHandler
 
