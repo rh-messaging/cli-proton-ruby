@@ -44,10 +44,10 @@ module Handlers
     # connects receiver client to SRCommonHandler#broker
     # and creates receiver connected to SRCommonHandler#address
     def on_start(event)
-      # Connecting to broker and creating receiver
-      @connection = event.container.create_receiver(
-        [@broker, @address].join("/")
-      )
+      # Connecting to broker
+      @connection = event.container.connect(@broker)
+      # Creating receiver
+      @receiver = event.container.create_receiver(@connection, opts = {:source => @address})
     end # on_start(event)
 
     # Called when a message is received,
