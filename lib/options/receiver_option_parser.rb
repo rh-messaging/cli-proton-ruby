@@ -24,6 +24,8 @@ module Options
   # ==== Specific receiver options
   # count:: number of messages to receiver
   #         (default: DEFAULT_COUNT, see Constants)
+  # recv-browse:: browse messages instead of reading
+  #               (default: DEFAULT_BROWSE, see Constants)
   class ReceiverOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific receiver
@@ -40,6 +42,8 @@ module Options
 
       # Number of messages option
       @options.count = Constants::DEFAULT_COUNT
+      # Browse messages
+      @options.browse = Constants::DEFAULT_BROWSE
 
       # Number of messages
       @opt_parser.on(
@@ -50,6 +54,14 @@ module Options
         "(default: #{Constants::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
+      end
+
+      # Browse messages
+      @opt_parser.on(
+        "--recv-browse",
+        "browse messages instead of reading",
+      ) do |browse|
+        @options.browse = browse
       end
 
       # Parse basic, common and specific options for receiver client

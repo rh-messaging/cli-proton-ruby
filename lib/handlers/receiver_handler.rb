@@ -25,6 +25,8 @@ module Handlers
 
     # Count of messages
     attr_accessor :count
+    # Browse
+    attr_accessor :browse
 
     # Initialization of receiver events handler
     # ==== Receiver events handler arguments
@@ -32,13 +34,16 @@ module Handlers
     # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     # count:: number of messages to receive
-    def initialize(broker, address, log_msgs, count)
+    # browse:: browse messages instead of reading
+    def initialize(broker, address, log_msgs, count, browse)
       super(broker, address, log_msgs)
       # Save count of messages
       @count = count
+      # Save browse
+      @browse = browse
       # Number of received messages
       @received = 0
-    end # initialize(broker, address, log_msgs, count)
+    end # initialize(broker, address, log_msgs, count, browse)
 
     # Called when the event loop starts,
     # connects receiver client to SRCommonHandler#broker
@@ -48,6 +53,11 @@ module Handlers
       @connection = event.container.connect(@broker)
       # Creating receiver
       @receiver = event.container.create_receiver(@connection, opts = {:source => @address})
+      # If browse messages instead of reading
+      if browse
+        # Set browsing mode
+        @receiver.source.distribution_mode = Qpid::Proton::Terminus::DIST_MODE_COPY
+      end
     end # on_start(event)
 
     # Called when a message is received,
