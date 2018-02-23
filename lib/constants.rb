@@ -31,6 +31,8 @@ module Constants
   DEFAULT_CORR_ID     = nil
   # Default value for message group ID
   DEFAULT_GROUP_ID    = nil
+  # Default value for browse messages
+  DEFAULT_BROWSE      = false
 
 end # module Constants
 
