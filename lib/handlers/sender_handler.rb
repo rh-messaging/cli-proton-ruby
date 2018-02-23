@@ -61,8 +61,20 @@ module Handlers
     # connects sender client to SRCommonHandler#broker
     # and creates sender connected to SRCommonHandler#address
     def on_container_start(container)
+      # Set SASL mechanisms to default value
+      sasl_mechs = Constants::DEFAULT_SASL_MECHS
+      # If user and password are set
+      if @broker.user and @broker.password
+        # Set SASL mechanisms to PLAIN
+        sasl_mechs = "PLAIN"
+      end
       # Connecting to broker and creating sender
-      @connection = container.connect(@broker).open_sender(@address)
+      @connection = container.connect(
+        @broker,
+        sasl_enabled: true,
+        sasl_allow_insecure_mechs: true,
+        sasl_allowed_sasl_mechs: sasl_mechs
+      ).open_sender(@address)
     end
 
     # Called when the sender link has credit

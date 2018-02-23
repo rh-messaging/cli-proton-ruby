@@ -41,10 +41,22 @@ module Handlers
     # Called when the event loop starts,
     # connecting ConnectorHandler#count number of connections
     def on_container_start(container)
+      # Set SASL mechanisms to default value
+      sasl_mechs = Constants::DEFAULT_SASL_MECHS
+      # If user and password are set
+      if @broker.user and @broker.password
+        # Set SASL mechanisms to PLAIN
+        sasl_mechs = "PLAIN"
+      end
       # Connecting count number of connections
       @count.times do
         # Save created connection(s) into array
-        @connections.push(container.connect(@broker))
+        @connections.push(container.connect(
+          @broker,
+          sasl_enabled: true,
+          sasl_allow_insecure_mechs: true,
+          sasl_allowed_mechs: sasl_mechs
+        ))
       end
     end
 

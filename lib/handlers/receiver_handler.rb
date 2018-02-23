@@ -49,8 +49,20 @@ module Handlers
     # connects receiver client to SRCommonHandler#broker
     # and creates receiver connected to SRCommonHandler#address
     def on_container_start(container)
+      # Set SASL mechanisms to default value
+      sasl_mechs = Constants::DEFAULT_SASL_MECHS
+      # If user and password are set
+      if @broker.user and @broker.password
+        # Set SASL mechanisms to PLAIN
+        sasl_mechs = "PLAIN"
+      end
       # Connecting to broker
-      @connection = container.connect(@broker)
+      @connection = container.connect(
+        @broker,
+        sasl_enabled: true,
+        sasl_allow_insecure_mechs: true,
+        sasl_allowed_mechs: sasl_mechs
+      )
       # Creating receiver
       @receiver = @connection.open_receiver(@address)
       # If browse messages instead of reading
