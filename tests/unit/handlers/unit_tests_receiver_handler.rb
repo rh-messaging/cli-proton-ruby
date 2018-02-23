@@ -22,7 +22,8 @@ require_relative '../../../lib/handlers/receiver_handler'
 class UnitTestsReceiverHandler < Minitest::Test
 
   def setup
-    @broker_value = "127.0.0.1:5672"
+    @broker_value_string = "127.0.0.1:5672"
+    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
     @address_value = "examples"
     @log_msgs_value = "dict"
     @count_value = 1
@@ -37,9 +38,27 @@ class UnitTestsReceiverHandler < Minitest::Test
     )
   end # setup
 
-  def test_receiver_handler_broker_argument_initialization
-    assert_equal(@broker_value, @receiver_handler_initialization.broker)
-  end # test_receiver_handler_broker_argument_initialization
+  def test_receiver_handler_broker_argument_initialization_string
+    receiver_handler_initialization_string = Handlers::ReceiverHandler.new(
+      @broker_value_string,
+      @address_value,
+      @log_msgs_value,
+      @count_value,
+      @browse_value
+    )
+
+    assert_equal(
+      @broker_value.to_s,
+      receiver_handler_initialization_string.broker.to_s
+    )
+  end # test_receiver_handler_broker_argument_initialization_string
+
+  def test_receiver_handler_broker_argument_initialization_class
+    assert_equal(
+      @broker_value.to_s,
+      @receiver_handler_initialization.broker.to_s
+    )
+  end # test_receiver_handler_broker_argument_initialization_class
 
   def test_receiver_handler_address_argument_initialization
     assert_equal(@address_value, @receiver_handler_initialization.address)

@@ -22,7 +22,8 @@ require_relative '../../../lib/handlers/sr_common_handler'
 class UnitTestsSRCommonHandler < Minitest::Test
 
   def setup
-    @broker_value = "127.0.0.1:5672"
+    @broker_value_string = "127.0.0.1:5672"
+    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
     @address_value = "examples"
     @log_msgs_value = "dict"
 
@@ -33,9 +34,25 @@ class UnitTestsSRCommonHandler < Minitest::Test
     )
   end # setup
 
-  def test_sr_common_handler_broker_argument_initialization
-    assert_equal(@broker_value, @sr_common_handler_initialization.broker)
-  end # test_sr_common_handler_broker_argument_initialization
+  def test_sr_common_handler_broker_argument_initialization_string
+    sr_common_handler_initialization_string = Handlers::SRCommonHandler.new(
+      @broker_value_string,
+      @address_value,
+      @log_msgs_value
+    )
+
+    assert_equal(
+      @broker_value.to_s,
+      sr_common_handler_initialization_string.broker.to_s
+    )
+  end # test_sr_common_handler_broker_argument_initialization_string
+
+  def test_sr_common_handler_broker_argument_initialization_class
+    assert_equal(
+      @broker_value.to_s,
+      @sr_common_handler_initialization.broker.to_s
+    )
+  end # test_sr_common_handler_broker_argument_initialization_class
 
   def test_sr_common_handler_address_argument_initialization
     assert_equal(@address_value, @sr_common_handler_initialization.address)

@@ -26,11 +26,15 @@ module Handlers
 
     # Initialization of basic events handler for all clients
     # ==== Basic events handler arguments
-    # broker:: URL of broker in format IP:PORT
+    # broker:: URL of broker
     def initialize(broker)
       super()
       # Save URL of broker
-      @broker = broker
+      if broker.is_a? Qpid::Proton::URL
+        @broker = broker
+      else
+        @broker = Qpid::Proton::URL.new(broker)
+      end
     end # initialize(broker)
 
   end # class BasicHandler

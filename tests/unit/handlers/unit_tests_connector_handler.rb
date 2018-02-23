@@ -22,7 +22,8 @@ require_relative '../../../lib/handlers/connector_handler'
 class UnitTestsConnectorHandler < Minitest::Test
 
   def setup
-    @broker_value = "127.0.0.1:5672"
+    @broker_value_string = "127.0.0.1:5672"
+    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
     @count_value = 1
 
     @connector_handler_initialization = Handlers::ConnectorHandler.new(
@@ -31,9 +32,24 @@ class UnitTestsConnectorHandler < Minitest::Test
     )
   end # setup
 
-  def test_connector_handler_broker_argument_initialization
-    assert_equal(@broker_value, @connector_handler_initialization.broker)
-  end # test_connector_handler_broker_argument_initialization
+  def test_connector_handler_broker_argument_initialization_string
+    connector_handler_initialization_string = Handlers::ConnectorHandler.new(
+      @broker_value_string,
+      @count_value
+    )
+
+    assert_equal(
+      @broker_value.to_s,
+      connector_handler_initialization_string.broker.to_s
+    )
+  end # test_connector_handler_broker_argument_initialization_string
+
+  def test_connector_handler_broker_argument_initialization_class
+    assert_equal(
+      @broker_value.to_s,
+      @connector_handler_initialization.broker.to_s
+    )
+  end # test_connector_handler_broker_argument_initialization_class
 
   def test_connector_handler_count_argument_initialization
     assert_equal(@count_value, @connector_handler_initialization.count)
