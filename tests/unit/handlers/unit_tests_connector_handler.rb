@@ -23,7 +23,7 @@ class UnitTestsConnectorHandler < Minitest::Test
 
   def setup
     @broker_value_string = "127.0.0.1:5672"
-    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
+    @broker_value = Qpid::Proton.uri(@broker_value_string)
     @count_value = 1
 
     @connector_handler_initialization = Handlers::ConnectorHandler.new(

@@ -28,7 +28,7 @@ module Handlers
 
     # Initialization of events handler for connector client
     # ==== Connector events handler arguments
-    # broker:: URL of broker in format IP:PORT
+    # broker:: URI of broker
     # count:: Number of connections to create
     def initialize(broker, count)
       super(broker)

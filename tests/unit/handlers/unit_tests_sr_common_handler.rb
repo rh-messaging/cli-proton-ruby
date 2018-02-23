@@ -23,7 +23,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
 
   def setup
     @broker_value_string = "127.0.0.1:5672"
-    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
+    @broker_value = Qpid::Proton.uri(@broker_value_string)
     @address_value = "examples"
     @log_msgs_value = "dict"
 

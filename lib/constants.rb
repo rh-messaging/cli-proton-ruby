@@ -17,7 +17,7 @@
 # Module containing constants and default values
 module Constants
 
-  # Default value for broker URL in format IP:PORT
+  # Default value for broker URI in format IP:PORT
   DEFAULT_BROKER      = "127.0.0.1:5672"
   # Default value for message(s)/connection(s) count to send/receive/create
   DEFAULT_COUNT       = 1

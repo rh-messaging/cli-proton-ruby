@@ -23,7 +23,7 @@ module Options
 
   # Option parser of basic options for all clients
   # ==== Basic client options
-  # broker:: URL of broker in format IP:PORT (default: DEFAULT_BROKER,
+  # broker:: URI of broker in format IP:PORT (default: DEFAULT_BROKER,
   #          see Constants)
   # help:: show help message and exit
   class BasicOptionParser
@@ -49,7 +49,7 @@ module Options
         "-b",
         "--broker BROKER",
         String,
-        "URL of broker in format IP:PORT "+
+        "URI of broker in format IP:PORT "+
         "(default: #{Constants::DEFAULT_BROKER})"
       ) do |broker|
         @options.broker = broker

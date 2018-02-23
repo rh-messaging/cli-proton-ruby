@@ -28,7 +28,7 @@ module Handlers
 
     # Initialization of common events handler for sender and receiver client
     # ==== Common events handler arguments
-    # broker:: URL of broker in format IP:PORT
+    # broker:: URI of broker
     # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     def initialize(broker, address, log_msgs)

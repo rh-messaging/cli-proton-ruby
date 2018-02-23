@@ -30,7 +30,7 @@ module Handlers
 
     # Initialization of receiver events handler
     # ==== Receiver events handler arguments
-    # broker:: URL of broker in format IP:PORT
+    # broker:: URI of broker
     # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     # count:: number of messages to receive

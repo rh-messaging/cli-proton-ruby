@@ -34,7 +34,7 @@ module Handlers
 
     # Initialization of sender events handler
     # ==== Sender events handler arguments
-    # broker:: URL of broker in format IP:PORT
+    # broker:: URI of broker
     # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     # count:: number of messages to send

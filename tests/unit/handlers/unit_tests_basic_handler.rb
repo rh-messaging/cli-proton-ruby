@@ -25,7 +25,7 @@ class UnitTestsBasicHandler < Minitest::Test
     # Broker in string
     @broker_value_string = "127.0.0.1:5672"
     # Broker in class
-    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
+    @broker_value = Qpid::Proton.uri(@broker_value_string)
   end # setup
 
   def test_basic_handler_broker_argument_initialization_string

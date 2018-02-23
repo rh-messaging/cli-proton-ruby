@@ -21,19 +21,19 @@ module Handlers
   # Basic events handler for all clients
   class BasicHandler < Qpid::Proton::MessagingHandler
 
-    # URL of broker
+    # URI of broker
     attr_accessor :broker
 
     # Initialization of basic events handler for all clients
     # ==== Basic events handler arguments
-    # broker:: URL of broker
+    # broker:: URI of broker
     def initialize(broker)
       super()
-      # Save URL of broker
-      if broker.is_a? Qpid::Proton::URL
+      # Save URI of broker
+      if broker.is_a? URI::AMQP or broker.is_a? URI::AMQPS
         @broker = broker
       else
-        @broker = Qpid::Proton::URL.new(broker)
+        @broker = Qpid::Proton.uri(broker)
       end
     end # initialize(broker)
 
