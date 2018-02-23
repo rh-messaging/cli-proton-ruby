@@ -12,4 +12,5 @@ gem install rake
 gem install minitest
 gem install qpid-proton/proton-c/bindings/ruby/gem/qpid_proton-*.gem
 cd $PROJECT/tests
-rake test
+rake unit_tests
+# rake client_tests
