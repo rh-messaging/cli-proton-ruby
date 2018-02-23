@@ -22,14 +22,29 @@ require_relative '../../../lib/handlers/basic_handler'
 class UnitTestsBasicHandler < Minitest::Test
 
   def setup
-    @broker_value = "127.0.0.1:5672"
-
-    @basic_handler_initialization = Handlers::BasicHandler.new(@broker_value)
+    # Broker in string
+    @broker_value_string = "127.0.0.1:5672"
+    # Broker in class
+    @broker_value = Qpid::Proton::URL.new(@broker_value_string)
   end # setup
 
-  def test_basic_handler_broker_argument_initialization
-    assert_equal(@broker_value, @basic_handler_initialization.broker)
-  end # test_basic_handler_broker_argument_initialization
+  def test_basic_handler_broker_argument_initialization_string
+    basic_handler_initialization_string = Handlers::BasicHandler.new(@broker_value_string)
+
+    assert_equal(
+      @broker_value.to_s,
+      basic_handler_initialization_string.broker.to_s
+    )
+  end # test_basic_handler_broker_argument_initialization_string
+
+  def test_basic_handler_broker_argument_initialization_class
+    basic_handler_initialization_class = Handlers::BasicHandler.new(@broker_value)
+
+    assert_equal(
+      @broker_value.to_s,
+      basic_handler_initialization_class.broker.to_s
+    )
+  end # test_basic_handler_broker_argument_initialization_class
 
 end # class UnitTestsBasicHandler
 
