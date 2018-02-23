@@ -52,7 +52,7 @@ module Handlers
       # Connecting to broker
       @connection = event.container.connect(@broker)
       # Creating receiver
-      @receiver = event.container.create_receiver(@connection, opts = {:source => @address})
+      @receiver = event.container.create_receiver(@connection, source: @address)
       # If browse messages instead of reading
       if browse
         # Set browsing mode
