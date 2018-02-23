@@ -33,6 +33,8 @@ module Constants
   DEFAULT_GROUP_ID    = nil
   # Default value for browse messages
   DEFAULT_BROWSE      = false
+  # Default value for SASL allowed mechanisms
+  DEFAULT_SASL_MECHS  = "ANONYMOUS"
 
 end # module Constants
 
