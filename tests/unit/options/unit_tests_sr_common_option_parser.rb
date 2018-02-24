@@ -18,7 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/sr_common_option_parser'
-require_relative '../../../lib/constants'
+require_relative '../../../lib/defaults'
 
 # SRCommonOptionParser unit tests class
 class UnitTestsSRCommonOptionParser < Minitest::Test
@@ -27,7 +27,7 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     sr_common_options_default_broker = Options::SRCommonOptionParser.new()
     sr_common_options_default_broker.parse([])
     assert_equal(
-      Constants::DEFAULT_BROKER,
+      Defaults::DEFAULT_BROKER,
       sr_common_options_default_broker.options.broker
     )
   end # test_sr_common_option_parser_default_broker_value
@@ -54,7 +54,7 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     sr_common_options_default_log_msgs = Options::SRCommonOptionParser.new()
     sr_common_options_default_log_msgs.parse([])
     assert_equal(
-      Constants::DEFAULT_LOG_MSGS,
+      Defaults::DEFAULT_LOG_MSGS,
       sr_common_options_default_log_msgs.options.log_msgs
     )
   end # test_sr_common_option_parser_default_log_msgs_value

@@ -22,9 +22,9 @@ module Options
   # common (see Options::SRCommonOptionParser)
   # and specific options for sender client
   # ==== Specific sender options
-  # count:: number of messages to send (default: DEFAULT_COUNT, see Constants)
+  # count:: number of messages to send (default: DEFAULT_COUNT, see Defaults)
   # msg-content:: message content (default: DEFAULT_MSG_CONTENT,
-  #               see Constants)
+  #               see Defaults)
   # msg-correlation-id:: message correlation ID
   # msg-content-map-item:: message content map item
   # msg-group-id:: message group ID
@@ -42,20 +42,20 @@ module Options
       # Sender specific options with default values
    
       # Number of messages option
-      @options.count = Constants::DEFAULT_COUNT
+      @options.count = Defaults::DEFAULT_COUNT
       # Message content option
-      @options.msg_content = Constants::DEFAULT_MSG_CONTENT
+      @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
       # Message correlation ID option
-      @options.msg_correlation_id = Constants::DEFAULT_CORR_ID
+      @options.msg_correlation_id = Defaults::DEFAULT_CORR_ID
       # Message group ID option
-      @options.msg_group_id = Constants::DEFAULT_GROUP_ID
+      @options.msg_group_id = Defaults::DEFAULT_GROUP_ID
 
       # Number of messages
       @opt_parser.on(
         "-c",
         "--count COUNT",
         Integer,
-        "number of messages to send (default: #{Constants::DEFAULT_COUNT})"
+        "number of messages to send (default: #{Defaults::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
       end
@@ -66,10 +66,10 @@ module Options
         "--msg-content CONTENT",
         String,
         "message content (default: "+(
-          if Constants::DEFAULT_MSG_CONTENT.nil?
+          if Defaults::DEFAULT_MSG_CONTENT.nil?
             "nil"
           else
-            Constants::DEFAULT_MSG_CONTENT
+            Defaults::DEFAULT_MSG_CONTENT
           end
         )+")"
       ) do |msg_content|

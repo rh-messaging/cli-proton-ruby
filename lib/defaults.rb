@@ -14,8 +14,8 @@
 # limitations under the License.
 #++
 
-# Module containing constants and default values
-module Constants
+# Module containing default values
+module Defaults
 
   # Default value for broker URI in format IP:PORT/queue
   DEFAULT_BROKER      = "127.0.0.1:5672/examples"
@@ -34,6 +34,6 @@ module Constants
   # Default value for SASL allowed mechanisms
   DEFAULT_SASL_MECHS  = "ANONYMOUS"
 
-end # module Constants
+end # module Defaults
 
 # eof

@@ -18,7 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/sender_option_parser'
-require_relative '../../../lib/constants'
+require_relative '../../../lib/defaults'
 
 # SenderOptionParser unit tests class
 class UnitTestsSenderOptionParser < Minitest::Test
@@ -26,7 +26,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_broker_value
     sender_options_default_broker = Options::SenderOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_BROKER,
+      Defaults::DEFAULT_BROKER,
       sender_options_default_broker.options.broker
     )
   end # test_sender_option_parser_default_broker_value
@@ -54,7 +54,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_log_msgs_value
     sender_options_default_log_msgs = Options::SenderOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_LOG_MSGS,
+      Defaults::DEFAULT_LOG_MSGS,
       sender_options_default_log_msgs.options.log_msgs
     )
   end # test_sender_option_parser_default_log_msgs_value
@@ -69,7 +69,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_count_value
     sender_options_default_count = Options::SenderOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_COUNT,
+      Defaults::DEFAULT_COUNT,
       sender_options_default_count.options.count
     )
   end # test_sender_option_parser_default_count_value
@@ -91,7 +91,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_msg_content_value
     sender_options_default_msg_content = Options::SenderOptionParser.new([])
     assert_nil(
-      Constants::DEFAULT_MSG_CONTENT,
+      Defaults::DEFAULT_MSG_CONTENT,
       sender_options_default_msg_content.options.msg_content
     )
   end # test_sender_option_parser_default_msg_content_value
@@ -109,7 +109,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_msg_corr_id_value
     sender_options_default_msg_corr_id = Options::SenderOptionParser.new([])
     assert_nil(
-      Constants::DEFAULT_CORR_ID,
+      Defaults::DEFAULT_CORR_ID,
       sender_options_default_msg_corr_id.options.msg_correlation_id
     )
   end # test_sender_option_parser_default_msg_corr_id_value
@@ -127,7 +127,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   def test_sender_option_parser_default_msg_group_id_value
     sender_options_default_msg_group_id = Options::SenderOptionParser.new([])
     assert_nil(
-      Constants::DEFAULT_GROUP_ID,
+      Defaults::DEFAULT_GROUP_ID,
       sender_options_default_msg_group_id.options.msg_group_id
     )
   end # test_sender_option_parser_default_msg_group_id_value

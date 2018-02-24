@@ -17,14 +17,14 @@
 require 'optparse'
 require 'ostruct'
 
-require_relative '../constants'
+require_relative '../defaults'
 
 module Options
 
   # Option parser of basic options for all clients
   # ==== Basic client options
   # broker:: URI of broker in format IP:PORT (default: DEFAULT_BROKER,
-  #          see Constants)
+  #          see Defaults)
   # help:: show help message and exit
   class BasicOptionParser
 
@@ -37,7 +37,7 @@ module Options
       # Basic client's options with default values
 
       # Broker in format IP:PORT option
-      @options.broker = Constants::DEFAULT_BROKER
+      @options.broker = Defaults::DEFAULT_BROKER
 
       @opt_parser = OptionParser.new
       # Basic usage
@@ -50,7 +50,7 @@ module Options
         "--broker BROKER",
         String,
         "URI of broker in format IP:PORT "+
-        "(default: #{Constants::DEFAULT_BROKER})"
+        "(default: #{Defaults::DEFAULT_BROKER})"
       ) do |broker|
         @options.broker = broker
       end

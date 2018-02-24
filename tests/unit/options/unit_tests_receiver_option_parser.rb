@@ -18,7 +18,7 @@
 require 'minitest/autorun'
 
 require_relative '../../../lib/options/receiver_option_parser'
-require_relative '../../../lib/constants'
+require_relative '../../../lib/defaults'
 
 # ReceiverOptionParser unit tests class
 class UnitTestsReceiverOptionParser < Minitest::Test
@@ -26,7 +26,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   def test_receiver_option_parser_default_broker_value
     receiver_options_default_broker = Options::ReceiverOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_BROKER,
+      Defaults::DEFAULT_BROKER,
       receiver_options_default_broker.options.broker
     )
   end # test_receiver_option_parser_default_broker_value
@@ -54,7 +54,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   def test_receiver_option_parser_default_log_msgs_value
     receiver_options_default_log_msgs = Options::ReceiverOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_LOG_MSGS,
+      Defaults::DEFAULT_LOG_MSGS,
       receiver_options_default_log_msgs.options.log_msgs
     )
   end # test_receiver_option_parser_default_log_msgs_value
@@ -69,7 +69,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   def test_receiver_option_parser_default_count_value
     receiver_options_default_count = Options::ReceiverOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_COUNT,
+      Defaults::DEFAULT_COUNT,
       receiver_options_default_count.options.count
     )
   end # test_receiver_option_parser_default_count_value
@@ -91,7 +91,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   def test_receiver_option_parser_default_recv_browse_value
     receiver_options_default_recv_browse = Options::ReceiverOptionParser.new([])
     assert_equal(
-      Constants::DEFAULT_BROWSE,
+      Defaults::DEFAULT_BROWSE,
       receiver_options_default_recv_browse.options.browse
     )
   end # test_receiver_option_parser_default_recv_browse_value

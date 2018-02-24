@@ -42,7 +42,7 @@ module Handlers
     # connecting ConnectorHandler#count number of connections
     def on_container_start(container)
       # Set SASL mechanisms to default value
-      sasl_mechs = Constants::DEFAULT_SASL_MECHS
+      sasl_mechs = Defaults::DEFAULT_SASL_MECHS
       # If user and password are set
       if @broker.user and @broker.password
         # Set SASL mechanisms to PLAIN
