@@ -40,10 +40,10 @@ module Formatters
       case value
       # Boolean value
       when TrueClass, FalseClass
-        return value ? "True" : "False"
+        value ? "True" : "False"
       # Numeric or Range value
       when Integer, Float, Numeric, Range #, Bignum, Fixnum are deprecated
-        return value
+        value
       # Array value
       when Array
         # Array for formatted items of array
@@ -53,7 +53,7 @@ module Formatters
           # Format array item
           help_array.push(format_value(item))
         end
-        return "[#{help_array.join(", ")}]"
+        "[#{help_array.join(", ")}]"
       # Dictionary/hash value
       when Hash
         # Array for formatted items of hash
@@ -63,13 +63,13 @@ module Formatters
           # Format key-value pair of item
           help_array.push("#{format_value(key)}: #{format_value(val)}")
         end
-        return "{#{help_array.join(", ")}}"
+        "{#{help_array.join(", ")}}"
       # String or symbol value
       when String, Symbol
-        return value.size > 0 ? "\'#{value}\'" : "None"
+        value.size > 0 ? "\'#{value}\'" : "None"
       # Nil value
       when NilClass
-        return "None"
+        "None"
       # Other or unknown type
       else
         raise TypeError, "Unknown value type"
