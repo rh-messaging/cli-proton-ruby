@@ -33,7 +33,6 @@ class ReceiverClient
     # Create receiver handler
     receiver_handler = Handlers::ReceiverHandler.new(
       receiver_options_parser.options.broker,
-      receiver_options_parser.options.address,
       receiver_options_parser.options.log_msgs,
       receiver_options_parser.options.count,
       receiver_options_parser.options.browse

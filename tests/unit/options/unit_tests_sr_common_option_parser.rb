@@ -50,33 +50,6 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_broker_value_long
 
-  def test_sr_common_option_parser_default_address_value
-    sr_common_options_default_address = Options::SRCommonOptionParser.new()
-    sr_common_options_default_address.parse([])
-    assert_equal(
-      Constants::DEFAULT_ADDRESS,
-      sr_common_options_default_address.options.address
-    )
-  end # test_sr_common_option_parser_default_address_value
-
-  def test_sr_common_option_parser_user_address_value_short
-    sr_common_options_user_address_short = Options::SRCommonOptionParser.new()
-    sr_common_options_user_address_short.parse(["-a", "address_short"])
-    assert_equal(
-      "address_short",
-      sr_common_options_user_address_short.options.address
-    )
-  end # test_sr_common_option_parser_user_address_value_short
-
-  def test_sr_common_option_parser_user_address_value_long
-    sr_common_options_user_address_long = Options::SRCommonOptionParser.new()
-    sr_common_options_user_address_long.parse(["--address", "address_long"])
-    assert_equal(
-      "address_long",
-      sr_common_options_user_address_long.options.address
-    )
-  end # test_sr_common_option_parser_user_address_value_long
-
   def test_sr_common_option_parser_default_log_msgs_value
     sr_common_options_default_log_msgs = Options::SRCommonOptionParser.new()
     sr_common_options_default_log_msgs.parse([])

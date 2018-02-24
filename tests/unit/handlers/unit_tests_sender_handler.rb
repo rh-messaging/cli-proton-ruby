@@ -24,7 +24,6 @@ class UnitTestsSenderHandler < Minitest::Test
   def setup
     @broker_value_string = "127.0.0.4:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
-    @address_value = "examples_queue"
     @log_msgs_value = "dict"
     @count_value = 7
     @msg_content_value = "hello"
@@ -33,7 +32,6 @@ class UnitTestsSenderHandler < Minitest::Test
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
-      @address_value,
       @log_msgs_value,
       @count_value,
       @msg_content_value,
@@ -45,7 +43,6 @@ class UnitTestsSenderHandler < Minitest::Test
   def test_sender_handler_broker_argument_initialization_string
     sender_handler_initialization_string = Handlers::SenderHandler.new(
       @broker_value_string,
-      @address_value,
       @log_msgs_value,
       @count_value,
       @msg_content_value,
@@ -65,10 +62,6 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.broker.to_s
     )
   end # test_sender_handler_broker_argument_initialization_class
-
-  def test_sender_handler_address_argument_initialization
-    assert_equal(@address_value, @sender_handler_initialization.address)
-  end # test_sender_handler_address_argument_initialization
 
   def test_sender_handler_log_msgs_argument_initialization
     assert_equal(@log_msgs_value, @sender_handler_initialization.log_msgs)

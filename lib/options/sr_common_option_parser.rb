@@ -21,7 +21,6 @@ module Options
   # Option parser of basic (see Options::BasicOptionParser) and common
   # options for sender and receiver client
   # ==== Common sender and receiver options
-  # address:: name of queue/topic (default: DEFAULT_ADDRESS, see Constants)
   # log-msgs:: format of message(s) log (none/body/dict,
   #            default: DEFAULT_LOG_MSGS, see Constants)
   class SRCommonOptionParser < Options::BasicOptionParser
@@ -35,20 +34,8 @@ module Options
 
       # SR specific options with default values
 
-      # Address option
-      @options.address = Constants::DEFAULT_ADDRESS
       # Format of message log option
       @options.log_msgs = Constants::DEFAULT_LOG_MSGS
-
-      # Address
-      @opt_parser.on(
-        "-a",
-        "--address ADDRESS",
-        String,
-        "name of queue/topic (default: #{Constants::DEFAULT_ADDRESS})"
-      ) do |address|
-        @options.address = address
-      end
 
       # Format of message log
       @opt_parser.on(

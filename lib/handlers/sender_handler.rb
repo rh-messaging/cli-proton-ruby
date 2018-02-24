@@ -35,14 +35,13 @@ module Handlers
     # Initialization of sender events handler
     # ==== Sender events handler arguments
     # broker:: URI of broker
-    # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     # count:: number of messages to send
     # msg_content:: message content
     # msg_correlation_id:: message correlation ID
     # msg_group_id:: message group ID
-    def initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
-      super(broker, address, log_msgs)
+    def initialize(broker, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
+      super(broker, log_msgs)
       # Save count of messages
       @count = count
       # Save message content
@@ -55,11 +54,11 @@ module Handlers
       @sent = 0
       # Number of accepted messages
       @accepted = 0
-    end # initialize(broker, address, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
+    end # initialize(broker, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
 
     # Called when the event loop starts,
     # connects sender client to SRCommonHandler#broker
-    # and creates sender connected to SRCommonHandler#address
+    # and creates sender
     def on_container_start(container)
       # Set SASL mechanisms to default value
       sasl_mechs = Constants::DEFAULT_SASL_MECHS
@@ -74,7 +73,7 @@ module Handlers
         sasl_enabled: true,
         sasl_allow_insecure_mechs: true,
         sasl_allowed_sasl_mechs: sasl_mechs
-      ).open_sender(@address)
+      ).open_sender(@broker.amqp_address)
     end
 
     # Called when the sender link has credit

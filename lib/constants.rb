@@ -17,12 +17,10 @@
 # Module containing constants and default values
 module Constants
 
-  # Default value for broker URI in format IP:PORT
-  DEFAULT_BROKER      = "127.0.0.1:5672"
+  # Default value for broker URI in format IP:PORT/queue
+  DEFAULT_BROKER      = "127.0.0.1:5672/examples"
   # Default value for message(s)/connection(s) count to send/receive/create
   DEFAULT_COUNT       = 1
-  # Default value for name of queue/topic
-  DEFAULT_ADDRESS     = "examples"
   # Default value for format of message(s) log
   DEFAULT_LOG_MSGS    = "none"
   # Default value for message content

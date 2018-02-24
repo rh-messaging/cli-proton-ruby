@@ -21,23 +21,18 @@ module Handlers
   # Common events handler for sender and receiver client
   class SRCommonHandler < Handlers::BasicHandler
 
-    # Name of queue/topic
-    attr_accessor :address
     # Format of log
     attr_accessor :log_msgs
 
     # Initialization of common events handler for sender and receiver client
     # ==== Common events handler arguments
     # broker:: URI of broker
-    # address:: name of queue/topic
     # log_msgs:: format of message(s) log
-    def initialize(broker, address, log_msgs)
+    def initialize(broker, log_msgs)
       super(broker)
-      # Save address
-      @address = address
       # Save message(s) log format
       @log_msgs = log_msgs
-    end # initialize(broker, address, log_msgs)
+    end # initialize(broker, log_msgs)
 
     # Default for un-handled errors is to raise an exception
     def on_error(condition)

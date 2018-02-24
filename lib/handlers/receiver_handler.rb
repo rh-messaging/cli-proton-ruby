@@ -31,23 +31,22 @@ module Handlers
     # Initialization of receiver events handler
     # ==== Receiver events handler arguments
     # broker:: URI of broker
-    # address:: name of queue/topic
     # log_msgs:: format of message(s) log
     # count:: number of messages to receive
     # browse:: browse messages instead of reading
-    def initialize(broker, address, log_msgs, count, browse)
-      super(broker, address, log_msgs)
+    def initialize(broker, log_msgs, count, browse)
+      super(broker, log_msgs)
       # Save count of messages
       @count = count
       # Save browse
       @browse = browse
       # Number of received messages
       @received = 0
-    end # initialize(broker, address, log_msgs, count, browse)
+    end # initialize(broker, log_msgs, count, browse)
 
     # Called when the event loop starts,
     # connects receiver client to SRCommonHandler#broker
-    # and creates receiver connected to SRCommonHandler#address
+    # and creates receiver
     def on_container_start(container)
       # Set SASL mechanisms to default value
       sasl_mechs = Constants::DEFAULT_SASL_MECHS
@@ -64,7 +63,7 @@ module Handlers
         sasl_allowed_mechs: sasl_mechs
       )
       # Creating receiver
-      @receiver = @connection.open_receiver(@address)
+      @receiver = @connection.open_receiver(@broker.amqp_address)
       # If browse messages instead of reading
       if browse
         # Set browsing mode
