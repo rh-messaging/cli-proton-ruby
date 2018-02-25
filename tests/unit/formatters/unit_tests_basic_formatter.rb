@@ -40,11 +40,23 @@ class UnitTestsBasicFormatter < Minitest::Test
     assert_equal("True", basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_true_format
 
+  def test_basic_formatter_true_in_string_format
+    message_object = Qpid::Proton::Message.new("true")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'true'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_true_in_string_format
+
   def test_basic_formatter_false_format
     message_object = Qpid::Proton::Message.new(false)
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal("False", basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_false_format
+
+  def test_basic_formatter_false_in_string_format
+    message_object = Qpid::Proton::Message.new("false")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'false'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_false_in_string_format
 
   def test_basic_formatter_integer_format
     message_object = Qpid::Proton::Message.new(1)
@@ -52,11 +64,23 @@ class UnitTestsBasicFormatter < Minitest::Test
     assert_equal(1, basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_integer_format
 
+  def test_basic_formatter_integer_in_string_format
+    message_object = Qpid::Proton::Message.new("1")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'1'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_integer_in_string_format
+
   def test_basic_formatter_float_format
     message_object = Qpid::Proton::Message.new(1.0)
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(1.0, basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_float_format
+
+  def test_basic_formatter_float_in_string_format
+    message_object = Qpid::Proton::Message.new("1.0")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'1.0'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_float_in_string_format
 
   def test_basic_formatter_range_format
     message_object = Qpid::Proton::Message.new(1..10)
@@ -64,11 +88,23 @@ class UnitTestsBasicFormatter < Minitest::Test
     assert_equal(1..10, basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_range_format
 
+  def test_basic_formatter_range_in_string_format
+    message_object = Qpid::Proton::Message.new("1..10")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'1..10'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_range_in_string_format
+
   def test_basic_formatter_empty_array_format
     message_object = Qpid::Proton::Message.new([])
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal("[]", basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_empty_array_format
+
+  def test_basic_formatter_empty_array_in_string_format
+    message_object = Qpid::Proton::Message.new("[]")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'[]'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_empty_array_in_string_format
 
   def test_basic_formatter_basic_array_format
     message_object = Qpid::Proton::Message.new(["A", "B", "C"])
@@ -79,11 +115,26 @@ class UnitTestsBasicFormatter < Minitest::Test
     )
   end # test_basic_formatter_basic_array_format
 
+  def test_basic_formatter_basic_array_in_string_format
+    message_object = Qpid::Proton::Message.new("['A', 'B', 'C']")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal(
+      "'[\\'A\\', \\'B\\', \\'C\\']'",
+      basic_formatter.format_value(message_object.body)
+    )
+  end # test_basic_formatter_basic_array_in_string_format
+
   def test_basic_formatter_empty_hash_format
     message_object = Qpid::Proton::Message.new({})
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal("{}", basic_formatter.format_value(message_object.body))
   end # test_basic_formatter_empty_hash_format
+
+  def test_basic_formatter_empty_hash_in_string_format
+    message_object = Qpid::Proton::Message.new("{}")
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal("'{}'", basic_formatter.format_value(message_object.body))
+  end # test_basic_formatter_empty_hash_in_string_format
 
   def test_basic_formatter_basic_hash_format
     message_object = Qpid::Proton::Message.new({1=>"A", 2=>"B", 3=>"C"})
@@ -93,6 +144,17 @@ class UnitTestsBasicFormatter < Minitest::Test
       basic_formatter.format_value(message_object.body)
     )
   end # test_basic_formatter_basic_hash_format
+
+  def test_basic_formatter_basic_dict_in_string_format
+    message_object = Qpid::Proton::Message.new(
+      "{1: 'A', 2: 'B', 3: 'C'}"
+    )
+    basic_formatter = Formatters::BasicFormatter.new(message_object)
+    assert_equal(
+      "'{1: \\'A\\', 2: \\'B\\', 3: \\'C\\'}'",
+      basic_formatter.format_value(message_object.body)
+    )
+  end # test_basic_formatter_basic_dict_in_string_format
 
   def test_basic_formatter_empty_string_format
     message_object = Qpid::Proton::Message.new("")

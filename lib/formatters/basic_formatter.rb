@@ -65,8 +65,10 @@ module Formatters
         end
         "{#{help_array.join(", ")}}"
       # String or symbol value
-      when String, Symbol
-        value.size > 0 ? "\'#{value}\'" : "None"
+      when Symbol
+        value.size > 0 ? "'#{value}'" : "None"
+      when String
+        value.size > 0 ? "'#{value.gsub(/'/, %q(\\\'))}'" : "None"
       # Nil value
       when NilClass
         "None"
