@@ -26,10 +26,20 @@ class UnitTestsBasicHandler < Minitest::Test
     @broker_value_string = "127.0.0.1:5672"
     # Broker in class
     @broker_value = Qpid::Proton.uri(@broker_value_string)
+    # Allowed SASL mechanisms
+    @sasl_mechs_value = "SASL"
+
+    @basic_handler_initialization_class = Handlers::BasicHandler.new(
+      @broker_value,
+      @sasl_mechs_value
+    )
   end # setup
 
   def test_basic_handler_broker_argument_initialization_string
-    basic_handler_initialization_string = Handlers::BasicHandler.new(@broker_value_string)
+    basic_handler_initialization_string = Handlers::BasicHandler.new(
+      @broker_value_string,
+      @sasl_mechs_value
+    )
 
     assert_equal(
       @broker_value.to_s,
@@ -38,13 +48,18 @@ class UnitTestsBasicHandler < Minitest::Test
   end # test_basic_handler_broker_argument_initialization_string
 
   def test_basic_handler_broker_argument_initialization_class
-    basic_handler_initialization_class = Handlers::BasicHandler.new(@broker_value)
-
     assert_equal(
       @broker_value.to_s,
-      basic_handler_initialization_class.broker.to_s
+      @basic_handler_initialization_class.broker.to_s
     )
   end # test_basic_handler_broker_argument_initialization_class
+
+  def test_basic_handler_sasl_mechs_argument_initialization
+    assert_equal(
+      @sasl_mechs_value,
+      @basic_handler_initialization_class.sasl_mechs
+    )
+  end # test_basic_handler_sasl_mechs_argument_initialization
 
 end # class UnitTestsBasicHandler
 

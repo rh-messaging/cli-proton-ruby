@@ -25,6 +25,7 @@ module Options
   # ==== Basic client options
   # broker:: URI of broker in format IP:PORT (default: DEFAULT_BROKER,
   #          see Defaults)
+  # conn-allowed-mechs:: allowed SASL mechanisms for authentication
   # help:: show help message and exit
   class BasicOptionParser
 
@@ -38,6 +39,8 @@ module Options
 
       # Broker in format IP:PORT option
       @options.broker = Defaults::DEFAULT_BROKER
+      # Allowed SASL mechanisms
+      @options.sasl_mechs = Defaults::DEFAULT_SASL_MECHS
 
       @opt_parser = OptionParser.new
       # Basic usage
@@ -55,6 +58,17 @@ module Options
         @options.broker = broker
       end
 
+      # Allowed SASL mechanisms
+      @opt_parser.on(
+        "--conn-allowed-mechs MECHS",
+        String,
+        "space separated list of SASL mechanisms allowed by client "+
+        "for authentication (ANONYMOUS/PLAIN/EXTERNAL, default: "+
+        "'#{Defaults::DEFAULT_SASL_MECHS}')"
+      ) do |sasl_mechs|
+        @options.sasl_mechs = sasl_mechs
+      end
+
       # Help
       @opt_parser.on_tail(
         "-h",
@@ -64,14 +78,14 @@ module Options
         puts @opt_parser
         exit
       end
-    end # initialize()
+    end
 
     # Parsing of basic options for all clients
     # ==== Parameters
     # args:: arguments to parse
     def parse(args)
       @opt_parser.parse(args)
-    end # parse(args)
+    end
 
   end # class BasicOptionParser
 

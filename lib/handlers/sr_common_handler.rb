@@ -28,11 +28,12 @@ module Handlers
     # ==== Common events handler arguments
     # broker:: URI of broker
     # log_msgs:: format of message(s) log
-    def initialize(broker, log_msgs)
-      super(broker)
+    # sasl_mechs:: allowed SASL mechanisms
+    def initialize(broker, log_msgs, sasl_mechs)
+      super(broker, sasl_mechs)
       # Save message(s) log format
       @log_msgs = log_msgs
-    end # initialize(broker, log_msgs)
+    end
 
     # Default for un-handled errors is to raise an exception
     def on_error(condition)

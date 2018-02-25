@@ -27,16 +27,18 @@ class UnitTestsSenderHandler < Minitest::Test
     @log_msgs_value = "dict"
     @count_value = 7
     @msg_content_value = "hello"
-    @msg_correlation_id = "corr-id-0123456789"
-    @msg_group_id = "group-id-0987654321"
+    @msg_correlation_id_value = "corr-id-0123456789"
+    @msg_group_id_value = "group-id-0987654321"
+    @sasl_mechs_value = "SASL"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
       @log_msgs_value,
       @count_value,
       @msg_content_value,
-      @msg_correlation_id,
-      @msg_group_id
+      @msg_correlation_id_value,
+      @msg_group_id_value,
+      @sasl_mechs_value
     )
   end # setup
 
@@ -46,8 +48,9 @@ class UnitTestsSenderHandler < Minitest::Test
       @log_msgs_value,
       @count_value,
       @msg_content_value,
-      @msg_correlation_id,
-      @msg_group_id
+      @msg_correlation_id_value,
+      @msg_group_id_value,
+      @sasl_mechs_value
     )
 
     assert_equal(
@@ -80,17 +83,24 @@ class UnitTestsSenderHandler < Minitest::Test
 
   def test_sender_handler_msg_correlation_id_argument_initialization
     assert_equal(
-      @msg_correlation_id,
+      @msg_correlation_id_value,
       @sender_handler_initialization.msg_correlation_id
     )
   end # test_sender_handler_msg_correlation_id_argument_initialization
 
   def test_sender_handler_msg_group_id_argument_initialization
     assert_equal(
-      @msg_group_id,
+      @msg_group_id_value,
       @sender_handler_initialization.msg_group_id
     )
   end # test_sender_handler_msg_group_id_argument_initialization
+
+  def test_sender_handler_sasl_mechs_argument_initialization
+    assert_equal(
+      @sasl_mechs_value,
+      @sender_handler_initialization.sasl_mechs
+    )
+  end # test_sender_handler_sasl_mechs_argument_initialization
 
 end # class UnitTestsSenderHandler
 

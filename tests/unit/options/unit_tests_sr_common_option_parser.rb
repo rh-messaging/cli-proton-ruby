@@ -50,6 +50,26 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_broker_value_long
 
+  def test_sr_common_option_parser_default_sasl_mechs_value
+    default_sr_common_options_sasl_mechs = Options::BasicOptionParser.new()
+    default_sr_common_options_sasl_mechs.parse([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_MECHS,
+      default_sr_common_options_sasl_mechs.options.sasl_mechs
+    )
+  end # test_sr_common_option_parser_default_sasl_mechs_value
+
+  def test_sr_common_option_parser_user_sasl_mechs_value_long
+    user_sr_common_options_sasl_mechs_long = Options::BasicOptionParser.new()
+    user_sr_common_options_sasl_mechs_long.parse(
+      ["--conn-allowed-mechs", "SASL"]
+    )
+    assert_equal(
+      "SASL",
+      user_sr_common_options_sasl_mechs_long.options.sasl_mechs
+    )
+  end # test_sr_common_option_parser_user_sasl_mechs_value_long
+
   def test_sr_common_option_parser_default_log_msgs_value
     sr_common_options_default_log_msgs = Options::SRCommonOptionParser.new()
     sr_common_options_default_log_msgs.parse([])

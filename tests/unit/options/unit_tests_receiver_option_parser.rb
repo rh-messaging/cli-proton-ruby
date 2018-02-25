@@ -51,6 +51,26 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     )
   end # test_receiver_option_parser_user_broker_value_long
 
+  def test_receiver_option_parser_default_sasl_mechs_value
+    default_receiver_options_sasl_mechs = Options::BasicOptionParser.new()
+    default_receiver_options_sasl_mechs.parse([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_MECHS,
+      default_receiver_options_sasl_mechs.options.sasl_mechs
+    )
+  end # test_receiver_option_parser_default_sasl_mechs_value
+
+  def test_receiver_option_parser_user_sasl_mechs_value_long
+    user_receiver_options_sasl_mechs_long = Options::BasicOptionParser.new()
+    user_receiver_options_sasl_mechs_long.parse(
+      ["--conn-allowed-mechs", "SASL"]
+    )
+    assert_equal(
+      "SASL",
+      user_receiver_options_sasl_mechs_long.options.sasl_mechs
+    )
+  end # test_receiver_option_parser_user_sasl_mechs_value_long
+
   def test_receiver_option_parser_default_log_msgs_value
     receiver_options_default_log_msgs = Options::ReceiverOptionParser.new([])
     assert_equal(

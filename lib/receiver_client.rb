@@ -35,11 +35,12 @@ class ReceiverClient
       receiver_options_parser.options.broker,
       receiver_options_parser.options.log_msgs,
       receiver_options_parser.options.count,
-      receiver_options_parser.options.browse
+      receiver_options_parser.options.browse,
+      receiver_options_parser.options.sasl_mechs
     )
     # Run receiver client
     Qpid::Proton::Container.new(receiver_handler).run
-  end # initialize(args)
+  end
 
 end # class ReceiverClient
 

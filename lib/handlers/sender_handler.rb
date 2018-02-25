@@ -40,8 +40,17 @@ module Handlers
     # msg_content:: message content
     # msg_correlation_id:: message correlation ID
     # msg_group_id:: message group ID
-    def initialize(broker, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
-      super(broker, log_msgs)
+    # sasl_mechs:: allowed SASL mechanisms
+    def initialize(
+      broker,
+      log_msgs,
+      count,
+      msg_content,
+      msg_correlation_id,
+      msg_group_id,
+      sasl_mechs
+    )
+      super(broker, log_msgs, sasl_mechs)
       # Save count of messages
       @count = count
       # Save message content
@@ -54,25 +63,22 @@ module Handlers
       @sent = 0
       # Number of accepted messages
       @accepted = 0
-    end # initialize(broker, log_msgs, count, msg_content, msg_correlation_id, msg_group_id)
+    end
 
     # Called when the event loop starts,
     # connects sender client to SRCommonHandler#broker
     # and creates sender
     def on_container_start(container)
-      # Set SASL mechanisms to default value
-      sasl_mechs = Defaults::DEFAULT_SASL_MECHS
-      # If user and password are set
-      if @broker.user and @broker.password
-        # Set SASL mechanisms to PLAIN
-        sasl_mechs = "PLAIN"
-      end
       # Connecting to broker and creating sender
-      @connection = container.connect(
+      container.connect(
+        # Set broker URI
         @broker,
+        # Enable SASL authentication
         sasl_enabled: true,
+        # Enable insecure SASL mechanisms
         sasl_allow_insecure_mechs: true,
-        sasl_allowed_sasl_mechs: sasl_mechs
+        # Set allowed SASL mechanisms
+        sasl_allowed_mechs: @sasl_mechs
       ).open_sender(@broker.amqp_address)
     end
 
@@ -108,7 +114,7 @@ module Handlers
           Formatters::DictFormatter.new(msg).print
         end
       end # while
-    end # on_sendable(event)
+    end
 
     # Called when the remote peer accepts an outgoing message,
     # accepting SenderHandler#count messages
@@ -120,7 +126,7 @@ module Handlers
         # Close connection
         tracker.sender.connection.close
       end # if
-    end # on_accepted(event)
+    end
 
   end # class SenderHandler
 

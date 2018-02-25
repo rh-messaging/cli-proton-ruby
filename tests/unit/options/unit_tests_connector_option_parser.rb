@@ -51,6 +51,26 @@ class UnitTestsConnectorOptionParser < Minitest::Test
     )
   end # test_connector_option_parser_user_broker_value_long
 
+  def test_connector_option_parser_default_sasl_mechs_value
+    default_connector_options_sasl_mechs = Options::BasicOptionParser.new()
+    default_connector_options_sasl_mechs.parse([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_MECHS,
+      default_connector_options_sasl_mechs.options.sasl_mechs
+    )
+  end # test_connector_option_parser_default_sasl_mechs_value
+
+  def test_connector_option_parser_user_sasl_mechs_value_long
+    user_connector_options_sasl_mechs_long = Options::BasicOptionParser.new()
+    user_connector_options_sasl_mechs_long.parse(
+      ["--conn-allowed-mechs", "SASL"]
+    )
+    assert_equal(
+      "SASL",
+      user_connector_options_sasl_mechs_long.options.sasl_mechs
+    )
+  end # test_connector_option_parser_user_sasl_mechs_value_long
+
   def test_connector_option_parser_default_count_value
     connector_options_default_count = Options::ConnectorOptionParser.new([])
     assert_equal(

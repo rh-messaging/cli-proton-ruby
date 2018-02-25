@@ -27,12 +27,14 @@ class UnitTestsReceiverHandler < Minitest::Test
     @log_msgs_value = "dict"
     @count_value = 1
     @browse_value = true
+    @sasl_mechs_value = "SASL"
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
       @broker_value,
       @log_msgs_value,
       @count_value,
-      @browse_value
+      @browse_value,
+      @sasl_mechs_value
     )
   end # setup
 
@@ -41,7 +43,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @broker_value_string,
       @log_msgs_value,
       @count_value,
-      @browse_value
+      @browse_value,
+      @sasl_mechs_value
     )
 
     assert_equal(
@@ -68,6 +71,13 @@ class UnitTestsReceiverHandler < Minitest::Test
   def test_receiver_handler_browse_argument_initialization
     assert_equal(@browse_value, @receiver_handler_initialization.browse)
   end # test_receiver_handler_browse_argument_initialization
+
+  def test_receiver_handler_sasl_mechs_argument_initialization
+    assert_equal(
+      @sasl_mechs_value,
+      @receiver_handler_initialization.sasl_mechs
+    )
+  end # test_receiver_handler_sasl_mechs_argument_initialization
 
 end # class UnitTestsReceiverHandler
 

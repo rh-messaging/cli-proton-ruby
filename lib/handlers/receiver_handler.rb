@@ -34,42 +34,38 @@ module Handlers
     # log_msgs:: format of message(s) log
     # count:: number of messages to receive
     # browse:: browse messages instead of reading
-    def initialize(broker, log_msgs, count, browse)
-      super(broker, log_msgs)
+    # sasl_mechs:: allowed SASL mechanisms
+    def initialize(broker, log_msgs, count, browse, sasl_mechs)
+      super(broker, log_msgs, sasl_mechs)
       # Save count of messages
       @count = count
       # Save browse
       @browse = browse
       # Number of received messages
       @received = 0
-    end # initialize(broker, log_msgs, count, browse)
+    end
 
     # Called when the event loop starts,
     # connects receiver client to SRCommonHandler#broker
     # and creates receiver
     def on_container_start(container)
-      # Set SASL mechanisms to default value
-      sasl_mechs = Defaults::DEFAULT_SASL_MECHS
-      # If user and password are set
-      if @broker.user and @broker.password
-        # Set SASL mechanisms to PLAIN
-        sasl_mechs = "PLAIN"
-      end
-      # Connecting to broker
-      @connection = container.connect(
+      # Connecting to broker and creating receiver
+      @receiver = container.connect(
+        # Set broker URI
         @broker,
+        # Enabled SASL authentication
         sasl_enabled: true,
+        # Enabled insecure SASL mechanisms
         sasl_allow_insecure_mechs: true,
-        sasl_allowed_mechs: sasl_mechs
-      )
-      # Creating receiver
-      @receiver = @connection.open_receiver(@broker.amqp_address)
+        # Set allowed SASL mechanisms
+        sasl_allowed_mechs: @sasl_mechs
+      ).open_receiver(@broker.amqp_address)
       # If browse messages instead of reading
       if browse
         # Set browsing mode
         @receiver.source.distribution_mode = Qpid::Proton::Terminus::DIST_MODE_COPY
       end
-    end # on_start(event)
+    end
 
     # Called when a message is received,
     # receiving ReceiverHandler#count messages
@@ -89,7 +85,7 @@ module Handlers
         # Close connection
         delivery.receiver.connection.close
       end # if
-    end # on_message(event)
+    end
 
   end # class ReceiverHandler
 

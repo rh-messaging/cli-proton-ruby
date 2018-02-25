@@ -23,11 +23,14 @@ module Handlers
 
     # URI of broker
     attr_accessor :broker
+    # Allowed SASL mechs
+    attr_accessor :sasl_mechs
 
     # Initialization of basic events handler for all clients
     # ==== Basic events handler arguments
     # broker:: URI of broker
-    def initialize(broker)
+    # sasl_mechs: allowed SASL mechanisms
+    def initialize(broker, sasl_mechs)
       super()
       # Save URI of broker
       if broker.is_a? URI::AMQP or broker.is_a? URI::AMQPS
@@ -35,7 +38,9 @@ module Handlers
       else
         @broker = Qpid::Proton.uri(broker)
       end
-    end # initialize(broker)
+      # Save allowed SASL mechanisms
+      @sasl_mechs = sasl_mechs
+    end
 
   end # class BasicHandler
 

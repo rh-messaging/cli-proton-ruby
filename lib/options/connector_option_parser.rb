@@ -44,7 +44,7 @@ module Options
         "-c",
         "--count COUNT",
         Integer,
-        "number of connections to create"+
+        "number of connections to create "+
         "(default: #{Defaults::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
@@ -52,7 +52,7 @@ module Options
 
       # Parse basic and specific options for connector client
       parse(args)
-    end # initialize(args)
+    end
 
   end # class ConnectorOptionParser
 

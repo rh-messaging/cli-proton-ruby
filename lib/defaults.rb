@@ -32,7 +32,7 @@ module Defaults
   # Default value for browse messages
   DEFAULT_BROWSE      = false
   # Default value for SASL allowed mechanisms
-  DEFAULT_SASL_MECHS  = "ANONYMOUS"
+  DEFAULT_SASL_MECHS  = "ANONYMOUS PLAIN EXTERNAL"
 
 end # module Defaults
 

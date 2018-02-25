@@ -30,32 +30,30 @@ module Handlers
     # ==== Connector events handler arguments
     # broker:: URI of broker
     # count:: Number of connections to create
-    def initialize(broker, count)
-      super(broker)
+    # sasl_mechs:: Allowed SASL mechanisms
+    def initialize(broker, count, sasl_mechs)
+      super(broker, sasl_mechs)
       # Save count of connections
       @count = count
       # Initialize array of connections
       @connections = []
-    end # initialize(broker, count)
+    end
 
     # Called when the event loop starts,
     # connecting ConnectorHandler#count number of connections
     def on_container_start(container)
-      # Set SASL mechanisms to default value
-      sasl_mechs = Defaults::DEFAULT_SASL_MECHS
-      # If user and password are set
-      if @broker.user and @broker.password
-        # Set SASL mechanisms to PLAIN
-        sasl_mechs = "PLAIN"
-      end
       # Connecting count number of connections
       @count.times do
         # Save created connection(s) into array
         @connections.push(container.connect(
+          # Set broker URI
           @broker,
+          # Enable SASL authentication
           sasl_enabled: true,
+          # Enable insecure SASL mechanisms
           sasl_allow_insecure_mechs: true,
-          sasl_allowed_mechs: sasl_mechs
+          # Set allowed SASL mechanisms
+          sasl_allowed_mechs: @sasl_mechs
         ))
       end
     end

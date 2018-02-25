@@ -37,11 +37,12 @@ class SenderClient
       sender_options_parser.options.count,
       sender_options_parser.options.msg_content,
       sender_options_parser.options.msg_correlation_id,
-      sender_options_parser.options.msg_group_id
+      sender_options_parser.options.msg_group_id,
+      sender_options_parser.options.sasl_mechs
     )
     # Run sender client
     Qpid::Proton::Container.new(sender_handler).run
-  end # initialize(args)
+  end
 
 end # class SenderClient
 

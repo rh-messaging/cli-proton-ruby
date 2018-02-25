@@ -25,17 +25,20 @@ class UnitTestsConnectorHandler < Minitest::Test
     @broker_value_string = "127.0.0.1:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @count_value = 1
+    @sasl_mechs_value = "SASL"
 
     @connector_handler_initialization = Handlers::ConnectorHandler.new(
       @broker_value,
-      @count_value
+      @count_value,
+      @sasl_mechs_value
     )
   end # setup
 
   def test_connector_handler_broker_argument_initialization_string
     connector_handler_initialization_string = Handlers::ConnectorHandler.new(
       @broker_value_string,
-      @count_value
+      @count_value,
+      @sasl_mechs_value
     )
 
     assert_equal(
@@ -54,6 +57,13 @@ class UnitTestsConnectorHandler < Minitest::Test
   def test_connector_handler_count_argument_initialization
     assert_equal(@count_value, @connector_handler_initialization.count)
   end # test_connector_handler_count_argument_initialization
+
+  def test_connector_handler_sasl_mechs_argument_initialization
+    assert_equal(
+      @sasl_mechs_value,
+      @connector_handler_initialization.sasl_mechs
+    )
+  end # test_connector_handler_sasl_mechs_argument_initialization
 
   def test_connector_handler_connections_initialization
     assert_equal(0, @connector_handler_initialization.connections.length)
