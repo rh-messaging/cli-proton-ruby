@@ -94,7 +94,7 @@ module Handlers
         # If message content is set
         if @msg_content
           # Set message content
-          msg.body = msg_content
+          msg.body = @msg_content
         end # if
         # If message correlation ID is set
         if @msg_correlation_id
