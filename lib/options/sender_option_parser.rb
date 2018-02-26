@@ -15,6 +15,7 @@
 #++
 
 require_relative 'sr_common_option_parser'
+require_relative '../utils'
 
 module Options
 
@@ -101,6 +102,31 @@ module Options
           end
 
           @options.msg_content[key] = value
+        end
+      end
+
+      # Message list content
+      @opt_parser.on(
+        "-L",
+        "--msg-content-list-item VALUE",
+        "list item"
+      ) do |msg_content_list_item|
+        if @options.msg_content.nil?
+          @options.msg_content = []
+        end
+
+        if msg_content_list_item.start_with? "~"
+          value = msg_content_list_item[1..-1]
+          
+          if Utils.str_is_int?(value)
+            @options.msg_content.push(value.to_i)
+          elsif Utils.str_is_float?(value)
+            @options.msg_content.push(value.to_f)
+          else
+            @options.msg_content.push(value)
+          end
+        else
+          @options.msg_content.push(msg_content_list_item)
         end
       end
 
