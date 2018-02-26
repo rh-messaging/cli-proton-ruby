@@ -14,8 +14,8 @@
 # limitations under the License.
 #++
 
-# Module containing utilities for cli-proton-ruby clients
-module Utils
+# Module containing string utilities for cli-proton-ruby clients
+module StringUtils
 
   # Function to check if string variable is convertible to integer
   # ==== Parameters
@@ -35,6 +35,6 @@ module Utils
     !Float(value).nil? rescue false
   end
 
-end # module Utils
+end # module StringUtils
 
 # eof

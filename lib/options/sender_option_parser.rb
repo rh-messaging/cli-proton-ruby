@@ -15,7 +15,7 @@
 #++
 
 require_relative 'sr_common_option_parser'
-require_relative '../utils'
+require_relative '../utils/string_utils'
 
 module Options
 
@@ -118,9 +118,9 @@ module Options
         if msg_content_list_item.start_with? "~"
           value = msg_content_list_item[1..-1]
           
-          if Utils.str_is_int?(value)
+          if StringUtils.str_is_int?(value)
             @options.msg_content.push(value.to_i)
-          elsif Utils.str_is_float?(value)
+          elsif StringUtils.str_is_float?(value)
             @options.msg_content.push(value.to_f)
           else
             @options.msg_content.push(value)
