@@ -222,6 +222,45 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_content_map_item_value_long
 
+
+  def test_sender_option_parser_user_msg_content_list_item_value_short
+    sender_options_user_msg_content_list_item_short = Options::SenderOptionParser.new([
+      "-L", "",
+      "-L", "String",
+      "-L", "~1",
+      "-L", "~1.0",
+      "-L", "1",
+      "-L", "1.0",
+      "-L", "~-1",
+      "-L", "~-1.3",
+      "-L", "-1",
+      "-L", "~~1"
+    ])
+    assert_equal(
+      ['', 'String', 1, 1.0, '1', '1.0', -1, -1.3, '-1', '~1'],
+      sender_options_user_msg_content_list_item_short.options.msg_content
+    )
+  end # test_sender_option_parser_user_msg_content_list_item_value_short
+
+  def test_sender_option_parser_user_msg_content_list_item_value_long
+    sender_options_user_msg_content_list_item_long = Options::SenderOptionParser.new([
+      "--msg-content-list-item", "",
+      "--msg-content-list-item", "String",
+      "--msg-content-list-item", "~1",
+      "--msg-content-list-item", "~1.0",
+      "--msg-content-list-item", "1",
+      "--msg-content-list-item", "1.0",
+      "--msg-content-list-item", "~-1",
+      "--msg-content-list-item", "~-1.3",
+      "--msg-content-list-item", "-1",
+      "--msg-content-list-item", "~~1"
+    ])
+    assert_equal(
+      ['', 'String', 1, 1.0, '1', '1.0', -1, -1.3, '-1', '~1'],
+      sender_options_user_msg_content_list_item_long.options.msg_content
+    )
+  end # test_sender_option_parser_user_msg_content_list_item_value_long
+
 end # class UnitTestsSenderOptionParser
 
 # eof
