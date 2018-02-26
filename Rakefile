@@ -16,10 +16,21 @@ Rake::TestTask.new(:unit_tests) do |t|
   t.warning = true
 end
 
-desc 'Run client tests. Requires a broker running on localhost:5672'
+desc 'Run client tests. Requires an external broker to be running on localhost:5672'
 Rake::TestTask.new(:client_tests) do |t|
   t.libs << "tests"
   t.test_files = Dir["tests/client/**/test_*.rb"]
   t.verbose = true
   t.warning = true
+end
+
+desc 'Run tests with a self-started test broker.'
+task :self_test => [:unit_tests] do
+  broker = IO.popen([RbConfig.ruby,  File.join("bin", "broker.rb"), "" ], :err=>[:child, :out])
+  unless (ready = broker.readline) =~ /^Listening on /
+    Process.kill :KILL, broker.pid
+    raise "broker failed: #{ready}#{broker.read}"
+  end
+  Rake::Task[:client_tests].invoke :client_tests
+  Process.kill :KILL, broker.pid
 end
