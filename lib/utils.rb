@@ -23,7 +23,7 @@ module Utils
   # ==== Returns
   # true if string variable is convertible to integer, false otherwise
   def self.str_is_int?(value)
-    Integer(value) != nil rescue false
+    !Integer(value).nil? rescue false
   end
 
   # Function to check if string variable is convertible to float
@@ -32,7 +32,7 @@ module Utils
   # ==== Returns
   # true if string variable is convertible to float, false otherwise
   def self.str_is_float?(value)
-    Float(value) != nil rescue false
+    !Float(value).nil? rescue false
   end
 
 end # module Utils
