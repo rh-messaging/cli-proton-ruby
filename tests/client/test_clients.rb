@@ -22,7 +22,9 @@ require 'receiver_client'
 
 BIN_DIR = File.absolute_path("../../bin", File.dirname(__FILE__))
 
-class TestClients < Minitest::Test
+# Base test class that provides run_client and some extra asserts for checking
+# client output and results
+class ClientTestCase < Minitest::Test
 
   def run_client(prog, *args)
     prog = File.join(BIN_DIR, prog)
@@ -36,8 +38,9 @@ class TestClients < Minitest::Test
   end
 
   def assert_output(proc, output, status=0)
+    Process.wait(proc.pid)
     assert_equal output, proc.read
-    assert_wait proc, status
+    assert_equal status, $?.exitstatus
   end
 
   def test_send_receive
