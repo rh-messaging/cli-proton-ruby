@@ -108,6 +108,26 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     assert_equal(3, receiver_options_user_count_long.options.count)
   end # test_receiver_option_parser_user_count_value_long
 
+  def test_receiver_option_parser_default_process_reply_to_value
+    receiver_options_default_process_reply_to = \
+      Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_PROC_REPLY_TO,
+      receiver_options_default_process_reply_to.options.process_reply_to
+    )
+  end # test_receiver_option_parser_default_process_reply_to_value
+
+  def test_receiver_option_parser_user_process_reply_to_value_long
+    receiver_options_user_process_reply_to_long = \
+      Options::ReceiverOptionParser.new(
+        ["--process-reply-to"]
+     )
+    assert_equal(
+      true,
+      receiver_options_user_process_reply_to_long.options.process_reply_to
+    )
+  end # test_receiver_option_parser_user_process_reply_to_value_long
+
   def test_receiver_option_parser_default_recv_browse_value
     receiver_options_default_recv_browse = Options::ReceiverOptionParser.new([])
     assert_equal(

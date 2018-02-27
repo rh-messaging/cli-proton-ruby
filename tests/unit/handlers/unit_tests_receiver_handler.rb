@@ -26,6 +26,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
     @count_value = 1
+    @process_reply_to_value = true
     @browse_value = true
     @sasl_mechs_value = "SASL"
 
@@ -33,6 +34,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @broker_value,
       @log_msgs_value,
       @count_value,
+      @process_reply_to_value,
       @browse_value,
       @sasl_mechs_value
     )
@@ -43,6 +45,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @broker_value_string,
       @log_msgs_value,
       @count_value,
+      @process_reply_to_value,
       @browse_value,
       @sasl_mechs_value
     )
@@ -67,6 +70,13 @@ class UnitTestsReceiverHandler < Minitest::Test
   def test_receiver_handler_count_argument_initialization
     assert_equal(@count_value, @receiver_handler_initialization.count)
   end # test_receiver_handler_count_argument_initialization
+
+  def test_receiver_handler_process_reply_to_argument_initialization
+    assert_equal(
+      @process_reply_to_value,
+      @receiver_handler_initialization.process_reply_to
+    )
+  end # test_receiver_handler_process_reply_to_argument_initialization
 
   def test_receiver_handler_browse_argument_initialization
     assert_equal(@browse_value, @receiver_handler_initialization.browse)
