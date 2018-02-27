@@ -25,6 +25,8 @@ module Handlers
 
     # Count of messages
     attr_accessor :count
+    # Process reply to
+    attr_accessor :process_reply_to
     # Browse
     attr_accessor :browse
 
@@ -33,16 +35,29 @@ module Handlers
     # broker:: URI of broker
     # log_msgs:: format of message(s) log
     # count:: number of messages to receive
+    # process-reply-to:: send message to reply-to address if enabled
+    #                    and message got reply-to address
     # browse:: browse messages instead of reading
     # sasl_mechs:: allowed SASL mechanisms
-    def initialize(broker, log_msgs, count, browse, sasl_mechs)
+    def initialize(
+      broker,
+      log_msgs,
+      count,
+      process_reply_to,
+      browse,
+      sasl_mechs
+    )
       super(broker, log_msgs, sasl_mechs)
       # Save count of messages
       @count = count
+      # Save process reply to
+      @process_reply_to = process_reply_to
       # Save browse
       @browse = browse
       # Number of received messages
       @received = 0
+      # Hash with senders for replying
+      @senders = {}
     end
 
     # Called when the event loop starts,
@@ -63,7 +78,8 @@ module Handlers
       # If browse messages instead of reading
       if browse
         # Set browsing mode
-        @receiver.source.distribution_mode = Qpid::Proton::Terminus::DIST_MODE_COPY
+        @receiver.source.distribution_mode = \
+          Qpid::Proton::Terminus::DIST_MODE_COPY
       end
     end
 
@@ -76,6 +92,10 @@ module Handlers
       elsif @log_msgs == "dict"
         Formatters::DictFormatter.new(message).print
       end
+      # If process reply to
+      if @process_reply_to and !message.reply_to.nil?
+        self.do_process_reply_to(message)
+      end
       # Increase number of received messages
       @received = @received + 1
       # If all messages are received
@@ -85,6 +105,16 @@ module Handlers
         # Close connection
         delivery.receiver.connection.close
       end # if
+    end
+
+    def do_process_reply_to(message)
+      if !@senders.include?(message.reply_to)
+        @senders[message.reply_to] = @receiver.connection.open_sender(
+          message.reply_to
+        )
+      end
+      message.address = message.reply_to
+      @senders[message.reply_to].send(message)
     end
 
   end # class ReceiverHandler

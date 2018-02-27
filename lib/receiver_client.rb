@@ -35,6 +35,7 @@ class ReceiverClient
       receiver_options_parser.options.broker,
       receiver_options_parser.options.log_msgs,
       receiver_options_parser.options.count,
+      receiver_options_parser.options.process_reply_to,
       receiver_options_parser.options.browse,
       receiver_options_parser.options.sasl_mechs
     )
