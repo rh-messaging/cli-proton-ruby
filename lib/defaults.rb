@@ -35,6 +35,8 @@ module Defaults
   DEFAULT_BROWSE      = false
   # Default value for SASL allowed mechanisms
   DEFAULT_SASL_MECHS  = "ANONYMOUS PLAIN EXTERNAL"
+  # Default value for message TTL (ms)
+  DEFAULT_MSG_TTL     = 0
 
 end # module Defaults
 
