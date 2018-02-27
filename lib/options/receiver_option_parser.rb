@@ -24,6 +24,8 @@ module Options
   # ==== Specific receiver options
   # count:: number of messages to receiver
   #         (default: DEFAULT_COUNT, see Defaults)
+  # process-reply-to:: send message to reply-to address if enabled
+  #                    and message got reply-to address
   # recv-browse:: browse messages instead of reading
   #               (default: DEFAULT_BROWSE, see Defaults)
   class ReceiverOptionParser < Options::SRCommonOptionParser
@@ -42,6 +44,8 @@ module Options
 
       # Number of messages option
       @options.count = Defaults::DEFAULT_COUNT
+      # Process reply to
+      @options.process_reply_to = Defaults::DEFAULT_PROC_REPLY_TO
       # Browse messages
       @options.browse = Defaults::DEFAULT_BROWSE
 
@@ -54,6 +58,15 @@ module Options
         "(default: #{Defaults::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
+      end
+
+      # Process reply to
+      @opt_parser.on(
+        "--process-reply-to",
+        "send message to reply-to address if enable and message got reply-to "+
+        "address",
+      ) do |process_reply_to|
+        @options.process_reply_to = process_reply_to
       end
 
       # Browse messages
