@@ -27,6 +27,8 @@ module Handlers
     attr_accessor :count
     # Message content
     attr_accessor :msg_content
+    # Message durability
+    attr_accessor :msg_durable
     # Message correlation ID
     attr_accessor :msg_correlation_id
     # Message group ID
@@ -38,6 +40,7 @@ module Handlers
     # log_msgs:: format of message(s) log
     # count:: number of messages to send
     # msg_content:: message content
+    # msg_durable:: message durability
     # msg_correlation_id:: message correlation ID
     # msg_group_id:: message group ID
     # sasl_mechs:: allowed SASL mechanisms
@@ -46,6 +49,7 @@ module Handlers
       log_msgs,
       count,
       msg_content,
+      msg_durable,
       msg_correlation_id,
       msg_group_id,
       sasl_mechs
@@ -55,6 +59,8 @@ module Handlers
       @count = count
       # Save message content
       @msg_content = msg_content
+      # Save message durability
+      @msg_durable = msg_durable
       # Save message correlation ID
       @msg_correlation_id = msg_correlation_id
       # Save message group ID
@@ -96,6 +102,8 @@ module Handlers
           # Set message content
           msg.body = @msg_content
         end # if
+        # Set message durability
+        msg.durable = @msg_durable
         # If message correlation ID is set
         if @msg_correlation_id
           msg.correlation_id = @msg_correlation_id

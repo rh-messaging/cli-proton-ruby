@@ -25,6 +25,8 @@ module Defaults
   DEFAULT_LOG_MSGS    = "none"
   # Default value for message content
   DEFAULT_MSG_CONTENT = nil
+  # Default message durability
+  DEFAULT_MSG_DURABLE = false
   # Default value for message correlation ID
   DEFAULT_CORR_ID     = nil
   # Default value for message group ID

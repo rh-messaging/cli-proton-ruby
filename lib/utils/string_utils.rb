@@ -35,6 +35,28 @@ module StringUtils
     !Float(value).nil? rescue false
   end
 
+  # Function to check if string variable is convertible to client bool value
+  # (yes/no|True/False|true/false)
+  # ==== Parameters
+  # value:: string variable to convert
+  # ==== Returns
+  # true if string variable is convertible to client bool value, false otherwise
+  # ==== Raises
+  # ArgumentError for invalid argument
+  def self.str_to_bool?(value)
+    # If positive value
+    if ["yes", "True", "true"].include?(value)
+      # Return true
+      return true
+    # If negative value
+    elsif ["no", "False", "false"].include?(value)
+      # Return false
+      return false
+    end
+    # If value is not convertible, raise ArgumentError
+    raise ArgumentError, "Invalid argument '#{value}'"
+  end
+
 end # module StringUtils
 
 # eof
