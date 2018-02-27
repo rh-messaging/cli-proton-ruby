@@ -280,6 +280,25 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_durable_value_long
 
+  def test_sender_option_parser_default_msg_ttl_value
+    sender_options_default_msg_ttl = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MSG_TTL,
+      sender_options_default_msg_ttl.options.msg_ttl
+    )
+  end # test_sender_option_parser_default_msg_ttl_value
+
+  def test_sender_option_parser_user_msg_ttl_value_long
+    value = Defaults::DEFAULT_MSG_TTL + 23
+    sender_options_user_msg_ttl_long = Options::SenderOptionParser.new([
+      "--msg-ttl", "#{value}"
+    ])
+    assert_equal(
+      value,
+      sender_options_user_msg_ttl_long.options.msg_ttl
+    )
+  end # test_sender_option_parser_user_msg_ttl_value_long
+
 end # class UnitTestsSenderOptionParser
 
 # eof

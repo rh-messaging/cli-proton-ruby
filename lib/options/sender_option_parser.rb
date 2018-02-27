@@ -29,6 +29,7 @@ module Options
   # msg-content-map-item:: message content map item
   # msg-content-list-item:: message content list item
   # msg-durable:: message durability (default: DEFAULT_MSG_DURABLE)
+  # msg-ttl:: message Time-To-Live (ms) (default: DEFAULT_MSG_TTL)
   # msg-correlation-id:: message correlation ID
   # msg-group-id:: message group ID
   class SenderOptionParser < Options::SRCommonOptionParser
@@ -50,6 +51,8 @@ module Options
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
       # Message durability
       @options.msg_durable = Defaults::DEFAULT_MSG_DURABLE
+      # Message TTL
+      @options.msg_ttl = Defaults::DEFAULT_MSG_TTL
       # Message correlation ID option
       @options.msg_correlation_id = Defaults::DEFAULT_CORR_ID
       # Message group ID option
@@ -142,6 +145,15 @@ module Options
         "#{Defaults::DEFAULT_MSG_DURABLE})"
       ) do |msg_durable|
         @options.msg_durable = StringUtils.str_to_bool?(msg_durable)
+      end
+
+      # Message TTL
+      @opt_parser.on(
+        "--msg-ttl TTL",
+        Integer,
+        "message Time-To-Live (ms) (default: #{Defaults::DEFAULT_MSG_TTL})"
+      ) do |msg_ttl|
+        @options.msg_ttl = msg_ttl
       end
 
       # Message correlation id
