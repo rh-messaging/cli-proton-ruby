@@ -30,6 +30,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_durable_value = "True"
     @msg_ttl_value = 29
     @msg_correlation_id_value = "corr-id-0123456789"
+    @msg_reply_to_value = "127.0.0.127:5672/reply_queue"
     @msg_group_id_value = "group-id-0987654321"
     @sasl_mechs_value = "SASL"
 
@@ -41,6 +42,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
+      @msg_reply_to_value,
       @msg_group_id_value,
       @sasl_mechs_value
     )
@@ -55,6 +57,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
+      @msg_reply_to_value,
       @msg_group_id_value,
       @sasl_mechs_value
     )
@@ -105,6 +108,13 @@ class UnitTestsSenderHandler < Minitest::Test
     assert_equal(
       @msg_correlation_id_value,
       @sender_handler_initialization.msg_correlation_id
+    )
+  end # test_sender_handler_msg_correlation_id_argument_initialization
+
+  def test_sender_handler_msg_reply_to_argument_initialization
+    assert_equal(
+      @msg_reply_to_value,
+      @sender_handler_initialization.msg_reply_to
     )
   end # test_sender_handler_msg_correlation_id_argument_initialization
 

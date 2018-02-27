@@ -142,6 +142,23 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_corr_id_value_long
 
+  def test_sender_option_parser_default_msg_reply_to_value
+    sender_options_default_msg_reply_to = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_reply_to.options.msg_reply_to
+    )
+  end # test_sender_option_parser_default_msg_reply_to_value
+
+  def test_sender_option_parser_user_msg_reply_to_value_long
+    sender_options_user_msg_reply_to = Options::SenderOptionParser.new(
+      ["--msg-reply-to", "127.0.0.1:5672/reply"]
+    )
+    assert_equal(
+      "127.0.0.1:5672/reply",
+      sender_options_user_msg_reply_to.options.msg_reply_to
+    )
+  end # test_sender_option_parser_user_msg_reply_to_value_long
+
   def test_sender_option_parser_default_msg_group_id_value
     sender_options_default_msg_group_id = Options::SenderOptionParser.new([])
     assert_nil(
