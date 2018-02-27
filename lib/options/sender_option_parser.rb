@@ -26,8 +26,10 @@ module Options
   # count:: number of messages to send (default: DEFAULT_COUNT, see Defaults)
   # msg-content:: message content (default: DEFAULT_MSG_CONTENT,
   #               see Defaults)
-  # msg-correlation-id:: message correlation ID
   # msg-content-map-item:: message content map item
+  # msg-content-list-item:: message content list item
+  # msg-durable:: message durability (default: DEFAULT_MSG_DURABLE)
+  # msg-correlation-id:: message correlation ID
   # msg-group-id:: message group ID
   class SenderOptionParser < Options::SRCommonOptionParser
 
@@ -46,6 +48,8 @@ module Options
       @options.count = Defaults::DEFAULT_COUNT
       # Message content option
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
+      # Message durability
+      @options.msg_durable = Defaults::DEFAULT_MSG_DURABLE
       # Message correlation ID option
       @options.msg_correlation_id = Defaults::DEFAULT_CORR_ID
       # Message group ID option
@@ -130,6 +134,16 @@ module Options
         end
       end
 
+      # Message durability
+      @opt_parser.on(
+        "--msg-durable DURABILITY",
+        String,
+        "message durability (yes/no|True/False|true/false, default: "+
+        "#{Defaults::DEFAULT_MSG_DURABLE})"
+      ) do |msg_durable|
+        @options.msg_durable = StringUtils.str_to_bool?(msg_durable)
+      end
+
       # Message correlation id
       @opt_parser.on(
         "--msg-correlation-id ID",
@@ -150,7 +164,7 @@ module Options
 
       # Parse basic, common and specific options for sender client
       parse(args)
-    end # initialize(args)
+    end # initialize
 
   end # class SenderOptionParser
 
