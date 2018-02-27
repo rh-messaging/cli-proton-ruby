@@ -261,6 +261,25 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_content_list_item_value_long
 
+  def test_sender_option_parser_default_msg_durable_value
+    sender_options_default_msg_durable = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MSG_DURABLE,
+      sender_options_default_msg_durable.options.msg_durable
+    )
+  end # test_sender_option_parser_default_msg_durable_value
+
+  def test_sender_option_parser_user_msg_durable_value_long
+    value = Defaults::DEFAULT_MSG_DURABLE ? false : true
+    sender_options_user_msg_durable_long = Options::SenderOptionParser.new([
+      "--msg-durable", "#{value}"
+    ])
+    assert_equal(
+      value,
+      sender_options_user_msg_durable_long.options.msg_durable
+    )
+  end # test_sender_option_parser_user_msg_durable_value_long
+
 end # class UnitTestsSenderOptionParser
 
 # eof
