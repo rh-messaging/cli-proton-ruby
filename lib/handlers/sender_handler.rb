@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :msg_content
     # Message durability
     attr_accessor :msg_durable
+    # Message TTL (ms)
+    attr_accessor :msg_ttl
     # Message correlation ID
     attr_accessor :msg_correlation_id
     # Message group ID
@@ -41,6 +43,7 @@ module Handlers
     # count:: number of messages to send
     # msg_content:: message content
     # msg_durable:: message durability
+    # msg_ttl:: message TTL (ms)
     # msg_correlation_id:: message correlation ID
     # msg_group_id:: message group ID
     # sasl_mechs:: allowed SASL mechanisms
@@ -50,6 +53,7 @@ module Handlers
       count,
       msg_content,
       msg_durable,
+      msg_ttl,
       msg_correlation_id,
       msg_group_id,
       sasl_mechs
@@ -61,6 +65,8 @@ module Handlers
       @msg_content = msg_content
       # Save message durability
       @msg_durable = msg_durable
+      # Save message TTL (ms)
+      @msg_ttl = msg_ttl
       # Save message correlation ID
       @msg_correlation_id = msg_correlation_id
       # Save message group ID
@@ -104,6 +110,8 @@ module Handlers
         end # if
         # Set message durability
         msg.durable = @msg_durable
+        # Set message TTL (ms)
+        msg.ttl = @msg_ttl
         # If message correlation ID is set
         if @msg_correlation_id
           msg.correlation_id = @msg_correlation_id
