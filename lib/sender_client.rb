@@ -39,6 +39,7 @@ class SenderClient
       sender_options_parser.options.msg_durable,
       sender_options_parser.options.msg_ttl,
       sender_options_parser.options.msg_correlation_id,
+      sender_options_parser.options.msg_reply_to,
       sender_options_parser.options.msg_group_id,
       sender_options_parser.options.sasl_mechs
     )

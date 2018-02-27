@@ -33,6 +33,8 @@ module Handlers
     attr_accessor :msg_ttl
     # Message correlation ID
     attr_accessor :msg_correlation_id
+    # Reply to address
+    attr_accessor :msg_reply_to
     # Message group ID
     attr_accessor :msg_group_id
 
@@ -45,6 +47,7 @@ module Handlers
     # msg_durable:: message durability
     # msg_ttl:: message TTL (ms)
     # msg_correlation_id:: message correlation ID
+    # msg_reply_to:: address to send reply to
     # msg_group_id:: message group ID
     # sasl_mechs:: allowed SASL mechanisms
     def initialize(
@@ -55,6 +58,7 @@ module Handlers
       msg_durable,
       msg_ttl,
       msg_correlation_id,
+      msg_reply_to,
       msg_group_id,
       sasl_mechs
     )
@@ -69,6 +73,8 @@ module Handlers
       @msg_ttl = msg_ttl
       # Save message correlation ID
       @msg_correlation_id = msg_correlation_id
+      # Save reply to address
+      @msg_reply_to = msg_reply_to
       # Save message group ID
       @msg_group_id = msg_group_id
       # Number of sent messages
@@ -116,6 +122,8 @@ module Handlers
         if @msg_correlation_id
           msg.correlation_id = @msg_correlation_id
         end # if
+        # Set reply to address
+        msg.reply_to = @msg_reply_to
         # If message group ID is set
         if @msg_group_id
           msg.group_id = @msg_group_id
