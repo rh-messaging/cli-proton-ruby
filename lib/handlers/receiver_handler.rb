@@ -108,7 +108,7 @@ module Handlers
     end
 
     def do_process_reply_to(message)
-      if !@senders.include?(message.reply_to)
+      unless @senders.include?(message.reply_to)
         @senders[message.reply_to] = @receiver.connection.open_sender(
           message.reply_to
         )
