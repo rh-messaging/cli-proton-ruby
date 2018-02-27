@@ -31,6 +31,7 @@ module Options
   # msg-durable:: message durability (default: DEFAULT_MSG_DURABLE)
   # msg-ttl:: message Time-To-Live (ms) (default: DEFAULT_MSG_TTL)
   # msg-correlation-id:: message correlation ID
+  # msg-reply-to:: address to send reply to
   # msg-group-id:: message group ID
   class SenderOptionParser < Options::SRCommonOptionParser
 
@@ -55,6 +56,8 @@ module Options
       @options.msg_ttl = Defaults::DEFAULT_MSG_TTL
       # Message correlation ID option
       @options.msg_correlation_id = Defaults::DEFAULT_CORR_ID
+      # Address to send reply to
+      @options.msg_reply_to = Defaults::DEFAULT_MSG_REPLY_TO
       # Message group ID option
       @options.msg_group_id = Defaults::DEFAULT_GROUP_ID
 
@@ -163,6 +166,15 @@ module Options
         "message correlation ID"
       ) do |msg_correlation_id|
         @options.msg_correlation_id = msg_correlation_id
+      end
+
+      # Address to send reply to
+      @opt_parser.on(
+        "--msg-reply-to ADDRESS",
+        String,
+        "address to send reply to"
+      ) do |msg_reply_to|
+        @options.msg_reply_to = msg_reply_to
       end
 
       # Message group id
