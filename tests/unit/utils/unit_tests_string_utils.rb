@@ -145,6 +145,46 @@ class UnitTestsStringUtils < Minitest::Test
     refute StringUtils.str_is_float?("nil")
   end
 
+  # str_to_bool
+
+  def test_string_utils_str_to_bool_yes_in_string
+    assert StringUtils.str_to_bool?("yes")
+  end
+
+  def test_string_utils_str_to_bool_camel_true_in_string
+    assert StringUtils.str_to_bool?("True")
+  end
+
+  def test_string_utils_str_to_bool_lower_true_in_string
+    assert StringUtils.str_to_bool?("yes")
+  end
+
+  def test_string_utils_str_to_bool_no_in_string
+    refute StringUtils.str_to_bool?("no")
+  end
+
+  def test_string_utils_str_to_bool_camel_false_in_string
+    refute StringUtils.str_to_bool?("False")
+  end
+
+  def test_string_utils_str_to_bool_lower_false_in_string
+    refute StringUtils.str_to_bool?("false")
+  end
+
+  def test_string_utils_str_to_bool_raise_argument_error
+    assert_raises ArgumentError do
+      StringUtils.str_to_bool?("string")
+    end
+  end
+
+  def test_string_utils_str_to_bool_raise_argument_error_message
+    value = "string"
+    exception = assert_raises ArgumentError do
+      StringUtils.str_to_bool?(value)
+    end
+    assert_equal("Invalid argument '#{value}'", exception.message)
+  end
+
 end # class UnitTestsStringUtils
 
 # eof
