@@ -111,8 +111,14 @@ module Handlers
         msg = Qpid::Proton::Message.new
         # If message content is set
         if @msg_content
-          # Set message content
-          msg.body = @msg_content
+          # If message content is string and contains formatting part
+          if @msg_content.is_a? String and @msg_content =~ /%[0-9]*d/
+            # Format message content with number of sent messages
+            msg.body = sprintf(@msg_content, @sent)
+          else
+            # Set message content as it is
+            msg.body = @msg_content
+          end
         end # if
         # Set message durability
         msg.durable = @msg_durable
