@@ -31,8 +31,8 @@ module Handlers
     # broker:: URI of broker
     # count:: Number of connections to create
     # sasl_mechs:: Allowed SASL mechanisms
-    def initialize(broker, count, sasl_mechs)
-      super(broker, sasl_mechs)
+    def initialize(broker, count, sasl_mechs, exit_timer=nil)
+      super(broker, sasl_mechs, exit_timer)
       # Save count of connections
       @count = count
       # Initialize array of connections
@@ -56,6 +56,10 @@ module Handlers
           sasl_allowed_mechs: @sasl_mechs
         ))
       end
+    end
+
+    def on_connection_open(c)
+      exit_timer.reset if exit_timer
     end
 
   end # class ConnectorHandler

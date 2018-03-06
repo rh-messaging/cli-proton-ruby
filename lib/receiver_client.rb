@@ -37,7 +37,8 @@ class ReceiverClient
       receiver_options_parser.options.count,
       receiver_options_parser.options.process_reply_to,
       receiver_options_parser.options.browse,
-      receiver_options_parser.options.sasl_mechs
+      receiver_options_parser.options.sasl_mechs,
+      receiver_options_parser.options.exit_timer
     )
     # Run receiver client
     Qpid::Proton::Container.new(receiver_handler).run

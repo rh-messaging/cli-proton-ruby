@@ -21,6 +21,8 @@ module Handlers
   # Basic events handler for all clients
   class BasicHandler < Qpid::Proton::MessagingHandler
 
+    # Exit timer limits the run-time of the application
+    attr_accessor :exit_timer
     # URI of broker
     attr_accessor :broker
     # Allowed SASL mechs
@@ -30,8 +32,9 @@ module Handlers
     # ==== Basic events handler arguments
     # broker:: URI of broker
     # sasl_mechs: allowed SASL mechanisms
-    def initialize(broker, sasl_mechs)
+    def initialize(broker, sasl_mechs, exit_timer=nil)
       super()
+      @exit_timer = exit_timer
       # Save URI of broker
       if broker.is_a? URI::AMQP or broker.is_a? URI::AMQPS
         @broker = broker

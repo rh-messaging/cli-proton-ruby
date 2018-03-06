@@ -29,8 +29,8 @@ module Handlers
     # broker:: URI of broker
     # log_msgs:: format of message(s) log
     # sasl_mechs:: allowed SASL mechanisms
-    def initialize(broker, log_msgs, sasl_mechs)
-      super(broker, sasl_mechs)
+    def initialize(broker, log_msgs, sasl_mechs, exit_timer=nil)
+      super(broker, sasl_mechs, exit_timer)
       # Save message(s) log format
       @log_msgs = log_msgs
     end
