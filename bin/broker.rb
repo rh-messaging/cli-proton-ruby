@@ -143,7 +143,8 @@ class Broker < Qpid::Proton::MessagingHandler
   end
 
   def remove_stale_consumers(connection)
-    connection.each_sender { |s| unsubscribe(s) }
+    # Note extra .each needed to work around https://issues.apache.org/jira/browse/PROTON-1784
+    connection.each_sender.each { |s| unsubscribe(s) }
   end
 
   def on_sendable(sender)

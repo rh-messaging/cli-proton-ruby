@@ -16,9 +16,12 @@
 #++
 
 require 'minitest/autorun'
+require 'benchmark'
+require 'socket'
 
 require 'sender_client'
 require 'receiver_client'
+require 'connector_client'
 
 BIN_DIR = File.absolute_path("../../bin", File.dirname(__FILE__))
 
@@ -32,15 +35,20 @@ class ClientTestCase < Minitest::Test
                    :err=>[:child, :out]) # Include stderr in output
   end
 
-  def assert_wait(proc, status=0)
+  def assert_wait(proc, status=0, msg=nil)
     Process.wait(proc.pid)
-    assert_equal status, $?.exitstatus
+    assert_equal status, $?.exitstatus, msg
   end
 
-  def assert_output(proc, output, status=0)
+  def assert_output(proc, output, status=0, msg=nil)
     Process.wait(proc.pid)
-    assert_equal output, proc.read
-    assert_equal status, $?.exitstatus
+    assert_equal output, proc.read, msg
+    assert_equal status, $?.exitstatus, msg
+  end
+
+  # Run the block, assert run time is within some error margin of expect  
+  def assert_time(expect, msg=nil)
+    assert_in_delta(expect, Benchmark.measure { yield }.real, 0.2, msg)
   end
 
   def test_send_receive
@@ -50,4 +58,35 @@ class ClientTestCase < Minitest::Test
     assert_output r, "'hello'\n"
   end
 
+  def test_connector_timeout
+    s = TCPServer.new ""
+    port = s.connect_address.ip_port
+    assert_time(0.1) do
+      r = run_client("cli-proton-ruby-connector", "--timeout=0.1", "--broker=:#{port}")
+      assert_output r, "timeout expired\n", 1
+    end
+  ensure
+    s.close if s
+  end
+
+  def test_receive_timeout
+    assert_time(0.1) do         # Nothing to receive, time out immediately
+      r = run_client("cli-proton-ruby-receiver", "--log-msgs=body", "--timeout=0.1")
+      assert_output r, "timeout expired\n", 1
+    end
+
+    # Send messages to reset the timeout at least once
+    r = run_client("cli-proton-ruby-receiver", "--log-msgs=body", "--timeout=0.2", "--count=4")
+    3.times do                  # Send a message every 0.1 seconds
+      bm = Benchmark.measure do
+        s = run_client("cli-proton-ruby-sender", "--msg-content=hello")
+        assert_output s, ""
+      end
+      t = 0.1 - bm.real
+      sleep t if t > 0
+    end
+    assert_time(0.2) do
+      assert_output r, ("'hello'\n" * 3) + "timeout expired\n", 1
+    end
+  end
 end

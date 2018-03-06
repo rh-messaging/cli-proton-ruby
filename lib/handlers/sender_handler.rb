@@ -60,9 +60,10 @@ module Handlers
       msg_correlation_id,
       msg_reply_to,
       msg_group_id,
-      sasl_mechs
+      sasl_mechs,
+      exit_timer=nil
     )
-      super(broker, log_msgs, sasl_mechs)
+      super(broker, log_msgs, sasl_mechs, exit_timer)
       # Save count of messages
       @count = count
       # Save message content
@@ -107,6 +108,7 @@ module Handlers
       # While sender credit is available
       # and number of sent messages is less than count
       while (sender.credit > 0) && (@sent < @count)
+        exit_timer.reset if exit_timer
         # Create new message
         msg = Qpid::Proton::Message.new
         # If message content is set

@@ -34,7 +34,8 @@ class ConnectorClient
     connector_handler = Handlers::ConnectorHandler.new(
       connector_options_parser.options.broker,
       connector_options_parser.options.count,
-      connector_options_parser.options.sasl_mechs
+      connector_options_parser.options.sasl_mechs,
+      connector_options_parser.options.exit_timer
     )
     # Run connector client
     Qpid::Proton::Container.new(connector_handler).run

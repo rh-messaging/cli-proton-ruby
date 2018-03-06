@@ -45,9 +45,10 @@ module Handlers
       count,
       process_reply_to,
       browse,
-      sasl_mechs
+      sasl_mechs,
+      exit_timer=nil
     )
-      super(broker, log_msgs, sasl_mechs)
+      super(broker, log_msgs, sasl_mechs, exit_timer)
       # Save count of messages
       @count = count
       # Save process reply to
@@ -86,6 +87,7 @@ module Handlers
     # Called when a message is received,
     # receiving ReceiverHandler#count messages
     def on_message(delivery, message)
+      exit_timer.reset if exit_timer
       # Print received message
       if @log_msgs == "body"
         Formatters::BasicFormatter.new(message).print
