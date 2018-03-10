@@ -23,6 +23,8 @@ module Defaults
   DEFAULT_COUNT         = 1
   # Default value for format of message(s) log
   DEFAULT_LOG_MSGS      = "none"
+  # Default value of message properties
+  DEFAULT_MSG_PROPERTIES = {}
   # Default value for message content
   DEFAULT_MSG_CONTENT   = nil
   # Default message durability
