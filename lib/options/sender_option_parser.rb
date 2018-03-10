@@ -45,9 +45,11 @@ module Options
       @opt_parser.banner = "Usage: <sender_program> [OPTIONS]"
 
       # Sender specific options with default values
-   
+
       # Number of messages option
       @options.count = Defaults::DEFAULT_COUNT
+      # Message property option
+      @options.msg_properties = Defaults::DEFAULT_MSG_PROPERTIES
       # Message content option
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
       # Message durability
@@ -93,6 +95,20 @@ module Options
         @options.msg_content = msg_content
       end
 
+      # Message property
+      @opt_parser.on(
+        "-P",
+        "--msg-property KEY=VALUE",
+        String,
+        "property specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
+      ) do |msg_property|
+        if @options.msg_properties.nil?
+          @options.msg_properties = {}
+        end
+
+        key, value = parse_kv(msg_property)
+        @options.msg_properties[key] = value
+      end
       # Message map content
       @opt_parser.on(
         "-M",
@@ -104,21 +120,8 @@ module Options
           @options.msg_content = {}
         end
 
-        if msg_content_map_item.include? "="
-          key, value = msg_content_map_item.split("=")
-
-          @options.msg_content[key] = value.nil? ? "" : value
-        elsif msg_content_map_item.include? "~"
-          key, value = msg_content_map_item.split("~")
-
-          if value.include? "."
-            value = value.to_f
-          else
-            value = value.to_i
-          end
-
-          @options.msg_content[key] = value
-        end
+        key, value = parse_kv(msg_content_map_item)
+        @options.msg_content[key] = value
       end
 
       # Message list content
@@ -133,7 +136,7 @@ module Options
 
         if msg_content_list_item.start_with? "~"
           value = msg_content_list_item[1..-1]
-          
+
           if StringUtils.str_is_int?(value)
             @options.msg_content.push(value.to_i)
           elsif StringUtils.str_is_float?(value)
@@ -221,6 +224,29 @@ module Options
 
       # Parse basic, common and specific options for sender client
       parse(args)
+    end
+
+    private
+    def parse_kv(key_value)
+      if key_value.include? "="
+        key, value = key_value.split("=")
+        value = "" if value.nil?
+      elsif key_value.include? "~"
+        key, value = key_value.split("~")
+        value = auto_cast(value)
+      else
+        raise OptionParser::InvalidArgument("kv pair '#{key_value}' is of invalid format, = or ~ required")
+      end
+      return key, value
+    end
+
+    def auto_cast(value)
+      if value.include? "."
+        value = value.to_f
+      else
+        value = value.to_i
+      end
+      value
     end # initialize
 
   end # class SenderOptionParser

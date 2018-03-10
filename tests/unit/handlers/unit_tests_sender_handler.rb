@@ -26,6 +26,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
     @count_value = 7
+    @msg_properties_value = {"property-key" => "property-value"}
     @msg_content_value = "hello"
     @msg_durable_value = "True"
     @msg_ttl_value = 29
@@ -41,6 +42,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @broker_value,
       @log_msgs_value,
       @count_value,
+      @msg_properties_value,
       @msg_content_value,
       @msg_durable_value,
       @msg_ttl_value,
@@ -59,6 +61,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @broker_value_string,
       @log_msgs_value,
       @count_value,
+      @msg_properties_value,
       @msg_content_value,
       @msg_durable_value,
       @msg_ttl_value,

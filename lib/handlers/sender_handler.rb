@@ -25,6 +25,8 @@ module Handlers
 
     # Count of messages
     attr_accessor :count
+    # Message properties
+    attr_accessor :msg_properties
     # Message content
     attr_accessor :msg_content
     # Message durability
@@ -60,6 +62,7 @@ module Handlers
       broker,
       log_msgs,
       count,
+      msg_properties,
       msg_content,
       msg_durable,
       msg_ttl,
@@ -75,6 +78,8 @@ module Handlers
       super(broker, log_msgs, sasl_mechs, exit_timer)
       # Save count of messages
       @count = count
+      # Save message properties
+      @msg_properties = msg_properties
       # Save message content
       @msg_content = msg_content
       # Save message durability
@@ -126,6 +131,8 @@ module Handlers
         exit_timer.reset if exit_timer
         # Create new message
         msg = Qpid::Proton::Message.new
+        # Set message properties
+        @msg_properties.each { |k, v| msg[k] = v }
         # If message content is set
         if @msg_content
           # If message content is string and contains formatting part
