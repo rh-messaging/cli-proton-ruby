@@ -43,6 +43,8 @@ module Defaults
   DEFAULT_GROUP_ID           = nil
   # Default value for browse messages
   DEFAULT_BROWSE             = false
+  # Default value for message selector
+  DEFAULT_SELECTOR           = nil
   # Default value for SASL allowed mechanisms
   DEFAULT_SASL_MECHS         = "ANONYMOUS PLAIN EXTERNAL"
   # Default value for idle timeout

@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :process_reply_to
     # Browse
     attr_accessor :browse
+    # Selector
+    attr_accessor :selector
     # Receiver listen
     attr_accessor :recv_listen
     # Receiver listen port
@@ -49,6 +51,7 @@ module Handlers
       count,
       process_reply_to,
       browse,
+      selector,
       sasl_mechs,
       idle_timeout,
       max_frame_size,
@@ -74,6 +77,8 @@ module Handlers
       @process_reply_to = process_reply_to
       # Save browse
       @browse = browse
+      # Save selector
+      @selector = selector
       # Save recv-listen value
       @recv_listen = recv_listen
       # Save recv-listen port value
@@ -97,6 +102,10 @@ module Handlers
       if @recv_listen # P2P
         @listener = container.listen("0.0.0.0:#{@recv_listen_port}")
       else # Broker
+        # Prepare source options
+        source = {}
+        source[:address] = @broker.amqp_address
+        source[:filter] = { :selector => make_apache_selector(@selector)} if @selector
         # Connecting to broker and creating receiver
         @receiver = container.connect(
           # Set broker URI
@@ -111,7 +120,7 @@ module Handlers
           idle_timeout: @idle_timeout,
           # Set max frame size
           max_frame_size: @max_frame_size,
-        ).open_receiver(@broker.amqp_address)
+        ).open_receiver(:source => source)
         # If browse messages instead of reading
         if browse
           # Set browsing mode
@@ -192,6 +201,11 @@ module Handlers
           i_sender.connection.close
         end
       end # if
+    end
+
+    private
+    def make_apache_selector(selector)
+      Qpid::Proton::Types::Described.new(:"apache.org:selector-filter:string", selector)
     end
 
   end # class ReceiverHandler

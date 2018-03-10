@@ -28,6 +28,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @count_value = 1
     @process_reply_to_value = true
     @browse_value = true
+    @selector_value = "a=b"
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 8191
@@ -43,6 +44,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @count_value,
       @process_reply_to_value,
       @browse_value,
+      @selector_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
@@ -61,6 +63,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @count_value,
       @process_reply_to_value,
       @browse_value,
+      @selector_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
@@ -109,6 +112,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @receiver_handler_initialization.sasl_mechs
     )
   end # test_receiver_handler_sasl_mechs_argument_initialization
+
 
   def test_receiver_handler_idle_timeout_argument_initialization
     assert_equal(
