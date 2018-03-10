@@ -41,6 +41,8 @@ module Defaults
   DEFAULT_SASL_MECHS    = "ANONYMOUS PLAIN EXTERNAL"
   # Default value for message TTL (ms)
   DEFAULT_MSG_TTL       = 0
+  # Default value for message priority
+  DEFAULT_MSG_PRIORITY  = nil
 
 end # module Defaults
 
