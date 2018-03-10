@@ -33,6 +33,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_reply_to_value = "127.0.0.127:5672/reply_queue"
     @msg_group_id_value = "group-id-0987654321"
     @msg_priority = 42
+    @msg_id = "message-id-112657"
     @sasl_mechs_value = "SASL"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
@@ -46,6 +47,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_reply_to_value,
       @msg_group_id_value,
       @msg_priority,
+      @msg_id,
       @sasl_mechs_value
     )
   end # setup
@@ -62,6 +64,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_reply_to_value,
       @msg_group_id_value,
       @msg_priority,
+      @msg_id,
       @sasl_mechs_value
     )
 

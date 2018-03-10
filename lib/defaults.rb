@@ -43,6 +43,8 @@ module Defaults
   DEFAULT_MSG_TTL       = 0
   # Default value for message priority
   DEFAULT_MSG_PRIORITY  = nil
+  # Default value for message ID
+  DEFAULT_MSG_ID        = nil
 
 end # module Defaults
 
