@@ -64,6 +64,8 @@ module Options
       @options.msg_priority = Defaults::DEFAULT_MSG_PRIORITY
       # Message ID option
       @options.msg_id = Defaults::DEFAULT_MSG_ID
+      # Message user ID option
+      @options.msg_user_id = Defaults::DEFAULT_MSG_USER_ID
 
       # Number of messages
       @opt_parser.on(
@@ -206,6 +208,15 @@ module Options
         "message ID"
       ) do |msg_id|
         @options.msg_id = msg_id
+      end
+
+      # Message user ID
+      @opt_parser.on(
+        "--msg-user-id ID",
+        String,
+        "message user ID"
+      ) do |msg_user_id|
+        @options.msg_user_id = msg_user_id
       end
 
       # Parse basic, common and specific options for sender client

@@ -43,6 +43,7 @@ class SenderClient
       sender_options_parser.options.msg_group_id,
       sender_options_parser.options.msg_priority,
       sender_options_parser.options.msg_id,
+      sender_options_parser.options.msg_user_id,
       sender_options_parser.options.sasl_mechs,
       sender_options_parser.options.exit_timer,
     )
