@@ -34,6 +34,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_group_id_value = "group-id-0987654321"
     @msg_priority = 42
     @msg_id = "message-id-112657"
+    @msg_user_id = "user-id-666"
     @sasl_mechs_value = "SASL"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
@@ -48,6 +49,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_group_id_value,
       @msg_priority,
       @msg_id,
+      @msg_user_id,
       @sasl_mechs_value
     )
   end # setup
@@ -65,6 +67,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_group_id_value,
       @msg_priority,
       @msg_id,
+      @msg_user_id,
       @sasl_mechs_value
     )
 

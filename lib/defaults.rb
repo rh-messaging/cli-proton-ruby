@@ -45,6 +45,8 @@ module Defaults
   DEFAULT_MSG_PRIORITY  = nil
   # Default value for message ID
   DEFAULT_MSG_ID        = nil
+  # Default value for message user ID
+  DEFAULT_MSG_USER_ID   = nil
 
 end # module Defaults
 
