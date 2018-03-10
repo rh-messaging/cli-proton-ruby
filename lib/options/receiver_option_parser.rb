@@ -50,6 +50,8 @@ module Options
       @options.process_reply_to = Defaults::DEFAULT_PROC_REPLY_TO
       # Browse messages
       @options.browse = Defaults::DEFAULT_BROWSE
+      # Filter using selector
+      @options.selector = Defaults::DEFAULT_SELECTOR
       # Receiver listen
       @options.recv_listen = Defaults::DEFAULT_RECV_LISTEN
       # Receiver listen port
@@ -81,6 +83,14 @@ module Options
         "browse messages instead of reading",
       ) do |browse|
         @options.browse = browse
+      end
+
+      # Filter messages
+      @opt_parser.on(
+        "--recv-selector SELECTOR",
+        "filter messages using a selector"
+      ) do |selector|
+        @options.selector = selector
       end
 
       # Receiver listen
