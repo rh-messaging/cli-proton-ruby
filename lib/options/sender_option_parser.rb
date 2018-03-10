@@ -99,6 +99,15 @@ module Options
         @options.msg_content = msg_content
       end
 
+      # Message content from file
+      @opt_parser.on(
+        "--msg-content-from-file FILE",
+        String,
+        "message content from file"
+      ) do |file|
+        @options.msg_content = File.read(file)
+      end
+
       # Message content type
       @opt_parser.on(
         "--msg-content-type TYPE",
