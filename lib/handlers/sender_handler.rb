@@ -39,6 +39,8 @@ module Handlers
     attr_accessor :msg_group_id
     # Message priority
     attr_accessor :msg_priority
+    # Message ID
+    attr_accessor :msg_id
 
     # Initialization of sender events handler
     # ==== Sender events handler arguments
@@ -63,6 +65,7 @@ module Handlers
       msg_reply_to,
       msg_group_id,
       msg_priority,
+      msg_id,
       sasl_mechs,
       exit_timer=nil
     )
@@ -83,6 +86,8 @@ module Handlers
       @msg_group_id = msg_group_id
       # Save message priority
       @msg_priority = msg_priority
+      # Save message ID
+      @msg_id = msg_id
       # Number of sent messages
       @sent = 0
       # Number of accepted messages
@@ -142,6 +147,7 @@ module Handlers
           msg.group_id = @msg_group_id
         end
         msg.priority = @msg_priority if @msg_priority
+        msg.id = @msg_id if @msg_id
         # Send message
         sender.send(msg)
         # Increase number of sent messages
