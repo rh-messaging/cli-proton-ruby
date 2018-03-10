@@ -28,6 +28,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @count_value = 7
     @msg_properties_value = {"property-key" => "property-value"}
     @msg_content_value = "hello"
+    @msg_content_type_value = "msg-content-type-value"
     @msg_durable_value = "True"
     @msg_ttl_value = 29
     @msg_correlation_id_value = "corr-id-0123456789"
@@ -44,6 +45,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @count_value,
       @msg_properties_value,
       @msg_content_value,
+      @msg_content_type_value,
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
@@ -63,6 +65,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @count_value,
       @msg_properties_value,
       @msg_content_value,
+      @msg_content_type_value,
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
