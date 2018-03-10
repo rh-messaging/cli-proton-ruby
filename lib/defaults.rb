@@ -51,6 +51,8 @@ module Defaults
   DEFAULT_MSG_ID        = nil
   # Default value for message user ID
   DEFAULT_MSG_USER_ID   = nil
+  # Default value for message subject
+  DEFAULT_MSG_SUBJECT   = nil
 
 end # module Defaults
 
