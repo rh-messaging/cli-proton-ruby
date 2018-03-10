@@ -37,6 +37,7 @@ class SenderClient
       sender_options_parser.options.count,
       sender_options_parser.options.msg_properties,
       sender_options_parser.options.msg_content,
+      sender_options_parser.options.msg_content_type,
       sender_options_parser.options.msg_durable,
       sender_options_parser.options.msg_ttl,
       sender_options_parser.options.msg_correlation_id,

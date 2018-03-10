@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :msg_properties
     # Message content
     attr_accessor :msg_content
+    # Message content type
+    attr_accessor :msg_content_type
     # Message durability
     attr_accessor :msg_durable
     # Message TTL (ms)
@@ -64,6 +66,7 @@ module Handlers
       count,
       msg_properties,
       msg_content,
+      msg_content_type,
       msg_durable,
       msg_ttl,
       msg_correlation_id,
@@ -82,6 +85,8 @@ module Handlers
       @msg_properties = msg_properties
       # Save message content
       @msg_content = msg_content
+      # Save message content type
+      @msg_content_type = msg_content_type
       # Save message durability
       @msg_durable = msg_durable
       # Save message TTL (ms)
@@ -144,6 +149,8 @@ module Handlers
             msg.body = @msg_content
           end
         end # if
+        # Set message content type if specified
+        msg.content_type = @msg_content_type if @msg_content_type
         # Set message durability
         msg.durable = @msg_durable
         # Set message TTL (ms)

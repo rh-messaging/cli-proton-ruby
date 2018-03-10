@@ -52,6 +52,8 @@ module Options
       @options.msg_properties = Defaults::DEFAULT_MSG_PROPERTIES
       # Message content option
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
+      # Message content type option
+      @options.msg_content_type = Defaults::DEFAULT_MSG_CONTENT_TYPE
       # Message durability
       @options.msg_durable = Defaults::DEFAULT_MSG_DURABLE
       # Message TTL
@@ -93,6 +95,15 @@ module Options
         )+")"
       ) do |msg_content|
         @options.msg_content = msg_content
+      end
+
+      # Message content type
+      @opt_parser.on(
+        "--msg-content-type TYPE",
+        String,
+        "AMQP message content type"
+      ) do |msg_content_type|
+        @options.msg_content_type = msg_content_type
       end
 
       # Message property
