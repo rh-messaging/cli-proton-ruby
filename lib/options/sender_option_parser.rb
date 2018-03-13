@@ -266,7 +266,7 @@ module Options
         key, value = key_value.split("~")
         value = auto_cast(value)
       else
-        raise OptionParser::InvalidArgument("kv pair '#{key_value}' is of invalid format, = or ~ required")
+        raise OptionParser::InvalidArgument, "kv pair '#{key_value}' is of invalid format, = or ~ required"
       end
       return key, value
     end
