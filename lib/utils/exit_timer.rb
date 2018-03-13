@@ -30,7 +30,7 @@ class ExitTimer
         sleep delta
       end
       puts "timeout expired"
-      exit(1)
+      exit(0)
     end
   end
 
