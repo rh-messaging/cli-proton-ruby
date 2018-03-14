@@ -20,6 +20,8 @@
 
 class ExitTimer
 
+  attr_reader :timeout
+
   # Start the timer to exit after timeout.
   def initialize(timeout)
     @timeout = timeout
