@@ -18,41 +18,43 @@
 module Defaults
 
   # Default value for broker URI in format IP:PORT/queue
-  DEFAULT_BROKER        = "127.0.0.1:5672/examples"
+  DEFAULT_BROKER           = "127.0.0.1:5672/examples"
   # Default value for message(s)/connection(s) count to send/receive/create
-  DEFAULT_COUNT         = 1
+  DEFAULT_COUNT            = 1
   # Default value for format of message(s) log
-  DEFAULT_LOG_MSGS      = "none"
+  DEFAULT_LOG_MSGS         = "none"
   # Default value of message properties
-  DEFAULT_MSG_PROPERTIES = {}
+  DEFAULT_MSG_PROPERTIES   = {}
   # Default value for message content
-  DEFAULT_MSG_CONTENT   = nil
+  DEFAULT_MSG_CONTENT      = nil
   # Default value for message content type
   DEFAULT_MSG_CONTENT_TYPE = nil
   # Default message durability
-  DEFAULT_MSG_DURABLE   = false
+  DEFAULT_MSG_DURABLE      = false
   # Default value for message correlation ID
-  DEFAULT_CORR_ID       = nil
+  DEFAULT_CORR_ID          = nil
   # Default value for reply-to
-  DEFAULT_MSG_REPLY_TO  = nil
+  DEFAULT_MSG_REPLY_TO     = nil
   # Default value for process reply to
-  DEFAULT_PROC_REPLY_TO = false
+  DEFAULT_PROC_REPLY_TO    = false
   # Default value for message group ID
-  DEFAULT_GROUP_ID      = nil
+  DEFAULT_GROUP_ID         = nil
   # Default value for browse messages
-  DEFAULT_BROWSE        = false
+  DEFAULT_BROWSE           = false
   # Default value for SASL allowed mechanisms
-  DEFAULT_SASL_MECHS    = "ANONYMOUS PLAIN EXTERNAL"
+  DEFAULT_SASL_MECHS       = "ANONYMOUS PLAIN EXTERNAL"
   # Default value for message TTL (ms)
-  DEFAULT_MSG_TTL       = 0
+  DEFAULT_MSG_TTL          = 0
   # Default value for message priority
-  DEFAULT_MSG_PRIORITY  = nil
+  DEFAULT_MSG_PRIORITY     = nil
   # Default value for message ID
-  DEFAULT_MSG_ID        = nil
+  DEFAULT_MSG_ID           = nil
   # Default value for message user ID
-  DEFAULT_MSG_USER_ID   = nil
+  DEFAULT_MSG_USER_ID      = nil
   # Default value for message subject
-  DEFAULT_MSG_SUBJECT   = nil
+  DEFAULT_MSG_SUBJECT      = nil
+  # Default value for exit timer
+  DEFAULT_EXIT_TIMER       = nil
 
 end # module Defaults
 
