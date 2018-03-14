@@ -40,6 +40,8 @@ module Options
 
       # Broker in format IP:PORT option
       @options.broker = Defaults::DEFAULT_BROKER
+      # Exit timer
+      @options.exit_timer = Defaults::DEFAULT_EXIT_TIMER
       # Allowed SASL mechanisms
       @options.sasl_mechs = Defaults::DEFAULT_SASL_MECHS
 
