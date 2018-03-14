@@ -60,11 +60,15 @@ module Options
       end
 
       # Client exits after this timeout.
-      # Handlers can restart the timer (e.g. on receiving messages, making connections etc.)
-      @opt_parser.on("--timeout TIMEOUT", Float,
-                     "timeout in seconds to wait before exiting, 0 unlimited (default 0)"
-                    ) do |t|
-        @options.exit_timer = ExitTimer.new(t) if t > 0
+      # Handlers can restart the timer
+      # (e.g. on receiving messages, making connections etc.)
+      @opt_parser.on(
+        "-t",
+        "--timeout TIMEOUT",
+        Float,
+        "timeout in seconds to wait before exiting, 0 unlimited (default: 0)"
+      ) do |timeout|
+        @options.exit_timer = ExitTimer.new(timeout) if timeout > 0
       end
 
       # Allowed SASL mechanisms
