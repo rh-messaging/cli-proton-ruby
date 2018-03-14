@@ -48,6 +48,7 @@ class SenderClient
       sender_options_parser.options.msg_user_id,
       sender_options_parser.options.msg_subject,
       sender_options_parser.options.sasl_mechs,
+      sender_options_parser.options.idle_timeout,
       sender_options_parser.options.exit_timer,
     )
     # Run sender client

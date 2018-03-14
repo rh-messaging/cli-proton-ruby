@@ -39,6 +39,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_user_id_value = "user-id-666"
     @msg_subject_value = "subject-swordfish"
     @sasl_mechs_value = "SASL"
+    @idle_timeout_value = 85
     @exit_timer_value = "timeout"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
@@ -58,7 +59,8 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_user_id_value,
       @msg_subject_value,
       @sasl_mechs_value,
-      @exit_timer_value
+      @idle_timeout_value,
+      @exit_timer_value,
     )
   end # setup
 
@@ -80,6 +82,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_user_id_value,
       @msg_subject_value,
       @sasl_mechs_value,
+      @idle_timeout_value,
       @exit_timer_value
     )
 
@@ -194,6 +197,13 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.sasl_mechs
     )
   end # test_sender_handler_sasl_mechs_argument_initialization
+
+  def test_sender_handler_idle_timeout_argument_initialization
+    assert_equal(
+        @idle_timeout_value,
+        @sender_handler_initialization.idle_timeout
+    )
+  end # test_sender_handler_idle_timeout_argument_initialization
 
   def test_sender_handler_exit_timer_argument_initialization
     assert_equal(

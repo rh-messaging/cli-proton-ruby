@@ -29,6 +29,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @process_reply_to_value = true
     @browse_value = true
     @sasl_mechs_value = "SASL"
+    @idle_timeout_value = 85
     @exit_timer_value = "timeout"
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
@@ -38,7 +39,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @process_reply_to_value,
       @browse_value,
       @sasl_mechs_value,
-      @exit_timer_value
+      @idle_timeout_value,
+      @exit_timer_value,
     )
   end # setup
 
@@ -50,7 +52,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @process_reply_to_value,
       @browse_value,
       @sasl_mechs_value,
-      @exit_timer_value
+      @idle_timeout_value,
+      @exit_timer_value,
     )
 
     assert_equal(
@@ -91,6 +94,13 @@ class UnitTestsReceiverHandler < Minitest::Test
       @receiver_handler_initialization.sasl_mechs
     )
   end # test_receiver_handler_sasl_mechs_argument_initialization
+
+  def test_receiver_handler_idle_timeout_argument_initialization
+    assert_equal(
+        @idle_timeout_value,
+        @receiver_handler_initialization.idle_timeout
+    )
+  end # test_receiver_handler_idle_timeout_argument_initialization
 
   def test_receiver_handler_exit_timer_argument_initialization
     assert_equal(

@@ -27,12 +27,14 @@ module Handlers
     attr_accessor :broker
     # Allowed SASL mechs
     attr_accessor :sasl_mechs
+    # Idle timeout
+    attr_accessor :idle_timeout
 
     # Initialization of basic events handler for all clients
     # ==== Basic events handler arguments
     # broker:: URI of broker
     # sasl_mechs: allowed SASL mechanisms
-    def initialize(broker, sasl_mechs, exit_timer=nil)
+    def initialize(broker, sasl_mechs, idle_timeout, exit_timer=nil)
       super()
       @exit_timer = exit_timer
       # Save URI of broker
@@ -43,6 +45,8 @@ module Handlers
       end
       # Save allowed SASL mechanisms
       @sasl_mechs = sasl_mechs
+      # Save idle timeout
+      @idle_timeout = idle_timeout
     end
 
   end # class BasicHandler

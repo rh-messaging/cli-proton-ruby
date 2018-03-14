@@ -46,9 +46,10 @@ module Handlers
       process_reply_to,
       browse,
       sasl_mechs,
+      idle_timeout,
       exit_timer=nil
     )
-      super(broker, log_msgs, sasl_mechs, exit_timer)
+      super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
       # Save count of messages
       @count = count
       # Save process reply to
@@ -74,7 +75,9 @@ module Handlers
         # Enabled insecure SASL mechanisms
         sasl_allow_insecure_mechs: true,
         # Set allowed SASL mechanisms
-        sasl_allowed_mechs: @sasl_mechs
+        sasl_allowed_mechs: @sasl_mechs,
+        # Set idle timeout
+        idle_timeout: @idle_timeout,
       ).open_receiver(@broker.amqp_address)
       # If browse messages instead of reading
       if browse
