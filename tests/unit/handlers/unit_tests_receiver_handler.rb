@@ -29,6 +29,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @process_reply_to_value = true
     @browse_value = true
     @sasl_mechs_value = "SASL"
+    @exit_timer_value = "timeout"
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
       @broker_value,
@@ -36,7 +37,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @count_value,
       @process_reply_to_value,
       @browse_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
   end # setup
 
@@ -47,7 +49,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @count_value,
       @process_reply_to_value,
       @browse_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
 
     assert_equal(
@@ -88,6 +91,13 @@ class UnitTestsReceiverHandler < Minitest::Test
       @receiver_handler_initialization.sasl_mechs
     )
   end # test_receiver_handler_sasl_mechs_argument_initialization
+
+  def test_receiver_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @receiver_handler_initialization.exit_timer
+    )
+  end # test_receiver_handler_exit_timer_argument_initialization
 
 end # class UnitTestsReceiverHandler
 

@@ -26,11 +26,13 @@ class UnitTestsConnectorHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @count_value = 1
     @sasl_mechs_value = "SASL"
+    @exit_timer_value = "timeout"
 
     @connector_handler_initialization = Handlers::ConnectorHandler.new(
       @broker_value,
       @count_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
   end # setup
 
@@ -38,7 +40,8 @@ class UnitTestsConnectorHandler < Minitest::Test
     connector_handler_initialization_string = Handlers::ConnectorHandler.new(
       @broker_value_string,
       @count_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
 
     assert_equal(
@@ -64,6 +67,13 @@ class UnitTestsConnectorHandler < Minitest::Test
       @connector_handler_initialization.sasl_mechs
     )
   end # test_connector_handler_sasl_mechs_argument_initialization
+
+  def test_connector_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @connector_handler_initialization.exit_timer
+    )
+  end # test_connector_handler_exit_timer_argument_initialization
 
   def test_connector_handler_connections_initialization
     assert_equal(0, @connector_handler_initialization.connections.length)

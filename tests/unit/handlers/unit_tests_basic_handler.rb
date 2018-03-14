@@ -28,17 +28,21 @@ class UnitTestsBasicHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     # Allowed SASL mechanisms
     @sasl_mechs_value = "SASL"
+    # Exit timer for client
+    @exit_timer_value = "timeout"
 
     @basic_handler_initialization_class = Handlers::BasicHandler.new(
       @broker_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
   end # setup
 
   def test_basic_handler_broker_argument_initialization_string
     basic_handler_initialization_string = Handlers::BasicHandler.new(
       @broker_value_string,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
 
     assert_equal(
@@ -60,6 +64,13 @@ class UnitTestsBasicHandler < Minitest::Test
       @basic_handler_initialization_class.sasl_mechs
     )
   end # test_basic_handler_sasl_mechs_argument_initialization
+
+  def test_basic_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @basic_handler_initialization_class.exit_timer
+    )
+  end # test_basic_handler_exit_timer_argument_initialization
 
 end # class UnitTestsBasicHandler
 

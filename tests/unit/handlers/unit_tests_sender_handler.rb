@@ -34,11 +34,12 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_correlation_id_value = "corr-id-0123456789"
     @msg_reply_to_value = "127.0.0.127:5672/reply_queue"
     @msg_group_id_value = "group-id-0987654321"
-    @msg_priority = 42
-    @msg_id = "message-id-112657"
-    @msg_user_id = "user-id-666"
+    @msg_priority_value = 42
+    @msg_id_value = "message-id-112657"
+    @msg_user_id_value = "user-id-666"
     @msg_subject_value = "subject-swordfish"
     @sasl_mechs_value = "SASL"
+    @exit_timer_value = "timeout"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
@@ -52,11 +53,12 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
-      @msg_priority,
-      @msg_id,
-      @msg_user_id,
+      @msg_priority_value,
+      @msg_id_value,
+      @msg_user_id_value,
       @msg_subject_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
   end # setup
 
@@ -73,11 +75,12 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
-      @msg_priority,
-      @msg_id,
-      @msg_user_id,
+      @msg_priority_value,
+      @msg_id_value,
+      @msg_user_id_value,
       @msg_subject_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
 
     assert_equal(
@@ -101,12 +104,26 @@ class UnitTestsSenderHandler < Minitest::Test
     assert_equal(@count_value, @sender_handler_initialization.count)
   end # test_sender_handler_count_argument_initialization
 
+  def test_sender_handler_msg_properties_argument_initialization
+    assert_equal(
+      @msg_properties_value,
+      @sender_handler_initialization.msg_properties
+    )
+  end # test_sender_handler_msg_properties_argument_initialization
+
   def test_sender_handler_msg_content_argument_initialization
     assert_equal(
       @msg_content_value,
       @sender_handler_initialization.msg_content
     )
   end # test_sender_handler_msg_content_argument_initialization
+
+  def test_sender_handler_msg_content_type_argument_initialization
+    assert_equal(
+      @msg_content_type_value,
+      @sender_handler_initialization.msg_content_type
+    )
+  end # test_sender_handler_msg_content_type_argument_initialization
 
   def test_sender_handler_msg_durable_argument_initialization
     assert_equal(
@@ -143,12 +160,47 @@ class UnitTestsSenderHandler < Minitest::Test
     )
   end # test_sender_handler_msg_group_id_argument_initialization
 
+  def test_sender_handler_msg_priority_argument_initialization
+    assert_equal(
+      @msg_priority_value,
+      @sender_handler_initialization.msg_priority
+    )
+  end # test_sender_handler_msg_priority_argument_initialization
+
+  def test_sender_handler_msg_id_argument_initialization
+    assert_equal(
+      @msg_id_value,
+      @sender_handler_initialization.msg_id
+    )
+  end # test_sender_handler_msg_id_argument_initialization
+
+  def test_sender_handler_msg_user_id_argument_initialization
+    assert_equal(
+      @msg_user_id_value,
+      @sender_handler_initialization.msg_user_id
+    )
+  end # test_sender_handler_msg_user_id_argument_initialization
+
+  def test_sender_handler_msg_subject_argument_initialization
+    assert_equal(
+      @msg_subject_value,
+      @sender_handler_initialization.msg_subject
+    )
+  end # test_sender_handler_msg_subject_argument_initialization
+
   def test_sender_handler_sasl_mechs_argument_initialization
     assert_equal(
       @sasl_mechs_value,
       @sender_handler_initialization.sasl_mechs
     )
   end # test_sender_handler_sasl_mechs_argument_initialization
+
+  def test_sender_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @sender_handler_initialization.exit_timer
+    )
+  end # test_sender_handler_exit_timer_argument_initialization
 
 end # class UnitTestsSenderHandler
 

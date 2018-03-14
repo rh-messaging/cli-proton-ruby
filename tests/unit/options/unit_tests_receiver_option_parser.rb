@@ -51,9 +51,89 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     )
   end # test_receiver_option_parser_user_broker_value_long
 
+  def test_receiver_option_parser_default_exit_timer_value
+    default_receiver_options_exit_timer = Options::ReceiverOptionParser.new(
+      []
+    )
+    assert_nil(
+      default_receiver_options_exit_timer.options.exit_timer
+    )
+  end # test_receiver_option_parser_default_exit_timer_value
+
+  def test_receiver_option_parser_user_timeout_value_short_int
+    user_receiver_options_timeout_short_int = Options::ReceiverOptionParser.new(
+      ["-t", "7"]
+    )
+    assert_equal(
+      7,
+      user_receiver_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_receiver_option_parser_user_timeout_value_short_int
+
+  def test_receiver_option_parser_user_timeout_value_long_int
+    user_receiver_options_timeout_long_int = Options::ReceiverOptionParser.new(
+      ["--timeout", "11"]
+    )
+    assert_equal(
+      11,
+      user_receiver_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_receiver_option_parser_user_timeout_value_long_int
+
+  def test_receiver_option_parser_user_timeout_value_short_float
+    user_receiver_options_timeout_short_float = \
+      Options::ReceiverOptionParser.new(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_receiver_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_receiver_option_parser_user_timeout_value_short_float
+
+  def test_receiver_option_parser_user_timeout_value_long_float
+    user_receiver_options_timeout_long_float = \
+      Options::ReceiverOptionParser.new(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_receiver_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_receiver_option_parser_user_timeout_value_long_float
+
+  def test_receiver_option_parser_user_timeout_value_short_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(["-t", "raise"])
+    end
+  end # test_receiver_option_parser_user_timeout_value_short_raise
+
+  def test_receiver_option_parser_user_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(["--timeout", "raise"])
+    end
+  end # test_receiver_option_parser_user_timeout_value_long_raise
+
+  def test_receiver_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_timeout_value_short_raise_message
+
+  def test_receiver_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(["--timeout", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_timeout_value_long_raise_message
+
   def test_receiver_option_parser_default_sasl_mechs_value
-    default_receiver_options_sasl_mechs = Options::BasicOptionParser.new()
-    default_receiver_options_sasl_mechs.parse([])
+    default_receiver_options_sasl_mechs = Options::ReceiverOptionParser.new([])
     assert_equal(
       Defaults::DEFAULT_SASL_MECHS,
       default_receiver_options_sasl_mechs.options.sasl_mechs
@@ -61,8 +141,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
   end # test_receiver_option_parser_default_sasl_mechs_value
 
   def test_receiver_option_parser_user_sasl_mechs_value_long
-    user_receiver_options_sasl_mechs_long = Options::BasicOptionParser.new()
-    user_receiver_options_sasl_mechs_long.parse(
+    user_receiver_options_sasl_mechs_long = Options::ReceiverOptionParser.new(
       ["--conn-allowed-mechs", "SASL"]
     )
     assert_equal(

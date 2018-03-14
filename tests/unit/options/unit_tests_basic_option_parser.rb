@@ -50,6 +50,92 @@ class UnitTestsBasicOptionParser < Minitest::Test
     )
   end # test_basic_option_parser_user_broker_value_long
 
+  def test_basic_option_parser_default_exit_timer_value
+    default_basic_options_exit_timer = Options::BasicOptionParser.new()
+    default_basic_options_exit_timer.parse([])
+    assert_nil(
+      default_basic_options_exit_timer.options.exit_timer
+    )
+  end # test_basic_option_parser_default_exit_timer_value
+
+  def test_basic_option_parser_user_timeout_value_short_int
+    user_basic_options_timeout_short_int = Options::BasicOptionParser.new()
+    user_basic_options_timeout_short_int.parse(["-t", "7"])
+    assert_equal(
+      7,
+      user_basic_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_short_int
+
+  def test_basic_option_parser_user_timeout_value_long_int
+    user_basic_options_timeout_long_int = Options::BasicOptionParser.new()
+    user_basic_options_timeout_long_int.parse(["--timeout", "11"])
+    assert_equal(
+      11,
+      user_basic_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_long_int
+
+  def test_basic_option_parser_user_timeout_value_short_float
+    user_basic_options_timeout_short_float = Options::BasicOptionParser.new()
+    user_basic_options_timeout_short_float.parse(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_basic_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_short_float
+
+  def test_basic_option_parser_user_timeout_value_long_float
+    user_basic_options_timeout_long_float = Options::BasicOptionParser.new()
+    user_basic_options_timeout_long_float.parse(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_basic_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_long_float
+
+  def test_basic_option_parser_user_timeout_value_short_raise
+    user_basic_options_timeout_short_raise = Options::BasicOptionParser.new()
+    assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_short_raise.parse(["-t", "raise"])
+    end
+  end # test_basic_option_parser_user_timeout_value_short_raise
+
+  def test_basic_option_parser_user_timeout_value_long_raise
+    user_basic_options_timeout_long_raise = Options::BasicOptionParser.new()
+    assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_long_raise.parse(["--timeout", "raise"])
+    end
+  end # test_basic_option_parser_user_timeout_value_long_raise
+
+  def test_basic_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    user_basic_options_timeout_short_raise_message = \
+      Options::BasicOptionParser.new()
+    exception = assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_short_raise_message.parse(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_timeout_value_short_raise_message
+
+  def test_basic_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    user_basic_options_timeout_long_raise_message = \
+      Options::BasicOptionParser.new()
+    exception = assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_long_raise_message.parse(
+        ["--timeout", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_timeout_value_long_raise_message
+
   def test_basic_option_parser_default_sasl_mechs_value
     default_basic_options_sasl_mechs = Options::BasicOptionParser.new()
     default_basic_options_sasl_mechs.parse([])

@@ -26,11 +26,13 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
     @sasl_mechs_value = "SASL"
+    @exit_timer_value = "timeout"
 
     @sr_common_handler_initialization = Handlers::SRCommonHandler.new(
       @broker_value,
       @log_msgs_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
   end # setup
 
@@ -38,7 +40,8 @@ class UnitTestsSRCommonHandler < Minitest::Test
     sr_common_handler_initialization_string = Handlers::SRCommonHandler.new(
       @broker_value_string,
       @log_msgs_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @exit_timer_value
     )
 
     assert_equal(
@@ -64,6 +67,13 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @sr_common_handler_initialization.sasl_mechs
     )
   end # test_sr_common_handler_sasl_mechs_argument_initialization
+
+  def test_sr_common_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @sr_common_handler_initialization.exit_timer
+    )
+  end # test_sr_common_handler_exit_timer_argument_initialization
 
 end # class UnitTestsSRCommonHandler
 

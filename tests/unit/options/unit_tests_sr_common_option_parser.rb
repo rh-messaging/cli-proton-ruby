@@ -50,8 +50,90 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_broker_value_long
 
+  def test_sr_common_option_parser_default_exit_timer_value
+    default_sr_common_options_exit_timer = Options::SRCommonOptionParser.new()
+    default_sr_common_options_exit_timer.parse([])
+    assert_nil(
+      default_sr_common_options_exit_timer.options.exit_timer
+    )
+  end # test_sr_common_option_parser_default_exit_timer_value
+
+  def test_sr_common_option_parser_user_timeout_value_short_int
+    user_sr_common_options_timeout_short_int = \
+      Options::SRCommonOptionParser.new()
+    user_sr_common_options_timeout_short_int.parse(["-t", "7"])
+    assert_equal(
+      7,
+      user_sr_common_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_sr_common_option_parser_user_timeout_value_short_int
+
+  def test_sr_common_option_parser_user_timeout_value_long_int
+    user_sr_common_options_timeout_long_int = \
+      Options::SRCommonOptionParser.new()
+    user_sr_common_options_timeout_long_int.parse(["--timeout", "11"])
+    assert_equal(
+      11,
+      user_sr_common_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_sr_common_option_parser_user_timeout_value_long_int
+
+  def test_sr_common_option_parser_user_timeout_value_short_float
+    user_sr_common_options_timeout_short_float = \
+      Options::SRCommonOptionParser.new()
+    user_sr_common_options_timeout_short_float.parse(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_sr_common_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_sr_common_option_parser_user_timeout_value_short_float
+
+  def test_sr_common_option_parser_user_timeout_value_long_float
+    user_sr_common_options_timeout_long_float = \
+      Options::SRCommonOptionParser.new()
+    user_sr_common_options_timeout_long_float.parse(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_sr_common_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_sr_common_option_parser_user_timeout_value_long_float
+
+  def test_sr_common_option_parser_user_timeout_value_short_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["-t", "raise"])
+    end
+  end # test_sr_common_option_parser_user_timeout_value_short_raise
+
+  def test_sr_common_option_parser_user_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["--timeout", "raise"])
+    end
+  end # test_sr_common_option_parser_user_timeout_value_long_raise
+
+  def test_sr_common_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_timeout_value_short_raise_message
+
+  def test_sr_common_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["--timeout", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_timeout_value_long_raise_message
+
   def test_sr_common_option_parser_default_sasl_mechs_value
-    default_sr_common_options_sasl_mechs = Options::BasicOptionParser.new()
+    default_sr_common_options_sasl_mechs = Options::SRCommonOptionParser.new()
     default_sr_common_options_sasl_mechs.parse([])
     assert_equal(
       Defaults::DEFAULT_SASL_MECHS,
@@ -60,7 +142,7 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
   end # test_sr_common_option_parser_default_sasl_mechs_value
 
   def test_sr_common_option_parser_user_sasl_mechs_value_long
-    user_sr_common_options_sasl_mechs_long = Options::BasicOptionParser.new()
+    user_sr_common_options_sasl_mechs_long = Options::SRCommonOptionParser.new()
     user_sr_common_options_sasl_mechs_long.parse(
       ["--conn-allowed-mechs", "SASL"]
     )
@@ -87,6 +169,33 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
       sr_common_options_user_log_msgs_long.options.log_msgs
     )
   end # test_sr_common_option_parser_user_log_msgs_value_long
+
+  def test_sr_common_option_parser_user_log_msgs_value_long_interop
+    sr_common_options_user_log_msgs_long_interop = \
+      Options::SRCommonOptionParser.new()
+    sr_common_options_user_log_msgs_long_interop.parse(["--log-msgs", "dict"])
+    assert_equal(
+      "dict",
+      sr_common_options_user_log_msgs_long_interop.options.log_msgs
+    )
+  end # test_sr_common_option_parser_user_log_msgs_value_long
+
+  def test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["--log-msgs", "hello"])
+    end
+  end # test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise
+
+  def test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise_msg
+    wrong_value = "hello"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(["--log-msgs", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --log-msgs #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise_msg
 
 end # class UnitTestsSRCommonOptionParser
 
