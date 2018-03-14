@@ -44,6 +44,8 @@ module Options
       @options.exit_timer = Defaults::DEFAULT_EXIT_TIMER
       # Allowed SASL mechanisms
       @options.sasl_mechs = Defaults::DEFAULT_SASL_MECHS
+      # Idle timeout
+      @options.idle_timeout = Defaults::DEFAULT_IDLE_TIMEOUT
 
       @opt_parser = OptionParser.new
       # Basic usage
@@ -82,6 +84,16 @@ module Options
         "'#{Defaults::DEFAULT_SASL_MECHS}')"
       ) do |sasl_mechs|
         @options.sasl_mechs = sasl_mechs
+      end
+
+      # Heartbeats configuration
+      @opt_parser.on(
+        "--conn-heartbeat HEARTBEAT",
+        Integer,
+        "enable and set connection heartbeat, " +
+        "default: #{Defaults::DEFAULT_IDLE_TIMEOUT})"
+      ) do |idle_timeout|
+        @options.idle_timeout = idle_timeout
       end
 
       # Help

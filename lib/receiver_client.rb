@@ -38,6 +38,7 @@ class ReceiverClient
       receiver_options_parser.options.process_reply_to,
       receiver_options_parser.options.browse,
       receiver_options_parser.options.sasl_mechs,
+      receiver_options_parser.options.idle_timeout,
       receiver_options_parser.options.exit_timer
     )
     # Run receiver client

@@ -35,7 +35,8 @@ class ConnectorClient
       connector_options_parser.options.broker,
       connector_options_parser.options.count,
       connector_options_parser.options.sasl_mechs,
-      connector_options_parser.options.exit_timer
+      connector_options_parser.options.idle_timeout,
+      connector_options_parser.options.exit_timer,
     )
     # Run connector client
     Qpid::Proton::Container.new(connector_handler).run
