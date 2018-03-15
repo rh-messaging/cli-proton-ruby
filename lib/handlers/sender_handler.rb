@@ -23,7 +23,7 @@ module Handlers
   # Sender events handler for sender client
   class SenderHandler < Handlers::SRCommonHandler
 
-    # Count of messages
+    # Count of messages to be send
     attr_accessor :count
     # Message properties
     attr_accessor :msg_properties
@@ -83,7 +83,7 @@ module Handlers
       exit_timer=nil
     )
       super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
-      # Save count of messages
+      # Save count of messages to be send
       @count = count
       # Save message properties
       @msg_properties = msg_properties
@@ -194,8 +194,10 @@ module Handlers
     def on_tracker_accept(tracker)
       # Increase number of accepted messages
       @accepted = @accepted + 1
-      # If all messages are accepted
+      # If all messages to be send are sent and accepted
       if @accepted == @count
+        # Close sender
+        tracker.sender.close
         # Close connection
         tracker.sender.connection.close
       end # if
