@@ -150,6 +150,42 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_sasl_mechs_value_long
 
+  def test_sender_option_parser_default_idle_timeout_value
+    default_sender_options_idle_timeout = Options::SenderOptionParser.new(
+      []
+    )
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_sender_options_idle_timeout.options.idle_timeout
+    )
+  end # test_sender_option_parser_default_idle_timeout_value
+
+  def test_sender_option_parser_user_idle_timeout_value_long
+    user_sender_options_idle_timeout_long = \
+      Options::SenderOptionParser.new(["--conn-heartbeat", "13"])
+    assert_equal(
+      13,
+      user_sender_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_sender_option_parser_user_idle_timeout_value_long
+
+  def test_sender_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--conn-heartbeat", "raise"])
+    end
+  end # test_sender_option_parser_user_idle_timeout_value_long_raise
+
+  def test_sender_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_idle_timeout_value_long_raise_message
+
   def test_sender_option_parser_default_log_msgs_value
     sender_options_default_log_msgs = Options::SenderOptionParser.new([])
     assert_equal(

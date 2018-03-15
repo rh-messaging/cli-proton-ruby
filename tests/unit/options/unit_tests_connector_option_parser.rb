@@ -150,6 +150,42 @@ class UnitTestsConnectorOptionParser < Minitest::Test
     )
   end # test_connector_option_parser_user_sasl_mechs_value_long
 
+  def test_connector_option_parser_default_idle_timeout_value
+    default_connector_options_idle_timeout = Options::ConnectorOptionParser.new(
+      []
+    )
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_connector_options_idle_timeout.options.idle_timeout
+    )
+  end # test_connector_option_parser_default_idle_timeout_value
+
+  def test_connector_option_parser_user_idle_timeout_value_long
+    user_connector_options_idle_timeout_long = \
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", "13"])
+    assert_equal(
+      13,
+      user_connector_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_connector_option_parser_user_idle_timeout_value_long
+
+  def test_connector_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", "raise"])
+    end
+  end # test_connector_option_parser_user_idle_timeout_value_long_raise
+
+  def test_connector_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_idle_timeout_value_long_raise_message
+
   def test_connector_option_parser_default_count_value
     connector_options_default_count = Options::ConnectorOptionParser.new([])
     assert_equal(

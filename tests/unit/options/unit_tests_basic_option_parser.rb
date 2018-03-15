@@ -156,6 +156,43 @@ class UnitTestsBasicOptionParser < Minitest::Test
     )
   end # test_basic_option_parser_user_sasl_mechs_value_long
 
+  def test_basic_option_parser_default_idle_timeout_value
+    default_basic_options_idle_timeout = Options::BasicOptionParser.new()
+    default_basic_options_idle_timeout.parse([])
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_basic_options_idle_timeout.options.idle_timeout
+    )
+  end # test_basic_option_parser_default_idle_timeout_value
+
+  def test_basic_option_parser_user_idle_timeout_value_long
+    user_basic_options_idle_timeout_long = Options::BasicOptionParser.new()
+    user_basic_options_idle_timeout_long.parse(
+      ["--conn-heartbeat", "13"]
+    )
+    assert_equal(
+      13,
+      user_basic_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_basic_option_parser_user_idle_timeout_value_long
+
+  def test_basic_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(["--conn-heartbeat", "raise"])
+    end
+  end # test_basic_option_parser_user_idle_timeout_value_long_raise
+
+  def test_basic_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_idle_timeout_value_long_raise_message
+
 end # class UnitTestsBasicOptionParser
 
 # eof
