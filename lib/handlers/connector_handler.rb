@@ -60,7 +60,7 @@ module Handlers
       end
     end
 
-    def on_connection_open(c)
+    def on_connection_open(_c)
       exit_timer.reset if exit_timer
     end
 
