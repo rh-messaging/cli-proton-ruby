@@ -23,7 +23,7 @@ module Handlers
   # Receiver events handler for receiver client
   class ReceiverHandler < Handlers::SRCommonHandler
 
-    # Count of messages
+    # Count of expected messages to be received
     attr_accessor :count
     # Process reply to
     attr_accessor :process_reply_to
@@ -50,7 +50,7 @@ module Handlers
       exit_timer=nil
     )
       super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
-      # Save count of messages
+      # Save count of expected messages to be received
       @count = count
       # Save process reply to
       @process_reply_to = process_reply_to
@@ -58,8 +58,14 @@ module Handlers
       @browse = browse
       # Number of received messages
       @received = 0
+      # Flag indicating that all expected messages were received
+      @all_received = false
       # Hash with senders for replying
       @senders = {}
+      # Counter of sent messages when processing reply-to
+      @sent = 0
+      # Counter of accepted messages
+      @accepted = 0
     end
 
     # Called when the event loop starts,
@@ -103,23 +109,51 @@ module Handlers
       end
       # Increase number of received messages
       @received = @received + 1
-      # If all messages are received
-      if @received == @count
+      # If expected count of messages to be received is not zero
+      # and all expected messages are received
+      if @count > 0 and @received == @count
+        # Set flag indicating that all expected messages were received to true
+        @all_received = true
         # Close receiver
-        delivery.receiver.close
-        # Close connection
-        delivery.receiver.connection.close
+        delivery.receiver.close 
+        # Close connection if not processing reply-to
+        delivery.receiver.connection.close if !process_reply_to
       end # if
     end
 
+    # Processing reply to reply-to address of message
     def do_process_reply_to(message)
+      # If sender for actual reply-to address does not exist
       unless @senders.include?(message.reply_to)
+        # Create new sender for reply-to address
         @senders[message.reply_to] = @receiver.connection.open_sender(
           message.reply_to
         )
       end
+      # Set target address of message to be send to reply-to address
       message.address = message.reply_to
+      # Increase number of sent messages
+      @sent = @sent + 1
+      # Send message to reply-to address
       @senders[message.reply_to].send(message)
+    end
+
+    # Called when the remote peer accepts an outgoing message,
+    # accepting ReceiverHandler#sent messages
+    def on_tracker_accept(_tracker)
+      # Increase number of accepted messages
+      @accepted = @accepted + 1
+      # If all expected messages were received
+      # and all sent messages were accepted
+      if @all_received and @accepted == @sent
+        # Close all senders and their connections
+        @senders.each do |_, i_sender|
+          # Close sender
+          i_sender.close
+          # Close connection of sender
+          i_sender.connection.close
+        end
+      end # if
     end
 
   end # class ReceiverHandler
