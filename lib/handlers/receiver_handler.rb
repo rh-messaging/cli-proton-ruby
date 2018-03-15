@@ -117,7 +117,7 @@ module Handlers
         # Close receiver
         delivery.receiver.close 
         # Close connection if not processing reply-to
-        delivery.receiver.connection.close if !process_reply_to
+        delivery.receiver.connection.close unless process_reply_to
       end # if
     end
 
