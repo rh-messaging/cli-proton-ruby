@@ -24,7 +24,7 @@ module Defaults
   # Default value for format of message(s) log
   DEFAULT_LOG_MSGS         = "none"
   # Default value of message properties
-  DEFAULT_MSG_PROPERTIES   = {}
+  DEFAULT_MSG_PROPERTIES   = nil
   # Default value for message content
   DEFAULT_MSG_CONTENT      = nil
   # Default value for content type

@@ -145,7 +145,9 @@ module Handlers
         # Create new message
         msg = Qpid::Proton::Message.new
         # Set message properties
-        @msg_properties.each { |k, v| msg[k] = v }
+        if @msg_properties
+          @msg_properties.each { |k, v| msg[k] = v }
+        end
         # If message content is set
         if @msg_content
           # If message content is string and contains formatting part
