@@ -54,6 +54,8 @@ module Options
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
       # Message content type option
       @options.msg_content_type = Defaults::DEFAULT_MSG_CONTENT_TYPE
+      # Content type option
+      @options.content_type = Defaults::DEFAULT_CONTENT_TYPE
       # Message durability
       @options.msg_durable = Defaults::DEFAULT_MSG_DURABLE
       # Message TTL
@@ -72,6 +74,10 @@ module Options
       @options.msg_user_id = Defaults::DEFAULT_MSG_USER_ID
       # Message subject option
       @options.msg_subject = Defaults::DEFAULT_MSG_SUBJECT
+
+      # List of blocks executed at the end of parsing
+      # when all other options are already applied
+      @do_last = []
 
       # Number of messages
       @opt_parser.on(
@@ -96,7 +102,9 @@ module Options
           end
         )+")"
       ) do |msg_content|
-        @options.msg_content = msg_content
+        @do_last << Proc.new {
+          @options.msg_content = manual_cast(@options.content_type, msg_content)
+        }
       end
 
       # Message content from file
@@ -105,7 +113,9 @@ module Options
         String,
         "message content from file"
       ) do |file|
-        @options.msg_content = File.read(file)
+        @do_last << Proc.new {
+          @options.msg_content = manual_cast(@options.content_type, File.read(file))
+        }
       end
 
       # Message content type
@@ -117,6 +127,16 @@ module Options
         @options.msg_content_type = msg_content_type
       end
 
+      # Content type
+      @opt_parser.on(
+        "--content-type TYPE",
+        %w(string int long float bool),
+        "cast --msg-content, -list-item, and =values of -map-item" +
+        "and --msg-property to this type (default: #{Defaults::DEFAULT_CONTENT_TYPE})"
+      ) do |content_type|
+        @options.content_type = content_type
+      end
+
       # Message property
       @opt_parser.on(
         "-P",
@@ -124,12 +144,15 @@ module Options
         String,
         "property specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
       ) do |msg_property|
-        if @options.msg_properties.nil?
-          @options.msg_properties = {}
-        end
+        _ = parse_kv(msg_property)  # ensure correct option format
+        @do_last << Proc.new {
+          if @options.msg_properties.nil?
+            @options.msg_properties = {}
+          end
 
-        key, value = parse_kv(msg_property)
-        @options.msg_properties[key] = value
+          key, value = parse_kv(msg_property)
+          @options.msg_properties[key] = value
+        }
       end
       # Message map content
       @opt_parser.on(
@@ -138,12 +161,15 @@ module Options
         String,
         "map item specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
       ) do |msg_content_map_item|
-        if @options.msg_content.nil?
-          @options.msg_content = {}
-        end
+        _ = parse_kv(msg_content_map_item)  # ensure correct option format
+        @do_last << Proc.new {
+          if @options.msg_content.nil?
+            @options.msg_content = {}
+          end
 
-        key, value = parse_kv(msg_content_map_item)
-        @options.msg_content[key] = value
+          key, value = parse_kv(msg_content_map_item)
+          @options.msg_content[key] = value
+        }
       end
 
       # Message list content
@@ -152,23 +178,19 @@ module Options
         "--msg-content-list-item VALUE",
         "list item"
       ) do |msg_content_list_item|
-        if @options.msg_content.nil?
-          @options.msg_content = []
-        end
-
-        if msg_content_list_item.start_with? "~"
-          value = msg_content_list_item[1..-1]
-
-          if StringUtils.str_is_int?(value)
-            @options.msg_content.push(value.to_i)
-          elsif StringUtils.str_is_float?(value)
-            @options.msg_content.push(value.to_f)
-          else
-            @options.msg_content.push(value)
+        @do_last << Proc.new {
+          if @options.msg_content.nil?
+            @options.msg_content = []
           end
-        else
-          @options.msg_content.push(msg_content_list_item)
-        end
+
+          if msg_content_list_item.start_with? "~"
+            value = msg_content_list_item[1..-1]
+            @options.msg_content.push(auto_cast(value))
+          else
+           @options.msg_content.push(
+                manual_cast(@options.content_type, msg_content_list_item))
+          end
+        }
       end
 
       # Message durability
@@ -255,30 +277,54 @@ module Options
 
       # Parse basic, common and specific options for sender client
       parse(args)
-    end
+      # Apply options which need to be applied last
+      @do_last.each { |proc| proc.call }
+    end # initialize
 
     private
     def parse_kv(key_value)
       if key_value.include? "="
         key, value = key_value.split("=")
         value = "" if value.nil?
+        return key, manual_cast(@options.content_type, value)
       elsif key_value.include? "~"
         key, value = key_value.split("~")
-        value = auto_cast(value)
+        return key, auto_cast(value)
       else
         raise OptionParser::InvalidArgument, "kv pair '#{key_value}' is of invalid format, = or ~ required"
       end
-      return key, value
     end
 
+    private
     def auto_cast(value)
-      if value.include? "."
-        value = value.to_f
-      else
-        value = value.to_i
+      if StringUtils.str_is_int?(value)
+        return value.to_i
+      elsif StringUtils.str_is_float?(value)
+        return value.to_f
       end
-      value
-    end # initialize
+      return value
+    end
+
+    private
+    def manual_cast(type, value)
+      case type
+      when "int"
+        return Integer(value)
+      when "float"
+        return Float(value)
+      when "long"
+        return Integer(value)
+      when "bool"
+        t = /[tT]rue/.match? value
+        f = /[fF]alse/.match? value
+        unless t or f
+          raise ArgumentError, "invalid value for Boolean(): \"#{value}\""
+        end
+        return t
+      else
+        return value
+      end
+    end
 
   end # class SenderOptionParser
 

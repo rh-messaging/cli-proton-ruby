@@ -227,10 +227,8 @@ class UnitTestsSenderOptionParser < Minitest::Test
     sender_options_default_msg_property = Options::SenderOptionParser.new(
       []
     )
-    assert_equal(
-      Defaults::DEFAULT_MSG_PROPERTIES,
-      sender_options_default_msg_property.options.msg_properties
-    )
+    assert_nil(Defaults::DEFAULT_MSG_PROPERTIES)
+    assert_nil(sender_options_default_msg_property.options.msg_properties)
   end # test_sender_option_parser_default_msg_property_value
 
   def test_sender_option_parser_user_msg_property_value_short_string
@@ -329,6 +327,21 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_property_value_long_raise_message
 
+  def test_sender_option_parser_user_content_type_msg_property_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      sender_options_user_msg_content_map_item_long = \
+        Options::SenderOptionParser.new([
+          "--msg-property", "key=#{param}", "--content-type", type
+        ])
+      assert_equal(
+          {"key" => expect},
+          sender_options_user_msg_content_map_item_long.options.msg_properties
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_property_values
+
+
   def test_sender_option_parser_default_msg_content_value
     sender_options_default_msg_content = Options::SenderOptionParser.new([])
     assert_nil(
@@ -357,6 +370,39 @@ class UnitTestsSenderOptionParser < Minitest::Test
       sender_options_user_msg_content_from_file_long.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_from_file_long
+
+  def test_sender_option_parser_user_content_type_msg_content_from_file_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      file = Tempfile.new("test_sender_option_parser_user_content_type_msg_content_from_file_values")
+      begin
+        file.write(param)
+        file.flush
+        sender_options_user_msg_content_map_item_long = \
+          Options::SenderOptionParser.new([
+            "--msg-content-from-file", file.path, "--content-type", type
+        ])
+        assert_equal(
+          expect,
+          sender_options_user_msg_content_map_item_long.options.msg_content
+        )
+      ensure
+        file.close
+        file.unlink
+      end
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_from_file_values
+
+  def test_sender_option_parser_user_content_type_msg_content_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                               ["float", "1.1", 1.1], ["bool", "true", true]]
+      assert_equal(
+          expect,
+          Options::SenderOptionParser.new(
+              ["--content-type", type, "--msg-content", param]).options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_values
 
   def test_sender_option_parser_default_msg_content_type_value
     sender_options_default_msg_content_type = Options::SenderOptionParser.new(
@@ -578,6 +624,20 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_content_map_item_value_long
 
+  def test_sender_option_parser_user_content_type_msg_content_map_item_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      sender_options_user_msg_content_map_item_long = \
+        Options::SenderOptionParser.new([
+          "--msg-content-map-item", "key=#{param}", "--content-type", type
+        ])
+      assert_equal(
+        { "key" => expect },
+        sender_options_user_msg_content_map_item_long.options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_map_item_values
+
 
   def test_sender_option_parser_user_msg_content_list_item_value_short
     sender_options_user_msg_content_list_item_short = \
@@ -618,6 +678,94 @@ class UnitTestsSenderOptionParser < Minitest::Test
       sender_options_user_msg_content_list_item_long.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_list_item_value_long
+
+  def test_sender_option_parser_user_content_type_msg_content_list_item_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      assert_equal(
+          [expect],
+          Options::SenderOptionParser.new(
+              ["-L", param, "--content-type", type]).options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_values
+
+
+  def test_sender_option_parser_user_content_type_msg_content_list_item_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "-L", param])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_content_map_item_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "-M", "key=#{param}"])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_map_item_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_property_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "--msg-property", "key=#{param}"])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_property_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      file = Tempfile.new('test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message')
+      begin
+        file.write(param)
+        file.flush
+        exception = assert_raises ArgumentError do
+          Options::SenderOptionParser.new(["--content-type", type, "--msg-content-from-file", file.path])
+        end
+        assert_match(
+            /invalid value for .* "#{param}"/,
+            exception.message
+        )
+      ensure
+        file.close
+        file.unlink   # deletes the temp file
+      end
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message
+
+  def test_sender_option_parser_default_content_type_values
+    sender_options_default_msg_durable = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_CONTENT_TYPE,
+      sender_options_default_msg_durable.options.content_type
+    )
+  end # test_sender_option_parser_default_content_type_value
+
+  def test_sender_option_parser_user_content_type_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--content-type", wrong_value])
+    end
+    assert_equal(
+        "invalid argument: --content-type #{wrong_value}",
+        exception.message
+    )
+  end # test_sender_option_parser_user_content_type_raise_message
+
 
   def test_sender_option_parser_default_msg_durable_value
     sender_options_default_msg_durable = Options::SenderOptionParser.new([])
