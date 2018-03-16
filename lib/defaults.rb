@@ -27,6 +27,8 @@ module Defaults
   DEFAULT_MSG_PROPERTIES   = {}
   # Default value for message content
   DEFAULT_MSG_CONTENT      = nil
+  # Default value for content type
+  DEFAULT_CONTENT_TYPE     = "string"
   # Default value for message content type
   DEFAULT_MSG_CONTENT_TYPE = nil
   # Default message durability
