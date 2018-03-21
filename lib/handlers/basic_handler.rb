@@ -34,7 +34,7 @@ module Handlers
     # ==== Basic events handler arguments
     # broker:: URI of broker
     # sasl_mechs: allowed SASL mechanisms
-    def initialize(broker, sasl_mechs, idle_timeout, exit_timer=nil)
+    def initialize(broker, sasl_mechs, idle_timeout, exit_timer)
       super()
       @exit_timer = exit_timer
       # Save URI of broker
