@@ -63,7 +63,7 @@ class ClientTestCase < Minitest::Test
     port = s.connect_address.ip_port
     assert_time(0.1) do
       r = run_client("cli-proton-ruby-connector", "--timeout=0.1", "--broker=:#{port}")
-      assert_output r, "timeout expired\n", 1
+      assert_output r, "timeout expired\n"
     end
   ensure
     s.close if s
@@ -72,7 +72,7 @@ class ClientTestCase < Minitest::Test
   def test_receive_timeout
     assert_time(0.1) do         # Nothing to receive, time out immediately
       r = run_client("cli-proton-ruby-receiver", "--log-msgs=body", "--timeout=0.1")
-      assert_output r, "timeout expired\n", 1
+      assert_output r, "timeout expired\n"
     end
 
     # Send messages to reset the timeout at least once
@@ -86,7 +86,7 @@ class ClientTestCase < Minitest::Test
       sleep t if t > 0
     end
     assert_time(0.2) do
-      assert_output r, ("'hello'\n" * 3) + "timeout expired\n", 1
+      assert_output r, ("'hello'\n" * 3) + "timeout expired\n"
     end
   end
 end
