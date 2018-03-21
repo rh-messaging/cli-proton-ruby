@@ -57,6 +57,8 @@ module Defaults
   DEFAULT_MSG_USER_ID      = nil
   # Default value for message subject
   DEFAULT_MSG_SUBJECT      = nil
+  # Default value for anonymous
+  DEFAULT_ANONYMOUS        = false
   # Default value for exit timer
   DEFAULT_EXIT_TIMER       = nil
 
