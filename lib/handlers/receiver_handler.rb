@@ -47,7 +47,7 @@ module Handlers
       browse,
       sasl_mechs,
       idle_timeout,
-      exit_timer=nil
+      exit_timer
     )
       super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
       # Save count of expected messages to be received

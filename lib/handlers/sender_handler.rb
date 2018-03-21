@@ -80,7 +80,7 @@ module Handlers
       msg_subject,
       sasl_mechs,
       idle_timeout,
-      exit_timer=nil
+      exit_timer
     )
       super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
       # Save count of messages to be send
