@@ -22,6 +22,8 @@ require_relative '../utils/exit_timer'
 
 module Options
 
+  BOOLEAN_STRINGS = %w(true True yes false False no)
+
   # Option parser of basic options for all clients
   # ==== Basic client options
   # broker:: URI of broker in format IP:PORT (default: DEFAULT_BROKER,

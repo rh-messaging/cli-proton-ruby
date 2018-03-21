@@ -49,6 +49,8 @@ module Handlers
     attr_accessor :msg_user_id
     # Message subject
     attr_accessor :msg_subject
+    # Anonymous
+    attr_accessor :anonymous
 
     # Initialization of sender events handler
     # ==== Sender events handler arguments
@@ -78,6 +80,7 @@ module Handlers
       msg_id,
       msg_user_id,
       msg_subject,
+      anonymous,
       sasl_mechs,
       idle_timeout,
       exit_timer
@@ -109,6 +112,8 @@ module Handlers
       @msg_user_id = msg_user_id
       # Save message subject
       @msg_subject = msg_subject
+      # Save anonymous
+      @anonymous = anonymous
       # Number of sent messages
       @sent = 0
       # Number of accepted messages
@@ -131,7 +136,7 @@ module Handlers
         sasl_allowed_mechs: @sasl_mechs,
         # Set idle timeout
         idle_timeout: @idle_timeout,
-      ).open_sender(@broker.amqp_address)
+      ).open_sender(anonymous ? nil : @broker.amqp_address)
     end
 
     # Called when the sender link has credit
@@ -144,6 +149,7 @@ module Handlers
         exit_timer.reset if exit_timer
         # Create new message
         msg = Qpid::Proton::Message.new
+        msg.address = @broker.amqp_address if @anonymous
         # Set message properties
         if @msg_properties
           @msg_properties.each { |k, v| msg[k] = v }

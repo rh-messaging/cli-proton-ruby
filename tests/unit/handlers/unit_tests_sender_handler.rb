@@ -38,6 +38,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_id_value = "message-id-112657"
     @msg_user_id_value = "user-id-666"
     @msg_subject_value = "subject-swordfish"
+    @anonymous_value = true
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @exit_timer_value = "timeout"
@@ -58,6 +59,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_id_value,
       @msg_user_id_value,
       @msg_subject_value,
+      @anonymous_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @exit_timer_value,
@@ -81,6 +83,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_id_value,
       @msg_user_id_value,
       @msg_subject_value,
+      @anonymous_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @exit_timer_value
@@ -190,6 +193,13 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.msg_subject
     )
   end # test_sender_handler_msg_subject_argument_initialization
+
+  def test_sender_handler_anonymous_argument_initialization
+    assert_equal(
+      @anonymous_value,
+      @sender_handler_initialization.anonymous
+    )
+  end # test_sender_handler_anonymous_argument_initialization
 
   def test_sender_handler_sasl_mechs_argument_initialization
     assert_equal(

@@ -74,6 +74,8 @@ module Options
       @options.msg_user_id = Defaults::DEFAULT_MSG_USER_ID
       # Message subject option
       @options.msg_subject = Defaults::DEFAULT_MSG_SUBJECT
+      # Anonymous producer option
+      @options.anonymous = Defaults::DEFAULT_ANONYMOUS
 
       # List of blocks executed at the end of parsing
       # when all other options are already applied
@@ -196,7 +198,7 @@ module Options
       # Message durability
       @opt_parser.on(
         "--msg-durable DURABILITY",
-        String,
+        BOOLEAN_STRINGS,
         "message durability (yes/no|True/False|true/false, default: "+
         "#{Defaults::DEFAULT_MSG_DURABLE})"
       ) do |msg_durable|
@@ -273,6 +275,16 @@ module Options
         "message subject"
       ) do |msg_subject|
         @options.msg_subject = msg_subject
+      end
+
+      # Anonymous producer
+      @opt_parser.on(
+        "--anonymous ANONYMOUS",
+        BOOLEAN_STRINGS,
+        "send message by connection level anonymous sender" +
+        " (default: #{Defaults::DEFAULT_ANONYMOUS})"
+      ) do |anonymous|
+        @options.anonymous = StringUtils.str_to_bool?(anonymous)
       end
 
       # Parse basic, common and specific options for sender client

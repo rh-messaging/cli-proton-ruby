@@ -511,6 +511,36 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_subject_value_long
 
+  def test_sender_option_parser_default_anonymous_value
+    sender_options_default_anonymous = Options::SenderOptionParser.new([])
+    assert_equal(
+        Defaults::DEFAULT_ANONYMOUS,
+        sender_options_default_anonymous.options.anonymous
+    )
+  end # test_sender_option_parser_default_anonymous_value
+
+  def test_sender_option_parser_user_anonymous_value_long
+    sender_options_user_anonymous_long = Options::SenderOptionParser.new(
+        ["--anonymous", "true"]
+    )
+    assert_equal(
+        true,
+        sender_options_user_anonymous_long.options.anonymous
+    )
+  end # test_sender_option_parser_user_anonymous_value_long
+
+  def test_sender_option_parser_user_anonymous_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--anonymous", wrong_value])
+    end
+    assert_equal(
+        "invalid argument: --anonymous #{wrong_value}",
+        exception.message
+    )
+  end # test_sender_option_parser_user_anonymous_raise_message
+
+
   def test_sender_option_parser_default_msg_corr_id_value
     sender_options_default_msg_corr_id = Options::SenderOptionParser.new([])
     assert_nil(
