@@ -519,7 +519,17 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_default_anonymous_value
 
-  def test_sender_option_parser_user_anonymous_value_long
+  def test_sender_option_parser_default_anonymous_no_value
+    sender_options_user_anonymous_no_value = Options::SenderOptionParser.new(
+        ["--anonymous"]
+    )
+    assert_equal(
+        true,
+        sender_options_user_anonymous_no_value.options.anonymous
+    )
+  end # test_sender_option_parser_default_anonymous_no_value
+
+  def test_sender_option_parser_user_anonymous_true_value_long
     sender_options_user_anonymous_long = Options::SenderOptionParser.new(
         ["--anonymous", "true"]
     )
@@ -527,7 +537,17 @@ class UnitTestsSenderOptionParser < Minitest::Test
         true,
         sender_options_user_anonymous_long.options.anonymous
     )
-  end # test_sender_option_parser_user_anonymous_value_long
+  end # test_sender_option_parser_user_anonymous_true_value_long
+
+  def test_sender_option_parser_user_anonymous_false_value_long
+    sender_options_user_anonymous_long = Options::SenderOptionParser.new(
+        ["--anonymous", "false"]
+    )
+    assert_equal(
+        false,
+        sender_options_user_anonymous_long.options.anonymous
+    )
+  end # test_sender_option_parser_user_anonymous_false_value_long
 
   def test_sender_option_parser_user_anonymous_raise_message
     wrong_value = "raise"
