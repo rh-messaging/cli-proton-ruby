@@ -47,9 +47,17 @@ module Handlers
       browse,
       sasl_mechs,
       idle_timeout,
+      max_frame_size,
       exit_timer
     )
-      super(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
+      super(
+        broker,
+        log_msgs,
+        sasl_mechs,
+        idle_timeout,
+        max_frame_size,
+        exit_timer
+      )
       # Save count of expected messages to be received
       @count = count
       # Save process reply to
@@ -84,6 +92,8 @@ module Handlers
         sasl_allowed_mechs: @sasl_mechs,
         # Set idle timeout
         idle_timeout: @idle_timeout,
+        # Set max frame size
+        max_frame_size: @max_frame_size,
       ).open_receiver(@broker.amqp_address)
       # If browse messages instead of reading
       if browse

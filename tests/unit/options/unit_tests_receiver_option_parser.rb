@@ -258,6 +258,91 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     assert_equal(true, receiver_options_user_recv_browse_long.options.browse)
   end # test_receiver_option_parser_user_recv_browse_value_long
 
+  def test_receiver_option_parser_default_max_frame_size_value
+    default_receiver_options_max_frame_size = Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MAX_FRAME_SIZE,
+      default_receiver_options_max_frame_size.options.max_frame_size
+    )
+  end # test_receiver_option_parser_default_max_frame_size_value
+
+  def test_receiver_option_parser_user_max_frame_size_value_long
+    user_receiver_options_max_frame_size_long = Options::ReceiverOptionParser.new(
+      ["--conn-max-frame-size", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_receiver_options_max_frame_size_long.options.max_frame_size
+    )
+  end # test_receiver_option_parser_user_max_frame_size_value_long
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+  end # test_receiver_option_parser_user_max_frame_size_value_long_range_lower_raise
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+  end # test_receiver_option_parser_user_max_frame_size_value_long_range_upper_raise
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "wrong_value"]
+      )
+    end
+  end # test_receiver_option_parser_user_max_frame_size_value_long_wrong_value_raise
+
+  def test_receiver_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--conn-max-frame-size", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+
 end # class UnitTestsReceiverOptionParser
 
 # eof

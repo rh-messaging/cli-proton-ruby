@@ -31,8 +31,15 @@ module Handlers
     # broker:: URI of broker
     # count:: Number of connections to create
     # sasl_mechs:: Allowed SASL mechanisms
-    def initialize(broker, count, sasl_mechs, idle_timeout, exit_timer)
-      super(broker, sasl_mechs, idle_timeout, exit_timer)
+    def initialize(
+      broker,
+      count,
+      sasl_mechs,
+      idle_timeout,
+      max_frame_size,
+      exit_timer
+    )
+      super(broker, sasl_mechs, idle_timeout, max_frame_size, exit_timer)
       # Save count of connections
       @count = count
       # Initialize array of connections
@@ -56,6 +63,8 @@ module Handlers
           sasl_allowed_mechs: @sasl_mechs,
           # Set idle timeout
           idle_timeout: @idle_timeout,
+          # Set max frame size
+          max_frame_size: @max_frame_size,
         ))
       end
     end

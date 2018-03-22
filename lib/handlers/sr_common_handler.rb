@@ -25,14 +25,23 @@ module Handlers
     attr_accessor :log_msgs
     # Idle timeout
     attr_accessor :idle_timeout
+    # Max frame size
+    attr_accessor :max_frame_size
 
     # Initialization of common events handler for sender and receiver client
     # ==== Common events handler arguments
     # broker:: URI of broker
     # log_msgs:: format of message(s) log
     # sasl_mechs:: allowed SASL mechanisms
-    def initialize(broker, log_msgs, sasl_mechs, idle_timeout, exit_timer)
-      super(broker, sasl_mechs, idle_timeout, exit_timer)
+    def initialize(
+      broker,
+      log_msgs,
+      sasl_mechs,
+      idle_timeout,
+      max_frame_size,
+      exit_timer
+    )
+      super(broker, sasl_mechs, idle_timeout, max_frame_size, exit_timer)
       # Save message(s) log format
       @log_msgs = log_msgs
     end

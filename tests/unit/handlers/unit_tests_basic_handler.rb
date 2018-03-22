@@ -30,6 +30,8 @@ class UnitTestsBasicHandler < Minitest::Test
     @sasl_mechs_value = "SASL"
     # Idle timeout value
     @idle_timeout_value = 85
+    # Max frame size
+    @max_frame_size = 5557
     # Exit timer for client
     @exit_timer_value = "timeout"
 
@@ -37,6 +39,7 @@ class UnitTestsBasicHandler < Minitest::Test
       @broker_value,
       @sasl_mechs_value,
       @idle_timeout_value,
+      @max_frame_size,
       @exit_timer_value,
     )
   end # setup
@@ -46,6 +49,7 @@ class UnitTestsBasicHandler < Minitest::Test
       @broker_value_string,
       @sasl_mechs_value,
       @idle_timeout_value,
+      @max_frame_size,
       @exit_timer_value,
     )
 
@@ -73,6 +77,13 @@ class UnitTestsBasicHandler < Minitest::Test
     assert_equal(
       @idle_timeout_value,
       @basic_handler_initialization_class.idle_timeout
+    )
+  end # test_basic_handler_idle_timeout_argument_initialization
+
+  def test_basic_handler_max_frame_size_argument_initialization
+    assert_equal(
+      @max_frame_size,
+      @basic_handler_initialization_class.max_frame_size
     )
   end # test_basic_handler_idle_timeout_argument_initialization
 

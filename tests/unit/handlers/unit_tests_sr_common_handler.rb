@@ -27,6 +27,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @log_msgs_value = "dict"
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
+    @max_frame_size_value = 6869
     @exit_timer_value = "timeout"
 
     @sr_common_handler_initialization = Handlers::SRCommonHandler.new(
@@ -34,6 +35,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @log_msgs_value,
       @sasl_mechs_value,
       @idle_timeout_value,
+      @max_frame_size_value,
       @exit_timer_value,
     )
   end # setup
@@ -44,6 +46,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @log_msgs_value,
       @sasl_mechs_value,
       @idle_timeout_value,
+      @max_frame_size_value,
       @exit_timer_value,
     )
 
@@ -75,6 +78,13 @@ class UnitTestsSRCommonHandler < Minitest::Test
     assert_equal(
         @idle_timeout_value,
         @sr_common_handler_initialization.idle_timeout
+    )
+  end # test_sr_common_handler_idle_timeout_argument_initialization
+
+  def test_sr_common_handler_max_frame_size_argument_initialization
+    assert_equal(
+        @max_frame_size_value,
+        @sr_common_handler_initialization.max_frame_size
     )
   end # test_sr_common_handler_idle_timeout_argument_initialization
 

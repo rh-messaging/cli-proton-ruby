@@ -48,6 +48,8 @@ module Options
       @options.sasl_mechs = Defaults::DEFAULT_SASL_MECHS
       # Idle timeout
       @options.idle_timeout = Defaults::DEFAULT_IDLE_TIMEOUT
+      # Max frame size
+      @options.max_frame_size = Defaults::DEFAULT_MAX_FRAME_SIZE
 
       @opt_parser = OptionParser.new
       # Basic usage
@@ -86,6 +88,24 @@ module Options
         "'#{Defaults::DEFAULT_SASL_MECHS}')"
       ) do |sasl_mechs|
         @options.sasl_mechs = sasl_mechs
+      end
+
+      # Max frame size
+      @opt_parser.on(
+        "--conn-max-frame-size SIZE",
+        Integer,
+        "define custom maximum frame size in bytes " +
+        "(range: #{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+        "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE}, " +
+        "default: #{Defaults::DEFAULT_MAX_FRAME_SIZE})",
+      ) do |max_frame_size|
+        if max_frame_size < Defaults::DEFAULT_MIN_MAX_FRAME_SIZE \
+          or max_frame_size > Defaults::DEFAULT_MAX_MAX_FRAME_SIZE
+          raise OptionParser::InvalidArgument, "#{max_frame_size} " +
+            "(out of range: #{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+            "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})"
+        end
+        @options.max_frame_size = max_frame_size
       end
 
       # Heartbeats configuration

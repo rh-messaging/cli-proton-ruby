@@ -237,6 +237,93 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise_msg
 
+  def test_sr_common_option_parser_default_max_frame_size_value
+    default_sr_common_options_max_frame_size = Options::SRCommonOptionParser.new()
+    default_sr_common_options_max_frame_size.parse([])
+    assert_equal(
+      Defaults::DEFAULT_MAX_FRAME_SIZE,
+      default_sr_common_options_max_frame_size.options.max_frame_size
+    )
+  end # test_sr_common_option_parser_default_max_frame_size_value
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long
+    user_sr_common_options_max_frame_size_long = Options::SRCommonOptionParser.new()
+    user_sr_common_options_max_frame_size_long.parse(
+      ["--conn-max-frame-size", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_sr_common_options_max_frame_size_long.options.max_frame_size
+    )
+  end # test_sr_common_option_parser_user_max_frame_size_value_long
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_range_lower_raise
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_range_upper_raise
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "wrong_value"]
+      )
+    end
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise
+
+  def test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+
 end # class UnitTestsSRCommonOptionParser
 
 # eof
