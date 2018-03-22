@@ -279,12 +279,13 @@ module Options
 
       # Anonymous producer
       @opt_parser.on(
-        "--anonymous ANONYMOUS",
+        "--anonymous [ANONYMOUS]",
         BOOLEAN_STRINGS,
         "send message by connection level anonymous sender" +
         " (default: #{Defaults::DEFAULT_ANONYMOUS})"
       ) do |anonymous|
-        @options.anonymous = StringUtils.str_to_bool?(anonymous)
+        @options.anonymous = true
+        @options.anonymous = StringUtils.str_to_bool?(anonymous) if anonymous
       end
 
       # Parse basic, common and specific options for sender client
