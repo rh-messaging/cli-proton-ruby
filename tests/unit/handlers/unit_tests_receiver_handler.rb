@@ -34,6 +34,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @log_lib_value = "TRANSPORT_RAW"
     @recv_listen_value = "recv-listen"
     @recv_listen_port_value = 8887
+    @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
@@ -48,6 +49,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @log_lib_value,
       @recv_listen_value,
       @recv_listen_port_value,
+      @auto_settle_off_value,
       @exit_timer_value,
     )
   end # setup
@@ -65,6 +67,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @log_lib_value,
       @recv_listen_value,
       @recv_listen_port_value,
+      @auto_settle_off_value,
       @exit_timer_value,
     )
 
@@ -119,14 +122,21 @@ class UnitTestsReceiverHandler < Minitest::Test
         @max_frame_size_value,
         @receiver_handler_initialization.max_frame_size
     )
-  end # test_receiver_handler_idle_timeout_argument_initialization
+  end # test_receiver_handler_max_frame_size_argument_initialization
 
   def test_receiver_handler_log_lib_argument_initialization
     assert_equal(
         @log_lib_value,
         @receiver_handler_initialization.log_lib
     )
-  end # test_receiver_handler_idle_timeout_argument_initialization
+  end # test_receiver_handler_log_lib_argument_initialization
+
+  def test_receiver_handler_auto_settle_off_argument_initialization
+    assert_equal(
+        @auto_settle_off_value,
+        @receiver_handler_initialization.auto_settle_off
+    )
+  end # test_receiver_handler_auto_settle_off_argument_initialization
 
   def test_receiver_handler_recv_listen_argument_initialization
     assert_equal(

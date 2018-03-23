@@ -29,6 +29,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @idle_timeout_value = 85
     @max_frame_size_value = 6869
     @log_lib_value = "TRANSPORT_DRV"
+    @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
 
     @sr_common_handler_initialization = Handlers::SRCommonHandler.new(
@@ -38,6 +39,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @idle_timeout_value,
       @max_frame_size_value,
       @log_lib_value,
+      @auto_settle_off_value,
       @exit_timer_value,
     )
   end # setup
@@ -50,6 +52,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @idle_timeout_value,
       @max_frame_size_value,
       @log_lib_value,
+      @auto_settle_off_value,
       @exit_timer_value,
     )
 
@@ -89,14 +92,21 @@ class UnitTestsSRCommonHandler < Minitest::Test
         @max_frame_size_value,
         @sr_common_handler_initialization.max_frame_size
     )
-  end # test_sr_common_handler_idle_timeout_argument_initialization
+  end # test_sr_common_handler_max_frame_size_argument_initialization
 
   def test_sr_common_handler_log_lib_argument_initialization
     assert_equal(
         @log_lib_value,
         @sr_common_handler_initialization.log_lib
     )
-  end # test_sr_common_handler_idle_timeout_argument_initialization
+  end # test_sr_common_handler_log_lib_argument_initialization
+
+  def test_sr_common_handler_auto_settle_off_argument_initialization
+    assert_equal(
+        @auto_settle_off_value,
+        @sr_common_handler_initialization.auto_settle_off
+    )
+  end # test_sr_common_handler_auto_settle_off_argument_initialization
 
   def test_sr_common_handler_exit_timer_argument_initialization
     assert_equal(
