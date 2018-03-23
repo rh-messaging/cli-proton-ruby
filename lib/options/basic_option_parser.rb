@@ -125,7 +125,7 @@ module Options
       @opt_parser.on(
         "--log-lib LEVEL",
         LOG_LIB_STRINGS,
-        "enable client library logging (#{LOG_LIB_STRINGS.join(", ")}, " +
+        "enable client library logging (#{LOG_LIB_STRINGS.join("/")}, " +
         "default: #{Defaults::DEFAULT_LOG_LIB})"
       ) do |log_lib|
         @options.log_lib = log_lib
