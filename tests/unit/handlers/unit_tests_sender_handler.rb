@@ -43,6 +43,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @idle_timeout_value = 85
     @max_frame_size_value = 7757
     @log_lib_value = "TRANSPORT_FRM"
+    @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
@@ -66,6 +67,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @idle_timeout_value,
       @max_frame_size_value,
       @log_lib_value,
+      @auto_settle_off_value,
       @exit_timer_value,
     )
   end # setup
@@ -92,6 +94,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @idle_timeout_value,
       @max_frame_size_value,
       @log_lib_value,
+      @auto_settle_off_value,
       @exit_timer_value
     )
 
@@ -234,6 +237,13 @@ class UnitTestsSenderHandler < Minitest::Test
         @sender_handler_initialization.log_lib
     )
   end # test_sender_handler_log_lib_argument_initialization
+
+  def test_sender_handler_auto_settle_off_argument_initialization
+    assert_equal(
+        @auto_settle_off_value,
+        @sender_handler_initialization.auto_settle_off
+    )
+  end # test_sender_handler_auto_settle_off_argument_initialization
 
   def test_sender_handler_exit_timer_argument_initialization
     assert_equal(

@@ -36,6 +36,8 @@ module Options
 
       # Format of message log option
       @options.log_msgs = Defaults::DEFAULT_LOG_MSGS
+      # Auto settle off
+      @options.auto_settle_off = Defaults::DEFAULT_AUTO_SETTLE_OFF
 
       # Format of message log
       @opt_parser.on(
@@ -47,6 +49,18 @@ module Options
         log_msgs = "dict" if log_msgs == "interop"
         @options.log_msgs = log_msgs
       end
+
+      # Auto settle off
+      @opt_parser.on(
+        "--auto-settle-off [OFF]",
+        Options::BOOLEAN_STRINGS,
+        "disable auto settle mode (default: #{Defaults::DEFAULT_AUTO_SETTLE_OFF})"
+      ) do |auto_settle_off|
+        @options.auto_settle_off = true
+        @options.auto_settle_off = \
+          StringUtils.str_to_bool?(auto_settle_off) if auto_settle_off
+      end
+
     end # initialize(args)
 
     # Parsing of basic and common options for sender and receiver client
