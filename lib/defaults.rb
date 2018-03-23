@@ -64,7 +64,7 @@ module Defaults
   # Default minimal max frame size
   DEFAULT_MIN_MAX_FRAME_SIZE = 512
   # Default maximal max frame size
-  DEFAULT_MAX_MAX_FRAME_SIZE = 4294967295
+  DEFAULT_MAX_MAX_FRAME_SIZE = 2**20  # TODO(jdanek): workaround PROTON-1809 Unable to receive messages ...
   # Default value for max frame size
   DEFAULT_MAX_FRAME_SIZE     = DEFAULT_MAX_MAX_FRAME_SIZE
 
