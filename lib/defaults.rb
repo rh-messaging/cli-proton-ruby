@@ -67,6 +67,8 @@ module Defaults
   DEFAULT_MAX_MAX_FRAME_SIZE = 2**20  # TODO(jdanek): workaround PROTON-1809 Unable to receive messages ...
   # Default value for max frame size
   DEFAULT_MAX_FRAME_SIZE     = DEFAULT_MAX_MAX_FRAME_SIZE
+  # Default client library logging
+  DEFAULT_LOG_LIB            = "NONE"
 
 end # module Defaults
 

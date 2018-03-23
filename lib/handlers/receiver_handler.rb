@@ -48,6 +48,7 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      log_lib,
       exit_timer
     )
       super(
@@ -56,6 +57,7 @@ module Handlers
         sasl_mechs,
         idle_timeout,
         max_frame_size,
+        log_lib,
         exit_timer
       )
       # Save count of expected messages to be received

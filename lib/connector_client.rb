@@ -37,6 +37,7 @@ class ConnectorClient
       connector_options_parser.options.sasl_mechs,
       connector_options_parser.options.idle_timeout,
       connector_options_parser.options.max_frame_size,
+      connector_options_parser.options.log_lib,
       connector_options_parser.options.exit_timer,
     )
     # Run connector client

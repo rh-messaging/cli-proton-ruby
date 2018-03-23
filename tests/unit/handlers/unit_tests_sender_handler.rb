@@ -42,6 +42,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 7757
+    @log_lib_value = "TRANSPORT_FRM"
     @exit_timer_value = "timeout"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
@@ -64,6 +65,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @log_lib_value,
       @exit_timer_value,
     )
   end # setup
@@ -89,6 +91,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @log_lib_value,
       @exit_timer_value
     )
 
@@ -224,6 +227,13 @@ class UnitTestsSenderHandler < Minitest::Test
         @sender_handler_initialization.max_frame_size
     )
   end # test_sender_handler_max_frame_size_argument_initialization
+
+  def test_sender_handler_log_lib_argument_initialization
+    assert_equal(
+        @log_lib_value,
+        @sender_handler_initialization.log_lib
+    )
+  end # test_sender_handler_log_lib_argument_initialization
 
   def test_sender_handler_exit_timer_argument_initialization
     assert_equal(

@@ -324,6 +324,48 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
 
+  def test_sr_common_option_parser_default_log_lib_value
+    default_sr_common_options_log_lib = Options::SRCommonOptionParser.new()
+    default_sr_common_options_log_lib.parse([])
+    assert_equal(
+      Defaults::DEFAULT_LOG_LIB,
+      default_sr_common_options_log_lib.options.log_lib
+    )
+  end # test_sr_common_option_parser_default_log_lib_value
+
+  def test_sr_common_option_parser_user_log_lib_value_long
+    value = "TRANSPORT_FRM"
+    user_sr_common_options_log_lib_long = Options::SRCommonOptionParser.new()
+    user_sr_common_options_log_lib_long.parse(
+      ["--log-lib", value]
+    )
+    assert_equal(
+      value,
+      user_sr_common_options_log_lib_long.options.log_lib
+    )
+  end # test_sr_common_option_parser_user_log_lib_value_long
+
+  def test_sr_common_option_parser_user_log_lib_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--log-lib", "raise"]
+      )
+    end
+  end # test_sr_common_option_parser_user_log_lib_value_long_raise
+
+  def test_sr_common_option_parser_user_log_lib_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--log-lib", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --log-lib #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_log_lib_value_long_raise_message
+
 end # class UnitTestsSRCommonOptionParser
 
 # eof

@@ -27,6 +27,8 @@ module Handlers
     attr_accessor :idle_timeout
     # Max frame size
     attr_accessor :max_frame_size
+    # Client library logging
+    attr_accessor :log_lib
 
     # Initialization of common events handler for sender and receiver client
     # ==== Common events handler arguments
@@ -39,9 +41,17 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      log_lib,
       exit_timer
     )
-      super(broker, sasl_mechs, idle_timeout, max_frame_size, exit_timer)
+      super(
+        broker,
+        sasl_mechs,
+        idle_timeout,
+        max_frame_size,
+        log_lib,
+        exit_timer
+      )
       # Save message(s) log format
       @log_msgs = log_msgs
     end

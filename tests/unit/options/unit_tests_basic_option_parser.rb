@@ -280,6 +280,48 @@ class UnitTestsBasicOptionParser < Minitest::Test
     )
   end # test_basic_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
 
+  def test_basic_option_parser_default_log_lib_value
+    default_basic_options_log_lib = Options::BasicOptionParser.new()
+    default_basic_options_log_lib.parse([])
+    assert_equal(
+      Defaults::DEFAULT_LOG_LIB,
+      default_basic_options_log_lib.options.log_lib
+    )
+  end # test_basic_option_parser_default_log_lib_value
+
+  def test_basic_option_parser_user_log_lib_value_long
+    value = "TRANSPORT_FRM"
+    user_basic_options_log_lib_long = Options::BasicOptionParser.new()
+    user_basic_options_log_lib_long.parse(
+      ["--log-lib", value]
+    )
+    assert_equal(
+      value,
+      user_basic_options_log_lib_long.options.log_lib
+    )
+  end # test_basic_option_parser_user_log_lib_value_long
+
+  def test_basic_option_parser_user_log_lib_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--log-lib", "raise"]
+      )
+    end
+  end # test_basic_option_parser_user_log_lib_value_long_raise
+
+  def test_basic_option_parser_user_log_lib_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--log-lib", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --log-lib #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_log_lib_value_long_raise_message
+
 end # class UnitTestsBasicOptionParser
 
 # eof

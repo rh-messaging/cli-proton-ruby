@@ -31,7 +31,9 @@ class UnitTestsBasicHandler < Minitest::Test
     # Idle timeout value
     @idle_timeout_value = 85
     # Max frame size
-    @max_frame_size = 5557
+    @max_frame_size_value = 5557
+    # Client library logging
+    @log_lib_value = "TRANSPORT_RAW"
     # Exit timer for client
     @exit_timer_value = "timeout"
 
@@ -39,7 +41,8 @@ class UnitTestsBasicHandler < Minitest::Test
       @broker_value,
       @sasl_mechs_value,
       @idle_timeout_value,
-      @max_frame_size,
+      @max_frame_size_value,
+      @log_lib_value,
       @exit_timer_value,
     )
   end # setup
@@ -49,7 +52,8 @@ class UnitTestsBasicHandler < Minitest::Test
       @broker_value_string,
       @sasl_mechs_value,
       @idle_timeout_value,
-      @max_frame_size,
+      @max_frame_size_value,
+      @log_lib_value,
       @exit_timer_value,
     )
 
@@ -82,10 +86,17 @@ class UnitTestsBasicHandler < Minitest::Test
 
   def test_basic_handler_max_frame_size_argument_initialization
     assert_equal(
-      @max_frame_size,
+      @max_frame_size_value,
       @basic_handler_initialization_class.max_frame_size
     )
-  end # test_basic_handler_idle_timeout_argument_initialization
+  end # test_basic_handler_max_frame_size_argument_initialization
+
+  def test_basic_handler_log_lib_argument_initialization
+    assert_equal(
+      @log_lib_value,
+      @basic_handler_initialization_class.log_lib
+    )
+  end # test_basic_handler_log_lib_argument_initialization
 
   def test_basic_handler_exit_timer_argument_initialization
     assert_equal(

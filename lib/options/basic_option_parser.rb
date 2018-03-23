@@ -23,6 +23,7 @@ require_relative '../utils/exit_timer'
 module Options
 
   BOOLEAN_STRINGS = %w(true True yes false False no)
+  LOG_LIB_STRINGS = %w(NONE TRANSPORT_RAW TRANSPORT_FRM TRANSPORT_DRV)
 
   # Option parser of basic options for all clients
   # ==== Basic client options
@@ -50,6 +51,8 @@ module Options
       @options.idle_timeout = Defaults::DEFAULT_IDLE_TIMEOUT
       # Max frame size
       @options.max_frame_size = Defaults::DEFAULT_MAX_FRAME_SIZE
+      # Client library logging
+      @options.log_lib = Defaults::DEFAULT_LOG_LIB
 
       @opt_parser = OptionParser.new
       # Basic usage
@@ -116,6 +119,16 @@ module Options
         "default: #{Defaults::DEFAULT_IDLE_TIMEOUT})"
       ) do |idle_timeout|
         @options.idle_timeout = idle_timeout
+      end
+
+      # Client library logging
+      @opt_parser.on(
+        "--log-lib LEVEL",
+        LOG_LIB_STRINGS,
+        "enable client library logging (#{LOG_LIB_STRINGS.join(", ")}, " +
+        "default: #{Defaults::DEFAULT_LOG_LIB})"
+      ) do |log_lib|
+        @options.log_lib = log_lib
       end
 
       # Help

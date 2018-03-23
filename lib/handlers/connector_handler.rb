@@ -37,9 +37,17 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      log_lib,
       exit_timer
     )
-      super(broker, sasl_mechs, idle_timeout, max_frame_size, exit_timer)
+      super(
+        broker,
+        sasl_mechs,
+        idle_timeout,
+        max_frame_size,
+        log_lib,
+        exit_timer
+      )
       # Save count of connections
       @count = count
       # Initialize array of connections
