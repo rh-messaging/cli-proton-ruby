@@ -798,10 +798,10 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message
 
   def test_sender_option_parser_default_content_type_values
-    sender_options_default_msg_durable = Options::SenderOptionParser.new([])
+    sender_options_default_content_type = Options::SenderOptionParser.new([])
     assert_equal(
       Defaults::DEFAULT_CONTENT_TYPE,
-      sender_options_default_msg_durable.options.content_type
+      sender_options_default_content_type.options.content_type
     )
   end # test_sender_option_parser_default_content_type_value
 

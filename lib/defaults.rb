@@ -69,6 +69,10 @@ module Defaults
   DEFAULT_MAX_FRAME_SIZE     = DEFAULT_MAX_MAX_FRAME_SIZE
   # Default client library logging
   DEFAULT_LOG_LIB            = "NONE"
+  # Default value for recv-listen
+  DEFAULT_RECV_LISTEN        = false
+  # Default value for recv-listen port
+  DEFAULT_RECV_LISTEN_PORT   = 5672
 
 end # module Defaults
 
