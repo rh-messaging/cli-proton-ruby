@@ -31,8 +31,12 @@ class ClientTestCase < Minitest::Test
 
   def run_client(prog, *args)
     prog = File.join(BIN_DIR, prog)
-    return IO.popen([ RbConfig.ruby, prog ] + args.map { |a| a.to_s },
-                   :err=>[:child, :out]) # Include stderr in output
+    args = [ RbConfig.ruby, prog ] + args.map { |a| a.to_s }
+    proc = IO.popen(args)
+    # Modify proc.to_s to print args
+    eigenclass = class << proc; self; end
+    eigenclass.class_eval { define_method(:to_s) { args.join ' ' } }
+    proc
   end
 
   def assert_wait(proc, status=0, msg=nil)
@@ -42,8 +46,8 @@ class ClientTestCase < Minitest::Test
 
   def assert_output(proc, output, status=0, msg=nil)
     Process.wait(proc.pid)
-    assert_equal output, proc.read, msg
-    assert_equal status, $?.exitstatus, msg
+    assert_equal output, proc.read, msg || "unexpected output: #{proc}"
+    assert_equal status, $?.exitstatus, msg || "unexpected status: #{proc}"
   end
 
   # Run the block, assert run time is within some error margin of expect  
