@@ -29,6 +29,10 @@ module Handlers
     attr_accessor :process_reply_to
     # Browse
     attr_accessor :browse
+    # Receiver listen
+    attr_accessor :recv_listen
+    # Receiver listen port
+    attr_accessor :recv_listen_port
 
     # Initialization of receiver events handler
     # ==== Receiver events handler arguments
@@ -49,6 +53,8 @@ module Handlers
       idle_timeout,
       max_frame_size,
       log_lib,
+      recv_listen,
+      recv_listen_port,
       exit_timer
     )
       super(
@@ -66,6 +72,10 @@ module Handlers
       @process_reply_to = process_reply_to
       # Save browse
       @browse = browse
+      # Save recv-listen value
+      @recv_listen = recv_listen
+      # Save recv-listen port value
+      @recv_listen_port = recv_listen_port
       # Number of received messages
       @received = 0
       # Flag indicating that all expected messages were received
@@ -82,26 +92,30 @@ module Handlers
     # connects receiver client to SRCommonHandler#broker
     # and creates receiver
     def on_container_start(container)
-      # Connecting to broker and creating receiver
-      @receiver = container.connect(
-        # Set broker URI
-        @broker,
-        # Enabled SASL authentication
-        sasl_enabled: true,
-        # Enabled insecure SASL mechanisms
-        sasl_allow_insecure_mechs: true,
-        # Set allowed SASL mechanisms
-        sasl_allowed_mechs: @sasl_mechs,
-        # Set idle timeout
-        idle_timeout: @idle_timeout,
-        # Set max frame size
-        max_frame_size: @max_frame_size,
-      ).open_receiver(@broker.amqp_address)
-      # If browse messages instead of reading
-      if browse
-        # Set browsing mode
-        @receiver.source.distribution_mode = \
-          Qpid::Proton::Terminus::DIST_MODE_COPY
+      if @recv_listen # P2P
+        @listener = container.listen("0.0.0.0:#{@recv_listen_port}")
+      else # Broker
+        # Connecting to broker and creating receiver
+        @receiver = container.connect(
+          # Set broker URI
+          @broker,
+          # Enabled SASL authentication
+          sasl_enabled: true,
+          # Enabled insecure SASL mechanisms
+          sasl_allow_insecure_mechs: true,
+          # Set allowed SASL mechanisms
+          sasl_allowed_mechs: @sasl_mechs,
+          # Set idle timeout
+          idle_timeout: @idle_timeout,
+          # Set max frame size
+          max_frame_size: @max_frame_size,
+        ).open_receiver(@broker.amqp_address)
+        # If browse messages instead of reading
+        if browse
+          # Set browsing mode
+          @receiver.source.distribution_mode = \
+            Qpid::Proton::Terminus::DIST_MODE_COPY
+        end
       end
     end
 
@@ -126,10 +140,17 @@ module Handlers
       if @count > 0 and @received == @count
         # Set flag indicating that all expected messages were received to true
         @all_received = true
-        # Close receiver
-        delivery.receiver.close 
-        # Close connection if not processing reply-to
-        delivery.receiver.connection.close unless process_reply_to
+        # Close listener when listening
+        if recv_listen
+          # Close listener if not processing reply-to
+          @listener.close unless process_reply_to
+        # Close receiver when not listening, but receiving
+        else
+          # Close receiver
+          delivery.receiver.close 
+          # Close connection if not processing reply-to
+          delivery.receiver.connection.close unless process_reply_to
+        end
       end # if
     end
 

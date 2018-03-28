@@ -15,6 +15,8 @@
 #++
 
 require_relative 'sr_common_option_parser'
+require_relative '../constants'
+require_relative '../utils/string_utils'
 
 module Options
 
@@ -48,6 +50,10 @@ module Options
       @options.process_reply_to = Defaults::DEFAULT_PROC_REPLY_TO
       # Browse messages
       @options.browse = Defaults::DEFAULT_BROWSE
+      # Receiver listen
+      @options.recv_listen = Defaults::DEFAULT_RECV_LISTEN
+      # Receiver listen port
+      @options.recv_listen_port = Defaults::DEFAULT_RECV_LISTEN_PORT
 
       # Number of messages
       @opt_parser.on(
@@ -75,6 +81,34 @@ module Options
         "browse messages instead of reading",
       ) do |browse|
         @options.browse = browse
+      end
+
+      # Receiver listen
+      @opt_parser.on(
+        "--recv-listen LISTEN",
+        Options::BOOLEAN_STRINGS,
+        "enable receiver listen (P2P) (#{Options::BOOLEAN_STRINGS.join("/")}, "+
+        "default: #{Defaults::DEFAULT_RECV_LISTEN})"
+      ) do |recv_listen|
+        @options.recv_listen = StringUtils.str_to_bool?(recv_listen)
+      end
+
+      # Receiver listen port
+      @opt_parser.on(
+        "--recv-listen-port PORT",
+        Integer,
+        "define port for local listening "+
+        "(range: #{Constants::CONST_MIN_PORT_RANGE_VALUE}-"+
+        "#{Constants::CONST_MAX_PORT_RANGE_VALUE}, "+
+        "default: #{Defaults::DEFAULT_RECV_LISTEN_PORT})"
+      ) do |recv_listen_port|
+        if recv_listen_port < Constants::CONST_MIN_PORT_RANGE_VALUE \
+          or recv_listen_port > Constants::CONST_MAX_PORT_RANGE_VALUE
+          raise OptionParser::InvalidArgument, "#{recv_listen_port} "+
+            "(out of range: #{Constants::CONST_MIN_PORT_RANGE_VALUE}-"+
+            "#{Constants::CONST_MAX_PORT_RANGE_VALUE})"
+        end
+        @options.recv_listen_port = recv_listen_port
       end
 
       # Parse basic, common and specific options for receiver client

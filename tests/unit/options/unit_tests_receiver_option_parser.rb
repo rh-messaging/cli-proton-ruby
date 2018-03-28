@@ -19,6 +19,7 @@ require 'minitest/autorun'
 
 require_relative '../../../lib/options/receiver_option_parser'
 require_relative '../../../lib/defaults'
+require_relative '../../../lib/constants'
 
 # ReceiverOptionParser unit tests class
 class UnitTestsReceiverOptionParser < Minitest::Test
@@ -382,6 +383,132 @@ class UnitTestsReceiverOptionParser < Minitest::Test
       exception.message
     )
   end # test_receiver_option_parser_user_log_lib_value_long_raise_message
+
+  def test_receiver_option_parser_default_recv_listen_value
+    default_receiver_options_recv_listen = Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_RECV_LISTEN,
+      default_receiver_options_recv_listen.options.recv_listen
+    )
+  end # test_receiver_option_parser_default_recv_listen_value
+
+  def test_receiver_option_parser_user_recv_listen_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_receiver_options_recv_listen_long = Options::ReceiverOptionParser.new(
+        ["--recv-listen", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool?(boolean_value),
+        user_receiver_options_recv_listen_long.options.recv_listen
+      )
+    end
+  end # test_receiver_option_parser_user_recv_listen_value_long
+
+  def test_receiver_option_parser_user_recv_listen_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen", "raise"]
+      )
+    end
+  end # test_receiver_option_parser_user_recv_listen_value_long_raise
+
+  def test_receiver_option_parser_user_recv_listen_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --recv-listen #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_recv_listen_value_long_raise_message
+
+  def test_receiver_option_parser_default_recv_listen_port_value
+    default_receiver_options_recv_listen_port = Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_RECV_LISTEN_PORT,
+      default_receiver_options_recv_listen_port.options.recv_listen_port
+    )
+  end # test_receiver_option_parser_default_recv_listen_port_value
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long
+    user_receiver_options_recv_listen_port_long = Options::ReceiverOptionParser.new(
+      ["--recv-listen-port", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_receiver_options_recv_listen_port_long.options.recv_listen_port
+    )
+  end # test_receiver_option_parser_user_recv_listen_port_value_long
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "#{Constants::CONST_MIN_PORT_RANGE_VALUE-1}"]
+      )
+    end
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_range_lower_raise
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "#{Constants::CONST_MIN_PORT_RANGE_VALUE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --recv-listen-port " +
+      "#{Constants::CONST_MIN_PORT_RANGE_VALUE-1} (out of range: " +
+      "#{Constants::CONST_MIN_PORT_RANGE_VALUE}-" +
+      "#{Constants::CONST_MAX_PORT_RANGE_VALUE})",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_range_lower_raise_msg
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "#{Constants::CONST_MAX_PORT_RANGE_VALUE+1}"]
+      )
+    end
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_range_upper_raise
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "#{Constants::CONST_MAX_PORT_RANGE_VALUE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --recv-listen-port " +
+      "#{Constants::CONST_MAX_PORT_RANGE_VALUE+1} (out of range: " +
+      "#{Constants::CONST_MIN_PORT_RANGE_VALUE}-" +
+      "#{Constants::CONST_MAX_PORT_RANGE_VALUE})",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_range_upper_raise_msg
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "wrong_value"]
+      )
+    end
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_wrong_value_raise
+
+  def test_receiver_option_parser_user_recv_listen_port_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--recv-listen-port", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --recv-listen-port #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_recv_listen_port_value_long_wrong_value_raise_msg
 
 end # class UnitTestsReceiverOptionParser
 
