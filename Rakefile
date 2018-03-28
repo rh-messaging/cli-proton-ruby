@@ -27,7 +27,7 @@ end
 
 desc 'Run client tests with a self-started test broker.'
 task :client_self_tests do
-  broker = IO.popen([RbConfig.ruby,  File.join("bin", "broker.rb"), "" ], :err=>[:child, :out])
+  broker = IO.popen([RbConfig.ruby,  File.join("bin", "broker.rb"), "" ])
   unless (ready = broker.readline) =~ /^Listening on /
     Process.kill :KILL, broker.pid
     raise "broker failed: #{ready}#{broker.read}"
