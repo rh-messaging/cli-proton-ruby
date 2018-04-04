@@ -85,7 +85,6 @@ module Handlers
       idle_timeout,
       max_frame_size,
       log_lib,
-      auto_settle_off,
       exit_timer
     )
       super(
@@ -95,7 +94,6 @@ module Handlers
         idle_timeout,
         max_frame_size,
         log_lib,
-        auto_settle_off,
         exit_timer
       )
       # Save count of messages to be send
@@ -150,12 +148,7 @@ module Handlers
         idle_timeout: @idle_timeout,
         # Set max frame size
         max_frame_size: @max_frame_size,
-      ).open_sender({
-          # Set target address
-          :target => anonymous ? nil : @broker.amqp_address,
-          # Set auto settle
-          :auto_settle => @auto_settle_off ? false : true,
-        })
+      ).open_sender(anonymous ? nil : @broker.amqp_address)
     end
 
     # Called when the sender link has credit

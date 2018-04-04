@@ -43,7 +43,6 @@ class ReceiverClient
       receiver_options_parser.options.log_lib,
       receiver_options_parser.options.recv_listen,
       receiver_options_parser.options.recv_listen_port,
-      receiver_options_parser.options.auto_settle_off,
       receiver_options_parser.options.exit_timer
     )
     # Run receiver client

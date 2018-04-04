@@ -509,57 +509,6 @@ class UnitTestsReceiverOptionParser < Minitest::Test
       exception.message
     )
   end # test_receiver_option_parser_user_recv_listen_port_value_long_wrong_value_raise_msg
-  
-  def test_receiver_option_parser_default_auto_settle_off_value
-    default_receiver_options_auto_settle_off = Options::ReceiverOptionParser.new([])
-    assert_equal(
-      Defaults::DEFAULT_AUTO_SETTLE_OFF,
-      default_receiver_options_auto_settle_off.options.auto_settle_off
-    )
-  end # test_receiver_option_parser_default_auto_settle_off_value
-
-  def test_receiver_option_parser_user_auto_settle_off_value_long_no_value
-    user_receiver_options_auto_settle_off_long_no_value = Options::ReceiverOptionParser.new(
-      ["--auto-settle-off"]
-    )
-    assert_equal(
-      true,
-      user_receiver_options_auto_settle_off_long_no_value.options.auto_settle_off
-    )
-  end # test_receiver_option_parser_user_auto_settle_off_value_long_no_value
-
-  def test_receiver_option_parser_user_auto_settle_off_value_long
-    Options::BOOLEAN_STRINGS.each do |auto_settle_off_value_long|
-      user_receiver_options_auto_settle_off_long = Options::ReceiverOptionParser.new(
-        ["--auto-settle-off", auto_settle_off_value_long]
-      )
-      assert_equal(
-        StringUtils.str_to_bool?(auto_settle_off_value_long),
-        user_receiver_options_auto_settle_off_long.options.auto_settle_off
-      )
-    end
-  end # test_receiver_option_parser_user_auto_settle_off_value_long
-
-  def test_receiver_option_parser_user_auto_settle_off_value_long_raise
-    assert_raises OptionParser::InvalidArgument do
-      Options::ReceiverOptionParser.new(
-        ["--auto-settle-off", "raise"]
-      )
-    end
-  end # test_receiver_option_parser_user_auto_settle_off_value_long_raise
-
-  def test_receiver_option_parser_user_auto_settle_off_value_long_raise_message
-    wrong_value = "raise"
-    exception = assert_raises OptionParser::InvalidArgument do
-      Options::ReceiverOptionParser.new(
-        ["--auto-settle-off", wrong_value]
-      )
-    end
-    assert_equal(
-      "invalid argument: --auto-settle-off #{wrong_value}",
-      exception.message
-    )
-  end # test_receiver_option_parser_user_auto_settle_off_value_long_raise_message
 
 end # class UnitTestsReceiverOptionParser
 

@@ -55,7 +55,6 @@ module Handlers
       log_lib,
       recv_listen,
       recv_listen_port,
-      auto_settle_off,
       exit_timer
     )
       super(
@@ -65,7 +64,6 @@ module Handlers
         idle_timeout,
         max_frame_size,
         log_lib,
-        auto_settle_off,
         exit_timer
       )
       # Save count of expected messages to be received
@@ -161,12 +159,9 @@ module Handlers
       # If sender for actual reply-to address does not exist
       unless @senders.include?(message.reply_to)
         # Create new sender for reply-to address
-        @senders[message.reply_to] = @receiver.connection.open_sender({
-          # Set target address
-          :target => message.reply_to,
-          # Set auto settle
-          :auto_settle => @auto_settle_off ? false : true,
-        })
+        @senders[message.reply_to] = @receiver.connection.open_sender(
+          message.reply_to
+        )
       end
       # Set target address of message to be send to reply-to address
       message.address = message.reply_to

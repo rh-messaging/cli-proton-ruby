@@ -73,8 +73,6 @@ module Defaults
   DEFAULT_RECV_LISTEN        = false
   # Default value for recv-listen port
   DEFAULT_RECV_LISTEN_PORT   = 5672
-  # Default value for auto-settle-off
-  DEFAULT_AUTO_SETTLE_OFF    = false
 
 end # module Defaults
 

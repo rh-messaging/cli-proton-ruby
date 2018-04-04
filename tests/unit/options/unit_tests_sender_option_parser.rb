@@ -519,7 +519,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_default_anonymous_value
 
-  def test_sender_option_parser_user_anonymous_no_value
+  def test_sender_option_parser_default_anonymous_no_value
     sender_options_user_anonymous_no_value = Options::SenderOptionParser.new(
         ["--anonymous"]
     )
@@ -527,7 +527,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
         true,
         sender_options_user_anonymous_no_value.options.anonymous
     )
-  end # test_sender_option_parser_user_anonymous_no_value
+  end # test_sender_option_parser_default_anonymous_no_value
 
   def test_sender_option_parser_user_anonymous_true_value_long
     sender_options_user_anonymous_long = Options::SenderOptionParser.new(
@@ -979,57 +979,6 @@ class UnitTestsSenderOptionParser < Minitest::Test
       exception.message
     )
   end # test_sender_option_parser_user_log_lib_value_long_raise_message
-
-  def test_sender_option_parser_default_auto_settle_off_value
-    default_sender_options_auto_settle_off = Options::SenderOptionParser.new([])
-    assert_equal(
-      Defaults::DEFAULT_AUTO_SETTLE_OFF,
-      default_sender_options_auto_settle_off.options.auto_settle_off
-    )
-  end # test_sender_option_parser_default_auto_settle_off_value
-
-  def test_sender_option_parser_user_auto_settle_off_value_long_no_value
-    user_sender_options_auto_settle_off_long_no_value = Options::SenderOptionParser.new(
-      ["--auto-settle-off"]
-    )
-    assert_equal(
-      true,
-      user_sender_options_auto_settle_off_long_no_value.options.auto_settle_off
-    )
-  end # test_sender_option_parser_user_auto_settle_off_value_long_no_value
-
-  def test_sender_option_parser_user_auto_settle_off_value_long
-    Options::BOOLEAN_STRINGS.each do |auto_settle_off_value_long|
-      user_sender_options_auto_settle_off_long = Options::SenderOptionParser.new(
-        ["--auto-settle-off", auto_settle_off_value_long]
-      )
-      assert_equal(
-        StringUtils.str_to_bool?(auto_settle_off_value_long),
-        user_sender_options_auto_settle_off_long.options.auto_settle_off
-      )
-    end
-  end # test_sender_option_parser_user_auto_settle_off_value_long
-
-  def test_sender_option_parser_user_auto_settle_off_value_long_raise
-    assert_raises OptionParser::InvalidArgument do
-      Options::SenderOptionParser.new(
-        ["--auto-settle-off", "raise"]
-      )
-    end
-  end # test_sender_option_parser_user_auto_settle_off_value_long_raise
-
-  def test_sender_option_parser_user_auto_settle_off_value_long_raise_message
-    wrong_value = "raise"
-    exception = assert_raises OptionParser::InvalidArgument do
-      Options::SenderOptionParser.new(
-        ["--auto-settle-off", wrong_value]
-      )
-    end
-    assert_equal(
-      "invalid argument: --auto-settle-off #{wrong_value}",
-      exception.message
-    )
-  end # test_sender_option_parser_user_auto_settle_off_value_long_raise_message
 
 end # class UnitTestsSenderOptionParser
 
