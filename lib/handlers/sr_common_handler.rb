@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :max_frame_size
     # Client library logging
     attr_accessor :log_lib
+    # Auto settle off
+    attr_accessor :auto_settle_off
 
     # Initialization of common events handler for sender and receiver client
     # ==== Common events handler arguments
@@ -42,6 +44,7 @@ module Handlers
       idle_timeout,
       max_frame_size,
       log_lib,
+      auto_settle_off,
       exit_timer
     )
       super(
@@ -54,6 +57,8 @@ module Handlers
       )
       # Save message(s) log format
       @log_msgs = log_msgs
+      # Save auto settle off
+      @auto_settle_off = auto_settle_off
     end
 
     # Default for un-handled errors is to raise an exception
