@@ -100,7 +100,7 @@ module Options
         "enable receiver listen (P2P) (#{Options::BOOLEAN_STRINGS.join("/")}, "+
         "default: #{Defaults::DEFAULT_RECV_LISTEN})"
       ) do |recv_listen|
-        @options.recv_listen = StringUtils.str_to_bool?(recv_listen)
+        @options.recv_listen = StringUtils.str_to_bool(recv_listen)
       end
 
       # Receiver listen port

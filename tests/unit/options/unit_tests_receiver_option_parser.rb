@@ -398,7 +398,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
         ["--recv-listen", "#{boolean_value}"]
       )
       assert_equal(
-        StringUtils.str_to_bool?(boolean_value),
+        StringUtils.str_to_bool(boolean_value),
         user_receiver_options_recv_listen_long.options.recv_listen
       )
     end
@@ -534,7 +534,7 @@ class UnitTestsReceiverOptionParser < Minitest::Test
         ["--auto-settle-off", auto_settle_off_value_long]
       )
       assert_equal(
-        StringUtils.str_to_bool?(auto_settle_off_value_long),
+        StringUtils.str_to_bool(auto_settle_off_value_long),
         user_receiver_options_auto_settle_off_long.options.auto_settle_off
       )
     end

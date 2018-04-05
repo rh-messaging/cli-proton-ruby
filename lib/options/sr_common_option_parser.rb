@@ -58,7 +58,7 @@ module Options
       ) do |auto_settle_off|
         @options.auto_settle_off = true
         @options.auto_settle_off = \
-          StringUtils.str_to_bool?(auto_settle_off) if auto_settle_off
+          StringUtils.str_to_bool(auto_settle_off) if auto_settle_off
       end
 
     end # initialize(args)
