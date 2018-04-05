@@ -106,6 +106,13 @@ class UnitTestsReceiverHandler < Minitest::Test
     assert_equal(@browse_value, @receiver_handler_initialization.browse)
   end # test_receiver_handler_browse_argument_initialization
 
+  def test_receiver_handler_selector_argument_initialization
+    assert_equal(
+        @selector_value,
+        @receiver_handler_initialization.selector
+    )
+  end # test_receiver_handler_selector_argument_initialization
+
   def test_receiver_handler_sasl_mechs_argument_initialization
     assert_equal(
       @sasl_mechs_value,
