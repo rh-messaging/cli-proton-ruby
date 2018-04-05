@@ -45,7 +45,9 @@ class ReceiverClient
       receiver_options_parser.options.recv_listen,
       receiver_options_parser.options.recv_listen_port,
       receiver_options_parser.options.auto_settle_off,
-      receiver_options_parser.options.exit_timer
+      receiver_options_parser.options.exit_timer,
+      receiver_options_parser.options.duration,
+      receiver_options_parser.options.duration_mode
     )
     # Run receiver client
     Qpid::Proton::Container.new(receiver_handler).run

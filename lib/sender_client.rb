@@ -15,6 +15,7 @@
 #++
 
 require 'qpid_proton'
+require_relative 'patches/container' # TODO aconway 2018-04-04: remove monkey-patch
 require_relative 'options/sender_option_parser'
 require_relative 'handlers/sender_handler'
 
@@ -54,6 +55,8 @@ class SenderClient
       sender_options_parser.options.log_lib,
       sender_options_parser.options.auto_settle_off,
       sender_options_parser.options.exit_timer,
+      sender_options_parser.options.duration,
+      sender_options_parser.options.duration_mode
     )
     # Run sender client
     Qpid::Proton::Container.new(sender_handler).run

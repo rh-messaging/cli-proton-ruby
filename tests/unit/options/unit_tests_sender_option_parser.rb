@@ -23,6 +23,8 @@ require_relative '../../../lib/defaults'
 # SenderOptionParser unit tests class
 class UnitTestsSenderOptionParser < Minitest::Test
 
+  def parse(args) Options::SenderOptionParser.new(args); end
+
   def test_sender_option_parser_default_broker_value
     sender_options_default_broker = Options::SenderOptionParser.new([])
     assert_equal(
@@ -1031,6 +1033,13 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_auto_settle_off_value_long_raise_message
 
+
+  def test_sender_option_parser_duration_mode
+    assert_equal 12.34, parse(["--duration", "12.34"]).options.duration
+    assert_equal "before-send", parse([]).options.duration_mode
+    assert_equal "after-send", parse(["--duration-mode", "after-send"]).options.duration_mode
+    assert_raises(OptionParser::InvalidArgument) { parse(["--duration-mode", "xxx"]) }
+  end
 end # class UnitTestsSenderOptionParser
 
 # eof

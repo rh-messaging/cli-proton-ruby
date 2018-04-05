@@ -16,6 +16,7 @@
 
 require_relative '../formatters/basic_formatter'
 require_relative '../formatters/dict_formatter'
+require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -86,7 +87,9 @@ module Handlers
       max_frame_size,
       log_lib,
       auto_settle_off,
-      exit_timer
+      exit_timer,
+      duration,
+      duration_mode
     )
       super(
         broker,
@@ -130,6 +133,10 @@ module Handlers
       @sent = 0
       # Number of accepted messages
       @accepted = 0
+      # Duration
+      @duration = Duration.new(duration, count, duration_mode);
+      # True if a send has been scheduled
+      @scheduled = false
     end
 
     # Called when the event loop starts,
@@ -158,62 +165,77 @@ module Handlers
         })
     end
 
+    def delay
+      before = @duration.delay("before-send")
+      after = @duration.delay("after-send") if @sent > 0 # No after-delay on first send
+      [before, after].compact.sum
+    end
+
     # Called when the sender link has credit
     # and messages can therefore be transferred,
     # sending SenderHandler#count messages
     def on_sendable(sender)
-      # While sender credit is available
-      # and number of sent messages is less than count
-      while (sender.credit > 0) && (@sent < @count)
-        exit_timer.reset if exit_timer
-        # Create new message
-        msg = Qpid::Proton::Message.new
-        msg.address = @broker.amqp_address if @anonymous
-        # Set message properties
-        if @msg_properties
-          @msg_properties.each { |k, v| msg[k] = v }
+      if @duration.zero?        # Send immediately
+        send(sender) while (sender.credit > 0) && (@sent < @count)
+      elsif (sender.credit > 0) && (@sent < @count) && !@scheduled # Schedule to send after delay
+        @scheduled = true
+        c = sender.connection.container;
+        c.schedule(delay) do
+          send(sender)
+          @scheduled = false    # Need to re-schedule for another send
         end
-        # If message content is set
-        if @msg_content
-          # If message content is string and contains formatting part
-          if @msg_content.is_a? String and @msg_content =~ /%[0-9]*d/
-            # Format message content with number of sent messages
-            msg.body = sprintf(@msg_content, @sent)
-          else
-            # Set message content as it is
-            msg.body = @msg_content
-          end
-        end # if
-        # Set message content type if specified
-        msg.content_type = @msg_content_type if @msg_content_type
-        # Set message durability
-        msg.durable = @msg_durable
-        # Set message TTL (ms)
-        msg.ttl = @msg_ttl
-        # If message correlation ID is set
-        if @msg_correlation_id
-          msg.correlation_id = @msg_correlation_id
-        end # if
-        # Set reply to address
-        msg.reply_to = @msg_reply_to
-        # If message group ID is set
-        if @msg_group_id
-          msg.group_id = @msg_group_id
+      end
+    end
+
+    def send(sender)
+      exit_timer.reset if exit_timer
+      # Create new message
+      msg = Qpid::Proton::Message.new
+      msg.address = @broker.amqp_address if @anonymous
+      # Set message properties
+      if @msg_properties
+        @msg_properties.each { |k, v| msg[k] = v }
+      end
+      # If message content is set
+      if @msg_content
+        # If message content is string and contains formatting part
+        if @msg_content.is_a? String and @msg_content =~ /%[0-9]*d/
+          # Format message content with number of sent messages
+          msg.body = sprintf(@msg_content, @sent)
+        else
+          # Set message content as it is
+          msg.body = @msg_content
         end
-        msg.priority = @msg_priority if @msg_priority
-        msg.id = @msg_id if @msg_id
-        msg.user_id = @msg_user_id if @msg_user_id
-        msg.subject = @msg_subject if @msg_subject
-        # Send message
-        sender.send(msg)
-        # Increase number of sent messages
-        @sent = @sent + 1
-        if @log_msgs == "body"
-          Formatters::BasicFormatter.new(msg).print
-        elsif @log_msgs == "dict"
-          Formatters::DictFormatter.new(msg).print
-        end
-      end # while
+      end # if
+      # Set message content type if specified
+      msg.content_type = @msg_content_type if @msg_content_type
+      # Set message durability
+      msg.durable = @msg_durable
+      # Set message TTL (ms)
+      msg.ttl = @msg_ttl
+      # If message correlation ID is set
+      if @msg_correlation_id
+        msg.correlation_id = @msg_correlation_id
+      end # if
+      # Set reply to address
+      msg.reply_to = @msg_reply_to
+      # If message group ID is set
+      if @msg_group_id
+        msg.group_id = @msg_group_id
+      end
+      msg.priority = @msg_priority if @msg_priority
+      msg.id = @msg_id if @msg_id
+      msg.user_id = @msg_user_id if @msg_user_id
+      msg.subject = @msg_subject if @msg_subject
+      # Send message
+      sender.send(msg)
+      # Increase number of sent messages
+      @sent = @sent + 1
+      if @log_msgs == "body"
+        Formatters::BasicFormatter.new(msg).print
+      elsif @log_msgs == "dict"
+        Formatters::DictFormatter.new(msg).print
+      end
     end
 
     # Called when the remote peer accepts an outgoing message,
