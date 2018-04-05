@@ -24,6 +24,8 @@ require_relative '../../../lib/constants'
 # ReceiverOptionParser unit tests class
 class UnitTestsReceiverOptionParser < Minitest::Test
 
+  def parse(args) Options::ReceiverOptionParser.new(args); end
+
   def test_receiver_option_parser_default_broker_value
     receiver_options_default_broker = Options::ReceiverOptionParser.new([])
     assert_equal(
@@ -578,6 +580,12 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     )
   end # test_receiver_option_parser_user_selector_value_long
 
+  def test_receiver_option_parser_duration_mode
+    assert_equal 12.34, parse(["--duration", "12.34"]).options.duration
+    assert_equal "before-receive", parse([]).options.duration_mode
+    assert_equal "after-receive", parse(["--duration-mode", "after-receive"]).options.duration_mode
+    assert_raises(OptionParser::InvalidArgument) { parse(["--duration-mode", "xxx"]) }
+  end
 end # class UnitTestsReceiverOptionParser
 
 # eof

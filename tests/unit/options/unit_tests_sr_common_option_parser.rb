@@ -23,6 +23,12 @@ require_relative '../../../lib/defaults'
 # SRCommonOptionParser unit tests class
 class UnitTestsSRCommonOptionParser < Minitest::Test
 
+  def parse(args)
+    p = Options::SRCommonOptionParser.new()
+    p.parse(args)
+    p
+  end
+
   def test_sr_common_option_parser_default_broker_value
     sr_common_options_default_broker = Options::SRCommonOptionParser.new()
     sr_common_options_default_broker.parse([])
@@ -420,6 +426,11 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_auto_settle_off_value_long_raise_message
 
+  def test_sr_common_option_parser_duration
+    assert_equal 0, parse([]).options.duration
+    assert_equal 12.34, parse(["--duration", "12.34"]).options.duration
+    assert_raises(OptionParser::InvalidArgument) { parse(["--duration", "xxx"]) }
+  end
 end # class UnitTestsSRCommonOptionParser
 
 # eof

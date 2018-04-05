@@ -37,6 +37,8 @@ class UnitTestsReceiverHandler < Minitest::Test
     @recv_listen_port_value = 8887
     @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
+    @duration_value = 0
+    @duration_mode_value = "before-receive"
 
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
       @broker_value,
@@ -53,6 +55,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @recv_listen_port_value,
       @auto_settle_off_value,
       @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
   end # setup
 
@@ -72,6 +76,8 @@ class UnitTestsReceiverHandler < Minitest::Test
       @recv_listen_port_value,
       @auto_settle_off_value,
       @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
 
     assert_equal(

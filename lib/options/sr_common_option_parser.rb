@@ -61,7 +61,14 @@ module Options
           StringUtils.str_to_bool(auto_settle_off) if auto_settle_off
       end
 
-    end # initialize(args)
+      @options.duration = 0
+      @opt_parser.on(
+        "--duration DURATION", Float,
+        "message actions total duration (defines msg-rate together with count, default 0)"
+      ) do |d|
+        @options.duration = d
+      end
+    end # initialize
 
     # Parsing of basic and common options for sender and receiver client
     # ==== Parameters

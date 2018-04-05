@@ -288,6 +288,16 @@ module Options
         @options.anonymous = StringUtils.str_to_bool(anonymous) if anonymous
       end
 
+      # Duration mode
+      duration_modes = %w(before-send after-send after-send-tx-action)
+      @options.duration_mode = "before-send"
+      @opt_parser.on(
+        "--duration-mode MODE", duration_modes,
+        "in use with --duration defines where to wait (allowed: #{duration_modes.join(', ')}, default: #{@options.duration_mode})"
+      ) do |d|
+        @options.duration_mode = d
+      end
+
       # Parse basic, common and specific options for sender client
       parse(args)
       # Apply options which need to be applied last

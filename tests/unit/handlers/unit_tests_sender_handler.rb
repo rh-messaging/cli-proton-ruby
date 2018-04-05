@@ -45,6 +45,8 @@ class UnitTestsSenderHandler < Minitest::Test
     @log_lib_value = "TRANSPORT_FRM"
     @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
+    @duration_value = 0
+    @duration_mode_value = "before-receive"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
@@ -69,6 +71,8 @@ class UnitTestsSenderHandler < Minitest::Test
       @log_lib_value,
       @auto_settle_off_value,
       @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
   end # setup
 
@@ -95,7 +99,9 @@ class UnitTestsSenderHandler < Minitest::Test
       @max_frame_size_value,
       @log_lib_value,
       @auto_settle_off_value,
-      @exit_timer_value
+      @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
 
     assert_equal(

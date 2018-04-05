@@ -121,6 +121,16 @@ module Options
         @options.recv_listen_port = recv_listen_port
       end
 
+      # Duration mode
+      @options.duration_mode = "before-receive"
+      duration_modes = %w(before-receive after-receive after-receive-action after-receive-tx-action)
+      @opt_parser.on(
+        "--duration-mode MODE", duration_modes,
+        "in use with --duration defines where to wait (allowed: #{duration_modes.join(', ')}, default: #{@options.duration_mode})"
+      ) do |d|
+        @options.duration_mode = d
+      end
+
       # Parse basic, common and specific options for receiver client
       parse(args)
     end # initialize(args)

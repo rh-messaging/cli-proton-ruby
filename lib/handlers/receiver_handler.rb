@@ -16,6 +16,7 @@
 
 require_relative '../formatters/basic_formatter'
 require_relative '../formatters/dict_formatter'
+require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
 module Handlers
@@ -59,7 +60,9 @@ module Handlers
       recv_listen,
       recv_listen_port,
       auto_settle_off,
-      exit_timer
+      exit_timer,
+      duration,
+      duration_mode
     )
       super(
         broker,
@@ -93,6 +96,8 @@ module Handlers
       @sent = 0
       # Counter of accepted messages
       @accepted = 0
+      # Duration
+      @duration = Duration.new(duration, count, duration_mode);
     end
 
     # Called when the event loop starts,
@@ -133,6 +138,7 @@ module Handlers
     # Called when a message is received,
     # receiving ReceiverHandler#count messages
     def on_message(delivery, message)
+      @duration.delay("before-receive") { |d| sleep d }
       exit_timer.reset if exit_timer
       # Print received message
       if @log_msgs == "body"
@@ -163,6 +169,7 @@ module Handlers
           delivery.receiver.connection.close unless process_reply_to
         end
       end # if
+      @duration.delay("after-receive") { |d| sleep d }
     end
 
     # Processing reply to reply-to address of message
