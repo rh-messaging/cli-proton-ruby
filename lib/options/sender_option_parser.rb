@@ -202,7 +202,7 @@ module Options
         "message durability (yes/no|True/False|true/false, default: "+
         "#{Defaults::DEFAULT_MSG_DURABLE})"
       ) do |msg_durable|
-        @options.msg_durable = StringUtils.str_to_bool?(msg_durable)
+        @options.msg_durable = StringUtils.str_to_bool(msg_durable)
       end
 
       # Message TTL
@@ -285,7 +285,7 @@ module Options
         " (default: #{Defaults::DEFAULT_ANONYMOUS})"
       ) do |anonymous|
         @options.anonymous = true
-        @options.anonymous = StringUtils.str_to_bool?(anonymous) if anonymous
+        @options.anonymous = StringUtils.str_to_bool(anonymous) if anonymous
       end
 
       # Parse basic, common and specific options for sender client
@@ -314,6 +314,8 @@ module Options
         return value.to_i
       elsif StringUtils.str_is_float?(value)
         return value.to_f
+      elsif StringUtils.str_is_bool?(value)
+        return StringUtils.str_to_bool(value)
       end
       return value
     end
@@ -328,12 +330,7 @@ module Options
       when "long"
         return Integer(value)
       when "bool"
-        t = /[tT]rue/.match? value
-        f = /[fF]alse/.match? value
-        unless t or f
-          raise ArgumentError, "invalid value for Boolean(): \"#{value}\""
-        end
-        return t
+        return StringUtils.str_to_bool(value)
       else
         return value
       end

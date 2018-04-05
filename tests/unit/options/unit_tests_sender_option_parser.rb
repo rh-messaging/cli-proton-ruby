@@ -1004,7 +1004,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
         ["--auto-settle-off", auto_settle_off_value_long]
       )
       assert_equal(
-        StringUtils.str_to_bool?(auto_settle_off_value_long),
+        StringUtils.str_to_bool(auto_settle_off_value_long),
         user_sender_options_auto_settle_off_long.options.auto_settle_off
       )
     end
