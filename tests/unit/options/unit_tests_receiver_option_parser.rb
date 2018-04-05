@@ -561,6 +561,23 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     )
   end # test_receiver_option_parser_user_auto_settle_off_value_long_raise_message
 
+  def test_receiver_option_parser_default_selector_value
+    default_receiver_options_selector = Options::ReceiverOptionParser.new([])
+    assert_nil(Defaults::DEFAULT_SELECTOR)
+    assert_nil(default_receiver_options_selector.options.selector)
+  end # test_receiver_option_parser_default_selector_value
+
+  def test_receiver_option_parser_user_selector_value_long
+    value = "a=b"
+    user_receiver_options_selector_long = Options::ReceiverOptionParser.new(
+      ["--recv-selector", value]
+    )
+    assert_equal(
+        value,
+        user_receiver_options_selector_long.options.selector
+    )
+  end # test_receiver_option_parser_user_selector_value_long
+
 end # class UnitTestsReceiverOptionParser
 
 # eof
