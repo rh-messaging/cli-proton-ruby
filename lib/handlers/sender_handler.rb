@@ -134,7 +134,7 @@ module Handlers
       # Number of accepted messages
       @accepted = 0
       # Duration
-      @duration = Duration.new(duration, count, duration_mode);
+      @duration = Duration.new(duration, count, duration_mode)
       # True if a send has been scheduled
       @scheduled = false
     end
@@ -179,7 +179,7 @@ module Handlers
         send(sender) while (sender.credit > 0) && (@sent < @count)
       elsif (sender.credit > 0) && (@sent < @count) && !@scheduled # Schedule to send after delay
         @scheduled = true
-        c = sender.connection.container;
+        c = sender.connection.container
         c.schedule(delay) do
           send(sender)
           @scheduled = false    # Need to re-schedule for another send

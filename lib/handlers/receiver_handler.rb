@@ -97,7 +97,7 @@ module Handlers
       # Counter of accepted messages
       @accepted = 0
       # Duration
-      @duration = Duration.new(duration, count, duration_mode);
+      @duration = Duration.new(duration, count, duration_mode)
     end
 
     # Called when the event loop starts,
