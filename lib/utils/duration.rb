@@ -21,7 +21,7 @@ class Duration
   # @param count the number of evenly-spaced delays within the duration
   # @param mode only delay for this mode
   def initialize(duration, count, mode)
-    @delay = duration / count         # Time for each delay
+    @delay = count > 0 ? duration / count : 0     # Time for each delay
     @deadline = Time.now + @delay     # End time of next call to #delay
     @mode = mode
   end
