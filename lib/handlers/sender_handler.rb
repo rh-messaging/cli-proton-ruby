@@ -168,7 +168,7 @@ module Handlers
     def delay
       before = @duration.delay("before-send")
       after = @duration.delay("after-send") if @sent > 0 # No after-delay on first send
-      [before, after].compact.sum
+      [before, after].compact.inject(:+)
     end
 
     # Called when the sender link has credit
