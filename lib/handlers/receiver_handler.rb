@@ -26,6 +26,8 @@ module Handlers
 
     # Count of expected messages to be received
     attr_accessor :count
+    # Credit for messages to be pre-fetched
+    attr_accessor :prefetch
     # Process reply to
     attr_accessor :process_reply_to
     # Browse
@@ -50,6 +52,7 @@ module Handlers
       broker,
       log_msgs,
       count,
+      prefetch,
       process_reply_to,
       browse,
       selector,
@@ -76,6 +79,8 @@ module Handlers
       )
       # Save count of expected messages to be received
       @count = count
+      # Save credit for messages to be pre-fetched
+      @prefetch = prefetch
       # Save process reply to
       @process_reply_to = process_reply_to
       # Save browse
@@ -125,7 +130,12 @@ module Handlers
           idle_timeout: @idle_timeout,
           # Set max frame size
           max_frame_size: @max_frame_size,
-        ).open_receiver(:source => source)
+        ).open_receiver(
+          # Set source options
+          :source => source,
+          # Set prefetch
+          :credit_window => @prefetch,
+        )
         # If browse messages instead of reading
         if browse
           # Set browsing mode

@@ -77,6 +77,8 @@ module Defaults
   DEFAULT_RECV_LISTEN_PORT   = 5672
   # Default value for auto-settle-off
   DEFAULT_AUTO_SETTLE_OFF    = false
+  # Default value of credit for messages to be pre-fetched
+  DEFAULT_PREFETCH           = 10
 
 end # module Defaults
 

@@ -46,6 +46,8 @@ module Options
 
       # Number of messages option
       @options.count = Defaults::DEFAULT_COUNT
+      # Credit for messages to be pre-fetched
+      @options.prefetch = Defaults::DEFAULT_PREFETCH
       # Process reply to
       @options.process_reply_to = Defaults::DEFAULT_PROC_REPLY_TO
       # Browse messages
@@ -66,6 +68,16 @@ module Options
         "(default: #{Defaults::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
+      end
+
+      # Prefetch
+      @opt_parser.on(
+        "--reactor-prefetch PREFETCH",
+        Integer,
+        "receiver's prefetch count "+
+        "(default: #{Defaults::DEFAULT_PREFETCH})"
+      ) do |prefetch|
+        @options.prefetch = prefetch
       end
 
       # Process reply to
