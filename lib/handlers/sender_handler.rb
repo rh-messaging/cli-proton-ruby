@@ -42,6 +42,8 @@ module Handlers
     attr_accessor :msg_reply_to
     # Message group ID
     attr_accessor :msg_group_id
+    # Message destination
+    attr_accessor :msg_to
     # Message priority
     attr_accessor :msg_priority
     # Message ID
@@ -64,6 +66,7 @@ module Handlers
     # msg_correlation_id:: message correlation ID
     # msg_reply_to:: address to send reply to
     # msg_group_id:: message group ID
+    # msg_to:: message destination
     # sasl_mechs:: allowed SASL mechanisms
     def initialize(
       broker,
@@ -77,6 +80,7 @@ module Handlers
       msg_correlation_id,
       msg_reply_to,
       msg_group_id,
+      msg_to,
       msg_priority,
       msg_id,
       msg_user_id,
@@ -119,6 +123,8 @@ module Handlers
       @msg_reply_to = msg_reply_to
       # Save message group ID
       @msg_group_id = msg_group_id
+      # Save message destination
+      @msg_to = msg_to
       # Save message priority
       @msg_priority = msg_priority
       # Save message ID
@@ -191,7 +197,13 @@ module Handlers
       exit_timer.reset if exit_timer
       # Create new message
       msg = Qpid::Proton::Message.new
-      msg.address = @broker.amqp_address if @anonymous
+      # Set message destination
+       msg.address = @msg_to
+      # If message destination is not set
+      unless msg.address
+        # Set message destination if anonymous mode
+      	msg.address = @broker.amqp_address if @anonymous
+      end
       # Set message properties
       if @msg_properties
         @msg_properties.each { |k, v| msg[k] = v }

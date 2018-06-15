@@ -79,6 +79,8 @@ module Defaults
   DEFAULT_AUTO_SETTLE_OFF    = false
   # Default value of credit for messages to be pre-fetched
   DEFAULT_PREFETCH           = 10
+  # Default message destination
+  DEFAULT_TO                 = nil
 
 end # module Defaults
 

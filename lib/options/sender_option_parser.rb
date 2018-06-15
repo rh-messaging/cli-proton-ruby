@@ -33,6 +33,7 @@ module Options
   # msg-correlation-id:: message correlation ID
   # msg-reply-to:: address to send reply to
   # msg-group-id:: message group ID
+  # msg-to:: message destination
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
@@ -76,6 +77,8 @@ module Options
       @options.msg_subject = Defaults::DEFAULT_MSG_SUBJECT
       # Anonymous producer option
       @options.anonymous = Defaults::DEFAULT_ANONYMOUS
+      # Message destination
+      @options.msg_to = Defaults::DEFAULT_TO
 
       # List of blocks executed at the end of parsing
       # when all other options are already applied
@@ -296,6 +299,15 @@ module Options
         "in use with --duration defines where to wait (allowed: #{duration_modes.join(', ')}, default: #{@options.duration_mode})"
       ) do |d|
         @options.duration_mode = d
+      end
+
+      # Destination
+      @opt_parser.on(
+        "--msg-to ADDRESS",
+        String,
+        "destination ADDRESS"
+      ) do |msg_to|
+        @options.msg_to = msg_to
       end
 
       # Parse basic, common and specific options for sender client

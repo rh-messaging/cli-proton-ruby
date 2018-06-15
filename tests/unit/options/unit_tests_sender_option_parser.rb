@@ -614,6 +614,23 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_group_id_value_long
 
+  def test_sender_option_parser_default_msg_to_value
+    sender_options_default_msg_to = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_to.options.msg_to
+    )
+  end # test_sender_option_parser_default_msg_to_value
+
+  def test_sender_option_parser_user_msg_to_value_long
+    sender_options_user_msg_to_long = Options::SenderOptionParser.new(
+      ["--msg-to", "msg-to-0987654321"]
+    )
+    assert_equal(
+      "msg-to-0987654321",
+      sender_options_user_msg_to_long.options.msg_to
+    )
+  end # test_sender_option_parser_user_msg_to_value_long
+
   def test_sender_option_parser_user_msg_content_map_item_value_short
     sender_options_user_msg_content_map_item_short = \
       Options::SenderOptionParser.new([

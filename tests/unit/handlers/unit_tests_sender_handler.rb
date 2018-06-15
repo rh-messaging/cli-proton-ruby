@@ -34,6 +34,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @msg_correlation_id_value = "corr-id-0123456789"
     @msg_reply_to_value = "127.0.0.127:5672/reply_queue"
     @msg_group_id_value = "group-id-0987654321"
+    @msg_to_value = "msg-to-address"
     @msg_priority_value = 42
     @msg_id_value = "message-id-112657"
     @msg_user_id_value = "user-id-666"
@@ -60,6 +61,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
+      @msg_to_value,
       @msg_priority_value,
       @msg_id_value,
       @msg_user_id_value,
@@ -89,6 +91,7 @@ class UnitTestsSenderHandler < Minitest::Test
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
+      @msg_to_value,
       @msg_priority_value,
       @msg_id_value,
       @msg_user_id_value,
@@ -180,6 +183,13 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.msg_group_id
     )
   end # test_sender_handler_msg_group_id_argument_initialization
+
+  def test_sender_handler_msg_to_argument_initialization
+    assert_equal(
+      @msg_to_value,
+      @sender_handler_initialization.msg_to
+    )
+  end # test_sender_handler_msg_to_argument_initialization
 
   def test_sender_handler_msg_priority_argument_initialization
     assert_equal(
