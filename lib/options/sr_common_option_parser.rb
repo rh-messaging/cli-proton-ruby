@@ -46,7 +46,6 @@ module Options
         "format of message(s) log (none/body/dict/interop, "+
         "default: #{Defaults::DEFAULT_LOG_MSGS})"
       ) do |log_msgs|
-        log_msgs = "dict" if log_msgs == "interop"
         @options.log_msgs = log_msgs
       end
 
