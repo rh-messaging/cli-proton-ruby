@@ -16,6 +16,7 @@
 
 require_relative '../formatters/basic_formatter'
 require_relative '../formatters/dict_formatter'
+require_relative '../formatters/interop_formatter'
 require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
@@ -247,6 +248,8 @@ module Handlers
         Formatters::BasicFormatter.new(msg).print
       elsif @log_msgs == "dict"
         Formatters::DictFormatter.new(msg).print
+      elsif @log_msgs == "interop"
+        Formatters::InteropFormatter.new(msg).print
       end
     end
 

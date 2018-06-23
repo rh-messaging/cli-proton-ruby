@@ -219,9 +219,9 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
   def test_sr_common_option_parser_user_log_msgs_value_long_interop
     sr_common_options_user_log_msgs_long_interop = \
       Options::SRCommonOptionParser.new()
-    sr_common_options_user_log_msgs_long_interop.parse(["--log-msgs", "dict"])
+    sr_common_options_user_log_msgs_long_interop.parse(["--log-msgs", "interop"])
     assert_equal(
-      "dict",
+      "interop",
       sr_common_options_user_log_msgs_long_interop.options.log_msgs
     )
   end # test_sr_common_option_parser_user_log_msgs_value_long

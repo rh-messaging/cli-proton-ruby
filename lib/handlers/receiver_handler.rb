@@ -16,6 +16,7 @@
 
 require_relative '../formatters/basic_formatter'
 require_relative '../formatters/dict_formatter'
+require_relative '../formatters/interop_formatter'
 require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
@@ -155,6 +156,8 @@ module Handlers
         Formatters::BasicFormatter.new(message).print
       elsif @log_msgs == "dict"
         Formatters::DictFormatter.new(message).print
+      elsif @log_msgs == "interop"
+        Formatters::InteropFormatter.new(message).print
       end
       # If process reply to
       if @process_reply_to and !message.reply_to.nil?
