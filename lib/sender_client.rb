@@ -15,7 +15,6 @@
 #++
 
 require 'qpid_proton'
-require_relative 'patches/container' # TODO aconway 2018-04-04: remove monkey-patch
 require_relative 'options/sender_option_parser'
 require_relative 'handlers/sender_handler'
 
