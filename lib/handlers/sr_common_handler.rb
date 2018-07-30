@@ -23,6 +23,8 @@ module Handlers
 
     # Format of log
     attr_accessor :log_msgs
+    # Content hashed
+    attr_accessor :msg_content_hashed
     # Idle timeout
     attr_accessor :idle_timeout
     # Max frame size
@@ -40,6 +42,7 @@ module Handlers
     def initialize(
       broker,
       log_msgs,
+      msg_content_hashed,
       sasl_mechs,
       idle_timeout,
       max_frame_size,
@@ -57,6 +60,8 @@ module Handlers
       )
       # Save message(s) log format
       @log_msgs = log_msgs
+      # Save message(s) content hashed
+      @msg_content_hashed = msg_content_hashed
       # Save auto settle off
       @auto_settle_off = auto_settle_off
     end

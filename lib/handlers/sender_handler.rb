@@ -72,6 +72,7 @@ module Handlers
     def initialize(
       broker,
       log_msgs,
+      msg_content_hashed,
       count,
       msg_properties,
       msg_content,
@@ -99,6 +100,7 @@ module Handlers
       super(
         broker,
         log_msgs,
+        msg_content_hashed,
         sasl_mechs,
         idle_timeout,
         max_frame_size,
@@ -245,11 +247,11 @@ module Handlers
       # Increase number of sent messages
       @sent = @sent + 1
       if @log_msgs == "body"
-        Formatters::BasicFormatter.new(msg).print
+        Formatters::BasicFormatter.new(msg, @msg_content_hashed).print
       elsif @log_msgs == "dict"
-        Formatters::DictFormatter.new(msg).print
+        Formatters::DictFormatter.new(msg, @msg_content_hashed).print
       elsif @log_msgs == "interop"
-        Formatters::InteropFormatter.new(msg).print
+        Formatters::InteropFormatter.new(msg, @msg_content_hashed).print
       end
     end
 

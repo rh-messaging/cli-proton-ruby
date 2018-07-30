@@ -25,6 +25,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @broker_value_string = "127.0.0.1:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
+    @msg_content_hashed_value = true
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 6869
@@ -35,6 +36,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @sr_common_handler_initialization = Handlers::SRCommonHandler.new(
       @broker_value,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
@@ -48,6 +50,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     sr_common_handler_initialization_string = Handlers::SRCommonHandler.new(
       @broker_value_string,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
@@ -72,6 +75,13 @@ class UnitTestsSRCommonHandler < Minitest::Test
   def test_sr_common_handler_log_msgs_argument_initialization
     assert_equal(@log_msgs_value, @sr_common_handler_initialization.log_msgs)
   end # test_sr_common_handler_log_msgs_argument_initialization
+
+  def test_sr_common_handler_msg_content_hashed_argument_initialization
+    assert_equal(
+        @msg_content_hashed_value,
+        @sr_common_handler_initialization.msg_content_hashed
+    )
+  end # test_sr_common_handler_msg_content_hashed_argument_initialization
 
   def test_sr_common_handler_sasl_mechs_argument_initialization
     assert_equal(

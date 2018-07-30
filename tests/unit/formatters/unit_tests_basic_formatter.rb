@@ -15,6 +15,7 @@
 # limitations under the License.
 #++
 
+require 'digest'
 require 'qpid_proton'
 require 'minitest/autorun'
 
@@ -28,11 +29,18 @@ class UnitTestsBasicFormatter < Minitest::Test
   class MyRaiseTest
   end # MyRaiseTest
 
-  def test_basic_formatter_initialization
+  def test_basic_formatter_initialization_message
     message_object = Qpid::Proton::Message.new(nil)
     basic_formatter = Formatters::BasicFormatter.new(message_object)
     assert_equal(message_object, basic_formatter.message)
-  end # test_basic_formatter_initialization
+  end # test_basic_formatter_initialization_message
+
+  def test_basic_formatter_initialization_message_and_msg_content_hashed
+    message_object = Qpid::Proton::Message.new(nil)
+    basic_formatter = Formatters::BasicFormatter.new(message_object, true)
+    assert_equal(message_object, basic_formatter.message)
+    assert_equal(true, basic_formatter.msg_content_hashed)
+  end # test_basic_formatter_initialization_message_and_msg_content_hashed
 
   def test_basic_formatter_true_format
     message_object = Qpid::Proton::Message.new(true)
@@ -202,6 +210,17 @@ class UnitTestsBasicFormatter < Minitest::Test
     end
     assert_equal("Unknown value type", exception.message)
   end # test_basic_formatter_raise_type_error_message
+
+  def test_basic_formatter_hashed_content
+    value = "text_to_hash"
+    message_object = Qpid::Proton::Message.new(value)
+    basic_formatter = Formatters::BasicFormatter.new(message_object, true)
+    hashed_value = basic_formatter.format_value(Digest::SHA1.hexdigest(value))+"\n"
+    my_output = StringIO.new
+    $stdout = my_output
+    basic_formatter.print
+    assert_equal(hashed_value, $stdout.string)
+  end # test_basic_formatter_hashed_content
 
 end # class UnitTestsBasicFormatter
 

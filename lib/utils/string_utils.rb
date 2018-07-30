@@ -14,6 +14,8 @@
 # limitations under the License.
 #++
 
+require 'digest'
+
 # Module containing string utilities for cli-proton-ruby clients
 module StringUtils
 
@@ -68,6 +70,10 @@ module StringUtils
     end
     # If value is not convertible, raise ArgumentError
     raise ArgumentError, "invalid value for Boolean(): \"#{value}\""
+  end
+
+  def self.sha1_hash(value)
+    Digest::SHA1.hexdigest value.to_s
   end
 
 end # module StringUtils

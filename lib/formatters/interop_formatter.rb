@@ -18,14 +18,14 @@ require_relative 'dict_formatter'
 
 module Formatters
 
-  # Formatter of message into dictionary format
+  # Formatter of message into interop dictionary format
   class InteropFormatter < Formatters::DictFormatter
 
-    # Initialization of dictionary formatter
-    # ==== Dictionary formatter arguments
+    # Initialization of interop dictionary formatter
+    # ==== Interop dictionary formatter arguments
     # message:: message to format
-    def initialize(message)
-      super(message)
+    def initialize(message, msg_content_hashed=false)
+      super(message, msg_content_hashed)
     end # initialize(message)
 
     # Format value according to type
@@ -43,6 +43,7 @@ module Formatters
       end
     end
 
-  end # class DictFormatter
+  end # class InteropFormatter
 
 end # module Formatters
+

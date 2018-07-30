@@ -204,6 +204,57 @@ class UnitTestsReceiverOptionParser < Minitest::Test
     assert_equal("dict", receiver_options_user_log_msgs_long.options.log_msgs)
   end # test_receiver_option_parser_user_log_msgs_value_long
 
+  def test_receiver_option_parser_default_msg_content_hashed_value
+    default_receiver_options_msg_content_hashed = Options::ReceiverOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MSG_CONTENT_HASHED,
+      default_receiver_options_msg_content_hashed.options.msg_content_hashed
+    )
+  end # test_receiver_option_parser_default_msg_content_hashed_value
+
+  def test_receiver_option_parser_user_msg_content_hashed_value_long_no_value
+    user_receiver_options_msg_content_hashed_long_no_value = Options::ReceiverOptionParser.new(
+      ["--msg-content-hashed"]
+    )
+    assert_equal(
+      true,
+      user_receiver_options_msg_content_hashed_long_no_value.options.msg_content_hashed
+    )
+  end # test_receiver_option_parser_user_msg_content_hashed_value_long_no_value
+
+  def test_receiver_option_parser_user_msg_content_hashed_value_long
+    Options::BOOLEAN_STRINGS.each do |msg_content_hashed_value_long|
+      user_receiver_options_msg_content_hashed_long = Options::ReceiverOptionParser.new(
+        ["--msg-content-hashed", msg_content_hashed_value_long]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(msg_content_hashed_value_long),
+        user_receiver_options_msg_content_hashed_long.options.msg_content_hashed
+      )
+    end
+  end # test_receiver_option_parser_user_msg_content_hashed_value_long
+
+  def test_receiver_option_parser_user_msg_content_hashed_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--msg-content-hashed", "raise"]
+      )
+    end
+  end # test_receiver_option_parser_user_msg_content_hashed_value_long_raise
+
+  def test_receiver_option_parser_user_msg_content_hashed_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ReceiverOptionParser.new(
+        ["--msg-content-hashed", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --msg-content-hashed #{wrong_value}",
+      exception.message
+    )
+  end # test_receiver_option_parser_user_msg_content_hashed_value_long_raise_message
+
   def test_receiver_option_parser_default_count_value
     receiver_options_default_count = Options::ReceiverOptionParser.new([])
     assert_equal(

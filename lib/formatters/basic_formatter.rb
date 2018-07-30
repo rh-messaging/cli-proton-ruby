@@ -14,6 +14,8 @@
 # limitations under the License.
 #++
 
+require_relative '../utils/string_utils'
+
 module Formatters
 
   # Basic formatter of message body
@@ -21,13 +23,16 @@ module Formatters
 
     # Message to format
     attr_accessor :message
+    # Content hashed
+    attr_accessor :msg_content_hashed
 
     # Initialization of basic formatter
     # ==== Basic formatter arguments
     # message:: message to format
-    def initialize(message)
+    def initialize(message, msg_content_hashed=false)
       # Save message
       @message = message
+      @msg_content_hashed = msg_content_hashed
     end # initialize(message)
 
     # Format value according to type
@@ -81,7 +86,7 @@ module Formatters
     # Prints formatted message body to stdout
     def print()
       # Print formatted body to stdout
-      puts format_value(@message.body)
+      puts format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
     end # print()
 
   end # class BasicFormatter

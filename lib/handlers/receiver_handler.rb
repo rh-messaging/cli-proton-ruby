@@ -52,6 +52,7 @@ module Handlers
     def initialize(
       broker,
       log_msgs,
+      msg_content_hashed,
       count,
       prefetch,
       process_reply_to,
@@ -71,6 +72,7 @@ module Handlers
       super(
         broker,
         log_msgs,
+        msg_content_hashed,
         sasl_mechs,
         idle_timeout,
         max_frame_size,
@@ -153,11 +155,11 @@ module Handlers
       exit_timer.reset if exit_timer
       # Print received message
       if @log_msgs == "body"
-        Formatters::BasicFormatter.new(message).print
+        Formatters::BasicFormatter.new(message, @msg_content_hashed).print
       elsif @log_msgs == "dict"
-        Formatters::DictFormatter.new(message).print
+        Formatters::DictFormatter.new(message, @msg_content_hashed).print
       elsif @log_msgs == "interop"
-        Formatters::InteropFormatter.new(message).print
+        Formatters::InteropFormatter.new(message, @msg_content_hashed).print
       end
       # If process reply to
       if @process_reply_to and !message.reply_to.nil?

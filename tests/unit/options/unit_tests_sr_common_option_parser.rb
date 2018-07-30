@@ -243,6 +243,60 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_log_msgs_value_wrong_long_raise_msg
 
+  def test_sr_common_option_parser_default_msg_content_hashed_value
+    default_sr_common_options_msg_content_hashed = Options::SRCommonOptionParser.new()
+    default_sr_common_options_msg_content_hashed.parse([])
+    assert_equal(
+      Defaults::DEFAULT_MSG_CONTENT_HASHED,
+      default_sr_common_options_msg_content_hashed.options.msg_content_hashed
+    )
+  end # test_sr_common_option_parser_default_msg_content_hashed_value
+
+  def test_sr_common_option_parser_user_msg_content_hashed_value_long_no_value
+    user_sr_common_options_msg_content_hashed_long_no_value = Options::SRCommonOptionParser.new()
+    user_sr_common_options_msg_content_hashed_long_no_value.parse(
+      ["--msg-content-hashed"]
+    )
+    assert_equal(
+      true,
+      user_sr_common_options_msg_content_hashed_long_no_value.options.msg_content_hashed
+    )
+  end # test_sr_common_option_parser_user_msg_content_hashed_value_long_no_value
+
+  def test_sr_common_option_parser_user_msg_content_hashed_value_long
+    Options::BOOLEAN_STRINGS.each do |msg_content_hashed_value_long|
+      user_sr_common_options_msg_content_hashed_long = Options::SRCommonOptionParser.new()
+      user_sr_common_options_msg_content_hashed_long.parse(
+        ["--msg-content-hashed", msg_content_hashed_value_long]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(msg_content_hashed_value_long),
+        user_sr_common_options_msg_content_hashed_long.options.msg_content_hashed
+      )
+    end
+  end # test_sr_common_option_parser_user_msg_content_hashed_value_long
+
+  def test_sr_common_option_parser_user_msg_content_hashed_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--msg-content-hashed", "raise"]
+      )
+    end
+  end # test_sr_common_option_parser_user_msg_content_hashed_value_long_raise
+
+  def test_sr_common_option_parser_user_msg_content_hashed_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--msg-content-hashed", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --msg-content-hashed #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_msg_content_hashed_value_long_raise_message
+
   def test_sr_common_option_parser_default_max_frame_size_value
     default_sr_common_options_max_frame_size = Options::SRCommonOptionParser.new()
     default_sr_common_options_max_frame_size.parse([])
