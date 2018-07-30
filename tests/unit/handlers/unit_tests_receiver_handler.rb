@@ -25,6 +25,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @broker_value_string = "127.0.0.1:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
+    @msg_content_hashed_value = true
     @count_value = 1
     @prefetch_value = 17
     @process_reply_to_value = true
@@ -44,6 +45,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @receiver_handler_initialization = Handlers::ReceiverHandler.new(
       @broker_value,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
       @prefetch_value,
       @process_reply_to_value,
@@ -66,6 +68,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     receiver_handler_initialization_string = Handlers::ReceiverHandler.new(
       @broker_value_string,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
       @prefetch_value,
       @process_reply_to_value,
@@ -99,6 +102,13 @@ class UnitTestsReceiverHandler < Minitest::Test
   def test_receiver_handler_log_msgs_argument_initialization
     assert_equal(@log_msgs_value, @receiver_handler_initialization.log_msgs)
   end # test_receiver_handler_log_msgs_argument_initialization
+
+  def test_receiver_handler_msg_content_hashed_argument_initialization
+    assert_equal(
+        @msg_content_hashed_value,
+        @receiver_handler_initialization.msg_content_hashed
+    )
+  end # test_receiver_handler_msg_content_hashed_argument_initialization
 
   def test_receiver_handler_count_argument_initialization
     assert_equal(@count_value, @receiver_handler_initialization.count)

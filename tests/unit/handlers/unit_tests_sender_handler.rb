@@ -25,6 +25,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @broker_value_string = "127.0.0.4:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
+    @msg_content_hashed_value = true
     @count_value = 7
     @msg_properties_value = {"property-key" => "property-value"}
     @msg_content_value = "hello"
@@ -52,6 +53,7 @@ class UnitTestsSenderHandler < Minitest::Test
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
       @msg_properties_value,
       @msg_content_value,
@@ -82,6 +84,7 @@ class UnitTestsSenderHandler < Minitest::Test
     sender_handler_initialization_string = Handlers::SenderHandler.new(
       @broker_value_string,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
       @msg_properties_value,
       @msg_content_value,
@@ -123,6 +126,13 @@ class UnitTestsSenderHandler < Minitest::Test
   def test_sender_handler_log_msgs_argument_initialization
     assert_equal(@log_msgs_value, @sender_handler_initialization.log_msgs)
   end # test_sender_handler_log_msgs_argument_initialization
+
+  def test_sender_handler_msg_content_hashed_argument_initialization
+    assert_equal(
+        @msg_content_hashed_value,
+        @sender_handler_initialization.msg_content_hashed
+    )
+  end # test_sender_handler_msg_content_hashed_argument_initialization
 
   def test_sender_handler_count_argument_initialization
     assert_equal(@count_value, @sender_handler_initialization.count)

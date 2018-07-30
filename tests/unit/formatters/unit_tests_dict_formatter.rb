@@ -15,6 +15,7 @@
 # limitations under the License.
 #++
 
+require 'digest'
 require 'qpid_proton'
 require 'minitest/autorun'
 
@@ -23,11 +24,18 @@ require_relative '../../../lib/formatters/dict_formatter'
 # DictFormatter unit tests class
 class UnitTestsDictFormatter < Minitest::Test
 
-  def test_dict_formatter_initialization
+  def test_dict_formatter_initialization_message
     message_object = Qpid::Proton::Message.new(nil)
     dict_formatter = Formatters::DictFormatter.new(message_object)
     assert_equal(message_object, dict_formatter.message)
-  end # test_dict_formatter_initialization
+  end # test_dict_formatter_initialization_message
+
+  def test_dict_formatter_initialization_message_and_msg_content_hashed
+    message_object = Qpid::Proton::Message.new(nil)
+    dict_formatter = Formatters::DictFormatter.new(message_object, true)
+    assert_equal(message_object, dict_formatter.message)
+    assert_equal(true, dict_formatter.msg_content_hashed)
+  end # test_dict_formatter_initialization_message_and_msg_content_hashed
 
   def test_dict_formatter_basic_message_format
     message_object = Qpid::Proton::Message.new()
@@ -49,6 +57,29 @@ class UnitTestsDictFormatter < Minitest::Test
       dict_formatter.get_as_dictionary()
     )
   end # test_dict_formatter_basic_message_format
+
+  def test_dict_formatter_basic_message_format_hashed
+    value = "text_to_hash"
+    message_object = Qpid::Proton::Message.new(value)
+    dict_formatter = Formatters::DictFormatter.new(message_object, true)
+    hashed_value = dict_formatter.format_value(Digest::SHA1.hexdigest(value))
+    assert_equal(
+      "{'redelivered': False, "\
+      + "'reply_to': None, "\
+      + "'subject': None, "\
+      + "'content_type': None, "\
+      + "'id': None, "\
+      + "'group_id': None, "\
+      + "'user_id': None, "\
+      + "'correlation_id': None, "\
+      + "'priority': 4, "\
+      + "'durable': False, "\
+      + "'ttl': 0, "\
+      + "'properties': {}, "\
+      + "'content': "+hashed_value+"}",
+      dict_formatter.get_as_dictionary()
+    )
+  end # test_dict_formatter_basic_message_format_hashed
 
 end # class UnitTestsDictFormatter
 

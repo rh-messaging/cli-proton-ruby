@@ -34,6 +34,7 @@ class ReceiverClient
     receiver_handler = Handlers::ReceiverHandler.new(
       receiver_options_parser.options.broker,
       receiver_options_parser.options.log_msgs,
+      receiver_options_parser.options.msg_content_hashed,
       receiver_options_parser.options.count,
       receiver_options_parser.options.prefetch,
       receiver_options_parser.options.process_reply_to,

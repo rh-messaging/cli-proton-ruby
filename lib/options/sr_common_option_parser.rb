@@ -36,6 +36,8 @@ module Options
 
       # Format of message log option
       @options.log_msgs = Defaults::DEFAULT_LOG_MSGS
+      # Hash message content
+      @options.msg_content_hashed = Defaults::DEFAULT_MSG_CONTENT_HASHED
       # Auto settle off
       @options.auto_settle_off = Defaults::DEFAULT_AUTO_SETTLE_OFF
 
@@ -47,6 +49,17 @@ module Options
         "default: #{Defaults::DEFAULT_LOG_MSGS})"
       ) do |log_msgs|
         @options.log_msgs = log_msgs
+      end
+
+      # Message content hashed
+      @opt_parser.on(
+        "--msg-content-hashed [HASHED]",
+        Options::BOOLEAN_STRINGS,
+        "display SHA-1 hash of message content in logged messages (true/false) (default: #{Defaults::DEFAULT_MSG_CONTENT_HASHED})"
+      ) do |msg_content_hashed|
+        @options.msg_content_hashed = true
+        @options.msg_content_hashed = \
+          StringUtils.str_to_bool(msg_content_hashed) if msg_content_hashed
       end
 
       # Auto settle off

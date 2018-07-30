@@ -34,6 +34,7 @@ class SenderClient
     sender_handler = Handlers::SenderHandler.new(
       sender_options_parser.options.broker,
       sender_options_parser.options.log_msgs,
+      sender_options_parser.options.msg_content_hashed,
       sender_options_parser.options.count,
       sender_options_parser.options.msg_properties,
       sender_options_parser.options.msg_content,

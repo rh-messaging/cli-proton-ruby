@@ -81,6 +81,8 @@ module Defaults
   DEFAULT_PREFETCH           = 10
   # Default message destination
   DEFAULT_TO                 = nil
+  # Default message content hashed
+  DEFAULT_MSG_CONTENT_HASHED = false
 
 end # module Defaults
 

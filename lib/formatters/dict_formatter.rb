@@ -24,8 +24,8 @@ module Formatters
     # Initialization of dictionary formatter
     # ==== Dictionary formatter arguments
     # message:: message to format
-    def initialize(message)
-      super(message)
+    def initialize(message, msg_content_hashed=false)
+      super(message, msg_content_hashed)
     end # initialize(message)
 
     # Format message as dictionary
@@ -47,7 +47,9 @@ module Formatters
       + "'durable': #{format_value(@message.durable)}, "\
       + "'ttl': #{format_value(@message.ttl)}, "\
       + "'properties': #{format_value(@message.properties)}, "\
-      + "'content': #{format_value(@message.body)}"
+      + "'content': #{
+        format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
+      }"
       return "{#{dict_to_return}}"
     end # get_as_dictionary()
 
