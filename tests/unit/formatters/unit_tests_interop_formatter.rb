@@ -43,19 +43,27 @@ class UnitTestsInteropFormatter < Minitest::Test
     interop_formatter = Formatters::InteropFormatter.new(message_object)
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': 3.14159, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
+      + "'absolute-expiry-time': 0, "\
+      + "'address': None, "\
+      + "'content-encoding': None, "\
+      + "'delivery-count': 0, "\
+      + "'first-acquirer': False, "\
+      + "'group-sequence': 0, "\
+      + "'reply-to-group-id': None, "\
+      + "'to': None, "\
       + "'properties': {}, "\
       + "'content': None}",
-      interop_formatter.get_as_dictionary()
+      interop_formatter.get_as_interop_dictionary()
     )
   end # test_interop_formatter_basic_message_format_round_down
 
@@ -65,19 +73,27 @@ class UnitTestsInteropFormatter < Minitest::Test
     interop_formatter = Formatters::InteropFormatter.new(message_object)
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': 3.1416, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
+      + "'absolute-expiry-time': 0, "\
+      + "'address': None, "\
+      + "'content-encoding': None, "\
+      + "'delivery-count': 0, "\
+      + "'first-acquirer': False, "\
+      + "'group-sequence': 0, "\
+      + "'reply-to-group-id': None, "\
+      + "'to': None, "\
       + "'properties': {}, "\
       + "'content': None}",
-      interop_formatter.get_as_dictionary()
+      interop_formatter.get_as_interop_dictionary()
     )
   end # test_interop_formatter_basic_message_format_round_up
 
@@ -89,19 +105,27 @@ class UnitTestsInteropFormatter < Minitest::Test
     hashed_value = interop_formatter.format_value(Digest::SHA1.hexdigest(value))
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': 3.14159, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
+      + "'absolute-expiry-time': 0, "\
+      + "'address': None, "\
+      + "'content-encoding': None, "\
+      + "'delivery-count': 0, "\
+      + "'first-acquirer': False, "\
+      + "'group-sequence': 0, "\
+      + "'reply-to-group-id': None, "\
+      + "'to': None, "\
       + "'properties': {}, "\
       + "'content': "+hashed_value+"}",
-      interop_formatter.get_as_dictionary()
+      interop_formatter.get_as_interop_dictionary()
     )
   end # test_interop_formatter_basic_message_format_round_down_hashed
 
@@ -113,19 +137,27 @@ class UnitTestsInteropFormatter < Minitest::Test
     hashed_value = interop_formatter.format_value(Digest::SHA1.hexdigest(value))
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': 3.1416, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
+      + "'absolute-expiry-time': 0, "\
+      + "'address': None, "\
+      + "'content-encoding': None, "\
+      + "'delivery-count': 0, "\
+      + "'first-acquirer': False, "\
+      + "'group-sequence': 0, "\
+      + "'reply-to-group-id': None, "\
+      + "'to': None, "\
       + "'properties': {}, "\
       + "'content': "+hashed_value+"}",
-      interop_formatter.get_as_dictionary()
+      interop_formatter.get_as_interop_dictionary()
     )
   end # test_interop_formatter_basic_message_format_round_up_hashed
 
