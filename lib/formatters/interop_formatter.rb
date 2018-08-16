@@ -43,6 +43,45 @@ module Formatters
       end
     end
 
+    # Format message as interop dictionary
+    # ==== Returns
+    # message formatted as interop dictionary
+    def get_as_interop_dictionary()
+      dict_to_return = "" \
+      + "'redelivered': #{format_value(
+        @message.delivery_count == 0 ? false : true
+      )}, "\
+      + "'reply-to': #{format_value(@message.reply_to)}, "\
+      + "'subject': #{format_value(@message.subject)}, "\
+      + "'content-type': #{format_value(@message.content_type)}, "\
+      + "'id': #{format_value(@message.id)}, "\
+      + "'group-id': #{format_value(@message.group_id)}, "\
+      + "'user-id': #{format_value(@message.user_id)}, "\
+      + "'correlation-id': #{format_value(@message.correlation_id)}, "\
+      + "'priority': #{format_value(@message.priority)}, "\
+      + "'durable': #{format_value(@message.durable)}, "\
+      + "'ttl': #{format_value(@message.ttl)}, "\
+      + "'absolute-expiry-time': #{format_value(@message.expires)}, "\
+      + "'address': #{format_value(@message.address)}, "\
+      + "'content-encoding': #{format_value(@message.content_encoding)}, "\
+      + "'delivery-count': #{format_value(@message.delivery_count)}, "\
+      + "'first-acquirer': #{format_value(@message.first_acquirer?)}, "\
+      + "'group-sequence': #{format_value(@message.group_sequence)}, "\
+      + "'reply-to-group-id': #{format_value(@message.reply_to_group_id)}, "\
+      + "'to': #{format_value(@message.to)}, "\
+      + "'properties': #{format_value(@message.properties)}, "\
+      + "'content': #{
+        format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
+      }"
+      return "{#{dict_to_return}}"
+    end # get_as_interop_dictionary()
+
+    # Prints message formatted as interop dictionary to stdout
+    def print()
+      # Print formatted message to stdout
+      puts get_as_interop_dictionary()
+    end # print()
+
   end # class InteropFormatter
 
 end # module Formatters

@@ -36,13 +36,13 @@ module Formatters
       + "'redelivered': #{format_value(
         @message.delivery_count == 0 ? false : true
       )}, "\
-      + "'reply_to': #{format_value(@message.reply_to)}, "\
+      + "'reply-to': #{format_value(@message.reply_to)}, "\
       + "'subject': #{format_value(@message.subject)}, "\
-      + "'content_type': #{format_value(@message.content_type)}, "\
+      + "'content-type': #{format_value(@message.content_type)}, "\
       + "'id': #{format_value(@message.id)}, "\
-      + "'group_id': #{format_value(@message.group_id)}, "\
-      + "'user_id': #{format_value(@message.user_id)}, "\
-      + "'correlation_id': #{format_value(@message.correlation_id)}, "\
+      + "'group-id': #{format_value(@message.group_id)}, "\
+      + "'user-id': #{format_value(@message.user_id)}, "\
+      + "'correlation-id': #{format_value(@message.correlation_id)}, "\
       + "'priority': #{format_value(@message.priority)}, "\
       + "'durable': #{format_value(@message.durable)}, "\
       + "'ttl': #{format_value(@message.ttl)}, "\

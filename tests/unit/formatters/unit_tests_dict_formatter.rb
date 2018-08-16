@@ -42,13 +42,13 @@ class UnitTestsDictFormatter < Minitest::Test
     dict_formatter = Formatters::DictFormatter.new(message_object)
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': None, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
@@ -65,13 +65,13 @@ class UnitTestsDictFormatter < Minitest::Test
     hashed_value = dict_formatter.format_value(Digest::SHA1.hexdigest(value))
     assert_equal(
       "{'redelivered': False, "\
-      + "'reply_to': None, "\
+      + "'reply-to': None, "\
       + "'subject': None, "\
-      + "'content_type': None, "\
+      + "'content-type': None, "\
       + "'id': None, "\
-      + "'group_id': None, "\
-      + "'user_id': None, "\
-      + "'correlation_id': None, "\
+      + "'group-id': None, "\
+      + "'user-id': None, "\
+      + "'correlation-id': None, "\
       + "'priority': 4, "\
       + "'durable': False, "\
       + "'ttl': 0, "\
