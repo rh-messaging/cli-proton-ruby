@@ -34,6 +34,7 @@ class UnitTestsReceiverHandler < Minitest::Test
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 8191
+    @sasl_enabled_value = "sasl-enabled"
     @log_lib_value = "TRANSPORT_RAW"
     @recv_listen_value = "recv-listen"
     @recv_listen_port_value = 8887
@@ -54,6 +55,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @recv_listen_value,
       @recv_listen_port_value,
@@ -77,6 +79,7 @@ class UnitTestsReceiverHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @recv_listen_value,
       @recv_listen_port_value,
@@ -178,6 +181,13 @@ class UnitTestsReceiverHandler < Minitest::Test
         @receiver_handler_initialization.recv_listen
     )
   end # test_receiver_handler_recv_listen_argument_initialization
+
+  def test_receiver_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @receiver_handler_initialization.sasl_enabled
+    )
+  end # test_receiver_handler_sasl_enabled_argument_initialization
 
   def test_receiver_handler_recv_listen_port_argument_initialization
     assert_equal(

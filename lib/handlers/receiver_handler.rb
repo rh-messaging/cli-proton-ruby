@@ -61,6 +61,7 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      sasl_enabled,
       log_lib,
       recv_listen,
       recv_listen_port,
@@ -76,6 +77,7 @@ module Handlers
         sasl_mechs,
         idle_timeout,
         max_frame_size,
+        sasl_enabled,
         log_lib,
         auto_settle_off,
         exit_timer
@@ -124,7 +126,7 @@ module Handlers
           # Set broker URI
           @broker,
           # Enabled SASL authentication
-          sasl_enabled: true,
+          sasl_enabled: @sasl_enabled,
           # Enabled insecure SASL mechanisms
           sasl_allow_insecure_mechs: true,
           # Set allowed SASL mechanisms

@@ -43,6 +43,7 @@ class ReceiverClient
       receiver_options_parser.options.sasl_mechs,
       receiver_options_parser.options.idle_timeout,
       receiver_options_parser.options.max_frame_size,
+      receiver_options_parser.options.sasl_enabled,
       receiver_options_parser.options.log_lib,
       receiver_options_parser.options.recv_listen,
       receiver_options_parser.options.recv_listen_port,

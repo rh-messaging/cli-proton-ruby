@@ -384,6 +384,60 @@ class UnitTestsSRCommonOptionParser < Minitest::Test
     )
   end # test_sr_common_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
 
+  def test_sr_common_option_parser_default_sasl_enabled_value
+    default_sr_common_options_sasl_enabled = Options::SRCommonOptionParser.new()
+    default_sr_common_options_sasl_enabled.parse([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_ENABLED,
+      default_sr_common_options_sasl_enabled.options.sasl_enabled
+    )
+  end # test_sr_common_option_parser_default_sasl_enabled_value
+
+  def test_sr_common_option_parser_user_sasl_enabled_no_value
+    sr_common_options_user_sasl_enabled_no_value = Options::SRCommonOptionParser.new()
+    sr_common_options_user_sasl_enabled_no_value.parse(
+        ["--conn-sasl-enabled"]
+    )
+    assert_equal(
+        true,
+        sr_common_options_user_sasl_enabled_no_value.options.sasl_enabled
+    )
+  end # test_sr_common_option_parser_user_sasl_enabled_no_value
+
+  def test_sr_common_option_parser_user_sasl_enabled_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_sr_common_options_sasl_enabled_long = Options::SRCommonOptionParser.new()
+      user_sr_common_options_sasl_enabled_long.parse(
+        ["--conn-sasl-enabled", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(boolean_value),
+        user_sr_common_options_sasl_enabled_long.options.sasl_enabled
+      )
+    end
+  end # test_sr_common_option_parser_user_sasl_enabled_value_long
+
+  def test_sr_common_option_parser_user_sasl_enabled_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-sasl-enabled", "raise"]
+      )
+    end
+  end # test_sr_common_option_parser_user_sasl_enabled_value_long_raise
+
+  def test_sr_common_option_parser_user_sasl_enabled_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SRCommonOptionParser.new().parse(
+        ["--conn-sasl-enabled", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-sasl-enabled #{wrong_value}",
+      exception.message
+    )
+  end # test_sr_common_option_parser_user_sasl_enabled_value_long_raise_message
+
   def test_sr_common_option_parser_default_log_lib_value
     default_sr_common_options_log_lib = Options::SRCommonOptionParser.new()
     default_sr_common_options_log_lib.parse([])

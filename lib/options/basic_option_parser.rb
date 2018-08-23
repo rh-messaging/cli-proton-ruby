@@ -51,6 +51,8 @@ module Options
       @options.idle_timeout = Defaults::DEFAULT_IDLE_TIMEOUT
       # Max frame size
       @options.max_frame_size = Defaults::DEFAULT_MAX_FRAME_SIZE
+      # SASL enabled
+      @options.sasl_enabled = Defaults::DEFAULT_SASL_ENABLED
       # Client library logging
       @options.log_lib = Defaults::DEFAULT_LOG_LIB
 
@@ -119,6 +121,17 @@ module Options
         "default: #{Defaults::DEFAULT_IDLE_TIMEOUT})"
       ) do |idle_timeout|
         @options.idle_timeout = idle_timeout
+      end
+
+      # Connection SASL enabled
+      @opt_parser.on(
+        "--conn-sasl-enabled [ENABLED]",
+        Options::BOOLEAN_STRINGS,
+        "enable connection SASL (#{Options::BOOLEAN_STRINGS.join("/")}, "+
+        "default: #{Defaults::DEFAULT_SASL_ENABLED})"
+      ) do |sasl_enabled|
+        @options.sasl_enabled = true
+        @options.sasl_enabled = StringUtils.str_to_bool(sasl_enabled) if sasl_enabled
       end
 
       # Client library logging

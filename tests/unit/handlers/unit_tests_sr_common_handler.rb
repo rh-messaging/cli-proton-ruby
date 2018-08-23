@@ -29,6 +29,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 6869
+    @sasl_enabled_value = "sasl-enabled"
     @log_lib_value = "TRANSPORT_DRV"
     @auto_settle_off_value = "settle"
     @exit_timer_value = "timeout"
@@ -40,6 +41,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @auto_settle_off_value,
       @exit_timer_value,
@@ -54,6 +56,7 @@ class UnitTestsSRCommonHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @auto_settle_off_value,
       @exit_timer_value,
@@ -103,6 +106,13 @@ class UnitTestsSRCommonHandler < Minitest::Test
         @sr_common_handler_initialization.max_frame_size
     )
   end # test_sr_common_handler_max_frame_size_argument_initialization
+
+  def test_sr_common_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @sr_common_handler_initialization.sasl_enabled
+    )
+  end # test_sr_common_handler_sasl_enabled_argument_initialization
 
   def test_sr_common_handler_log_lib_argument_initialization
     assert_equal(

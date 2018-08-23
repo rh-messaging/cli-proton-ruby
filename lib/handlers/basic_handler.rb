@@ -32,6 +32,8 @@ module Handlers
     attr_accessor :idle_timeout
     # Max frame size
     attr_accessor :max_frame_size
+    # SASL enabled
+    attr_accessor :sasl_enabled
     # Client library logging
     attr_accessor :log_lib
 
@@ -44,6 +46,7 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      sasl_enabled,
       log_lib,
       exit_timer
     )
@@ -61,6 +64,8 @@ module Handlers
       @idle_timeout = idle_timeout
       # Save max frame size
       @max_frame_size = max_frame_size
+      # Save SASL enabled
+      @sasl_enabled = sasl_enabled
       # Save client library logging
       @log_lib = log_lib
       # Set environment variable for client library logging

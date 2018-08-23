@@ -83,6 +83,8 @@ module Defaults
   DEFAULT_TO                 = nil
   # Default message content hashed
   DEFAULT_MSG_CONTENT_HASHED = false
+  # Default connection SASL enabled
+  DEFAULT_SASL_ENABLED       = true
 
 end # module Defaults
 

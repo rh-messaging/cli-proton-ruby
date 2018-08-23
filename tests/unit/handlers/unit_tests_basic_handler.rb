@@ -32,6 +32,8 @@ class UnitTestsBasicHandler < Minitest::Test
     @idle_timeout_value = 85
     # Max frame size
     @max_frame_size_value = 5557
+    # SASL enabled
+    @sasl_enabled_value = "sasl-enabled"
     # Client library logging
     @log_lib_value = "TRANSPORT_RAW"
     # Exit timer for client
@@ -42,6 +44,7 @@ class UnitTestsBasicHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @exit_timer_value,
     )
@@ -53,6 +56,7 @@ class UnitTestsBasicHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @exit_timer_value,
     )
@@ -90,6 +94,13 @@ class UnitTestsBasicHandler < Minitest::Test
       @basic_handler_initialization_class.max_frame_size
     )
   end # test_basic_handler_max_frame_size_argument_initialization
+
+  def test_basic_handler_sasl_enabled_argument_initialization
+    assert_equal(
+      @sasl_enabled_value,
+      @basic_handler_initialization_class.sasl_enabled
+    )
+  end # test_basic_handler_sasl_enabled_argument_initialization
 
   def test_basic_handler_log_lib_argument_initialization
     assert_equal(
