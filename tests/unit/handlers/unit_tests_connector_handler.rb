@@ -28,6 +28,7 @@ class UnitTestsConnectorHandler < Minitest::Test
     @sasl_mechs_value = "SASL"
     @idle_timeout_value = 85
     @max_frame_size_value = 8999
+    @sasl_enabled_value = "sasl-enabled"
     @log_lib_value = "TRANSPORT_DRV"
     @exit_timer_value = "timeout"
 
@@ -37,6 +38,7 @@ class UnitTestsConnectorHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @exit_timer_value,
     )
@@ -49,6 +51,7 @@ class UnitTestsConnectorHandler < Minitest::Test
       @sasl_mechs_value,
       @idle_timeout_value,
       @max_frame_size_value,
+      @sasl_enabled_value,
       @log_lib_value,
       @exit_timer_value,
     )
@@ -90,6 +93,13 @@ class UnitTestsConnectorHandler < Minitest::Test
         @connector_handler_initialization.max_frame_size
     )
   end # test_connector_handler_max_frame_size_argument_initialization
+
+  def test_connector_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @connector_handler_initialization.sasl_enabled
+    )
+  end # test_connector_handler_sasl_enabled_argument_initialization
 
   def test_connector_handler_log_lib_argument_initialization
     assert_equal(

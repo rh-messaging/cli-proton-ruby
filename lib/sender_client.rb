@@ -53,6 +53,7 @@ class SenderClient
       sender_options_parser.options.sasl_mechs,
       sender_options_parser.options.idle_timeout,
       sender_options_parser.options.max_frame_size,
+      sender_options_parser.options.sasl_enabled,
       sender_options_parser.options.log_lib,
       sender_options_parser.options.auto_settle_off,
       sender_options_parser.options.exit_timer,

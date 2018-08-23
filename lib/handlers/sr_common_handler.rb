@@ -29,6 +29,8 @@ module Handlers
     attr_accessor :idle_timeout
     # Max frame size
     attr_accessor :max_frame_size
+    # SASL enabled
+    attr_accessor :sasl_enabled
     # Client library logging
     attr_accessor :log_lib
     # Auto settle off
@@ -46,6 +48,7 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      sasl_enabled,
       log_lib,
       auto_settle_off,
       exit_timer
@@ -55,6 +58,7 @@ module Handlers
         sasl_mechs,
         idle_timeout,
         max_frame_size,
+        sasl_enabled,
         log_lib,
         exit_timer
       )

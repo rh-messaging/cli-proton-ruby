@@ -37,6 +37,7 @@ module Handlers
       sasl_mechs,
       idle_timeout,
       max_frame_size,
+      sasl_enabled,
       log_lib,
       exit_timer
     )
@@ -45,6 +46,7 @@ module Handlers
         sasl_mechs,
         idle_timeout,
         max_frame_size,
+        sasl_enabled,
         log_lib,
         exit_timer
       )
@@ -64,7 +66,7 @@ module Handlers
           # Set broker URI
           @broker,
           # Enable SASL authentication
-          sasl_enabled: true,
+          sasl_enabled: @sasl_enabled,
           # Enable insecure SASL mechanisms
           sasl_allow_insecure_mechs: true,
           # Set allowed SASL mechanisms

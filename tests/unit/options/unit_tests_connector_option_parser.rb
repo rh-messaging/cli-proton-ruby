@@ -293,6 +293,57 @@ class UnitTestsConnectorOptionParser < Minitest::Test
     )
   end # test_connector_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
 
+  def test_connector_option_parser_default_sasl_enabled_value
+    default_connector_options_sasl_enabled = Options::ConnectorOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_ENABLED,
+      default_connector_options_sasl_enabled.options.sasl_enabled
+    )
+  end # test_connector_option_parser_default_sasl_enabled_value
+
+  def test_connector_option_parser_user_sasl_enabled_no_value
+    connector_options_user_sasl_enabled_no_value = Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled"]
+    )
+    assert_equal(
+        true,
+        connector_options_user_sasl_enabled_no_value.options.sasl_enabled
+    )
+  end # test_connector_option_parser_user_sasl_enabled_no_value
+
+  def test_connector_option_parser_user_sasl_enabled_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_connector_options_sasl_enabled_long = Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(boolean_value),
+        user_connector_options_sasl_enabled_long.options.sasl_enabled
+      )
+    end
+  end # test_connector_option_parser_user_sasl_enabled_value_long
+
+  def test_connector_option_parser_user_sasl_enabled_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", "raise"]
+      )
+    end
+  end # test_connector_option_parser_user_sasl_enabled_value_long_raise
+
+  def test_connector_option_parser_user_sasl_enabled_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-sasl-enabled #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_sasl_enabled_value_long_raise_message
+
   def test_connector_option_parser_default_log_lib_value
     default_connector_options_log_lib = Options::ConnectorOptionParser.new([])
     assert_equal(
