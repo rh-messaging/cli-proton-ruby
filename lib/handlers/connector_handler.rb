@@ -31,8 +31,25 @@ module Handlers
     # broker:: URI of broker
     # count:: Number of connections to create
     # sasl_mechs:: Allowed SASL mechanisms
-    def initialize(broker, count, sasl_mechs)
-      super(broker, sasl_mechs)
+    def initialize(
+      broker,
+      count,
+      sasl_mechs,
+      idle_timeout,
+      max_frame_size,
+      sasl_enabled,
+      log_lib,
+      exit_timer
+    )
+      super(
+        broker,
+        sasl_mechs,
+        idle_timeout,
+        max_frame_size,
+        sasl_enabled,
+        log_lib,
+        exit_timer
+      )
       # Save count of connections
       @count = count
       # Initialize array of connections
@@ -49,13 +66,21 @@ module Handlers
           # Set broker URI
           @broker,
           # Enable SASL authentication
-          sasl_enabled: true,
+          sasl_enabled: @sasl_enabled,
           # Enable insecure SASL mechanisms
           sasl_allow_insecure_mechs: true,
           # Set allowed SASL mechanisms
-          sasl_allowed_mechs: @sasl_mechs
+          sasl_allowed_mechs: @sasl_mechs,
+          # Set idle timeout
+          idle_timeout: @idle_timeout,
+          # Set max frame size
+          max_frame_size: @max_frame_size,
         ))
       end
+    end
+
+    def on_connection_open(_c)
+      exit_timer.reset if exit_timer
     end
 
   end # class ConnectorHandler

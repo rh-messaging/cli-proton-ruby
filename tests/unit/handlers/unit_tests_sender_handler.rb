@@ -25,26 +25,60 @@ class UnitTestsSenderHandler < Minitest::Test
     @broker_value_string = "127.0.0.4:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
+    @msg_content_hashed_value = true
     @count_value = 7
+    @msg_properties_value = {"property-key" => "property-value"}
     @msg_content_value = "hello"
+    @msg_content_type_value = "msg-content-type-value"
     @msg_durable_value = "True"
     @msg_ttl_value = 29
     @msg_correlation_id_value = "corr-id-0123456789"
     @msg_reply_to_value = "127.0.0.127:5672/reply_queue"
     @msg_group_id_value = "group-id-0987654321"
+    @msg_to_value = "msg-to-address"
+    @msg_priority_value = 42
+    @msg_id_value = "message-id-112657"
+    @msg_user_id_value = "user-id-666"
+    @msg_subject_value = "subject-swordfish"
+    @anonymous_value = true
     @sasl_mechs_value = "SASL"
+    @idle_timeout_value = 85
+    @max_frame_size_value = 7757
+    @sasl_enabled_value = "sasl-enabled"
+    @log_lib_value = "TRANSPORT_FRM"
+    @auto_settle_off_value = "settle"
+    @exit_timer_value = "timeout"
+    @duration_value = 0
+    @duration_mode_value = "before-receive"
 
     @sender_handler_initialization = Handlers::SenderHandler.new(
       @broker_value,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
+      @msg_properties_value,
       @msg_content_value,
+      @msg_content_type_value,
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
-      @sasl_mechs_value
+      @msg_to_value,
+      @msg_priority_value,
+      @msg_id_value,
+      @msg_user_id_value,
+      @msg_subject_value,
+      @anonymous_value,
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @auto_settle_off_value,
+      @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
   end # setup
 
@@ -52,14 +86,31 @@ class UnitTestsSenderHandler < Minitest::Test
     sender_handler_initialization_string = Handlers::SenderHandler.new(
       @broker_value_string,
       @log_msgs_value,
+      @msg_content_hashed_value,
       @count_value,
+      @msg_properties_value,
       @msg_content_value,
+      @msg_content_type_value,
       @msg_durable_value,
       @msg_ttl_value,
       @msg_correlation_id_value,
       @msg_reply_to_value,
       @msg_group_id_value,
-      @sasl_mechs_value
+      @msg_to_value,
+      @msg_priority_value,
+      @msg_id_value,
+      @msg_user_id_value,
+      @msg_subject_value,
+      @anonymous_value,
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @auto_settle_off_value,
+      @exit_timer_value,
+      @duration_value,
+      @duration_mode_value,
     )
 
     assert_equal(
@@ -79,9 +130,23 @@ class UnitTestsSenderHandler < Minitest::Test
     assert_equal(@log_msgs_value, @sender_handler_initialization.log_msgs)
   end # test_sender_handler_log_msgs_argument_initialization
 
+  def test_sender_handler_msg_content_hashed_argument_initialization
+    assert_equal(
+        @msg_content_hashed_value,
+        @sender_handler_initialization.msg_content_hashed
+    )
+  end # test_sender_handler_msg_content_hashed_argument_initialization
+
   def test_sender_handler_count_argument_initialization
     assert_equal(@count_value, @sender_handler_initialization.count)
   end # test_sender_handler_count_argument_initialization
+
+  def test_sender_handler_msg_properties_argument_initialization
+    assert_equal(
+      @msg_properties_value,
+      @sender_handler_initialization.msg_properties
+    )
+  end # test_sender_handler_msg_properties_argument_initialization
 
   def test_sender_handler_msg_content_argument_initialization
     assert_equal(
@@ -89,6 +154,13 @@ class UnitTestsSenderHandler < Minitest::Test
       @sender_handler_initialization.msg_content
     )
   end # test_sender_handler_msg_content_argument_initialization
+
+  def test_sender_handler_msg_content_type_argument_initialization
+    assert_equal(
+      @msg_content_type_value,
+      @sender_handler_initialization.msg_content_type
+    )
+  end # test_sender_handler_msg_content_type_argument_initialization
 
   def test_sender_handler_msg_durable_argument_initialization
     assert_equal(
@@ -125,12 +197,96 @@ class UnitTestsSenderHandler < Minitest::Test
     )
   end # test_sender_handler_msg_group_id_argument_initialization
 
+  def test_sender_handler_msg_to_argument_initialization
+    assert_equal(
+      @msg_to_value,
+      @sender_handler_initialization.msg_to
+    )
+  end # test_sender_handler_msg_to_argument_initialization
+
+  def test_sender_handler_msg_priority_argument_initialization
+    assert_equal(
+      @msg_priority_value,
+      @sender_handler_initialization.msg_priority
+    )
+  end # test_sender_handler_msg_priority_argument_initialization
+
+  def test_sender_handler_msg_id_argument_initialization
+    assert_equal(
+      @msg_id_value,
+      @sender_handler_initialization.msg_id
+    )
+  end # test_sender_handler_msg_id_argument_initialization
+
+  def test_sender_handler_msg_user_id_argument_initialization
+    assert_equal(
+      @msg_user_id_value,
+      @sender_handler_initialization.msg_user_id
+    )
+  end # test_sender_handler_msg_user_id_argument_initialization
+
+  def test_sender_handler_msg_subject_argument_initialization
+    assert_equal(
+      @msg_subject_value,
+      @sender_handler_initialization.msg_subject
+    )
+  end # test_sender_handler_msg_subject_argument_initialization
+
+  def test_sender_handler_anonymous_argument_initialization
+    assert_equal(
+      @anonymous_value,
+      @sender_handler_initialization.anonymous
+    )
+  end # test_sender_handler_anonymous_argument_initialization
+
   def test_sender_handler_sasl_mechs_argument_initialization
     assert_equal(
       @sasl_mechs_value,
       @sender_handler_initialization.sasl_mechs
     )
   end # test_sender_handler_sasl_mechs_argument_initialization
+
+  def test_sender_handler_idle_timeout_argument_initialization
+    assert_equal(
+        @idle_timeout_value,
+        @sender_handler_initialization.idle_timeout
+    )
+  end # test_sender_handler_idle_timeout_argument_initialization
+
+  def test_sender_handler_max_frame_size_argument_initialization
+    assert_equal(
+        @max_frame_size_value,
+        @sender_handler_initialization.max_frame_size
+    )
+  end # test_sender_handler_max_frame_size_argument_initialization
+
+  def test_sender_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @sender_handler_initialization.sasl_enabled
+    )
+  end # test_sender_handler_sasl_enabled_argument_initialization
+
+  def test_sender_handler_log_lib_argument_initialization
+    assert_equal(
+        @log_lib_value,
+        @sender_handler_initialization.log_lib
+    )
+  end # test_sender_handler_log_lib_argument_initialization
+
+  def test_sender_handler_auto_settle_off_argument_initialization
+    assert_equal(
+        @auto_settle_off_value,
+        @sender_handler_initialization.auto_settle_off
+    )
+  end # test_sender_handler_auto_settle_off_argument_initialization
+
+  def test_sender_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @sender_handler_initialization.exit_timer
+    )
+  end # test_sender_handler_exit_timer_argument_initialization
 
 end # class UnitTestsSenderHandler
 

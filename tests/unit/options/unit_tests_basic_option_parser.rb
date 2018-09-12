@@ -50,6 +50,92 @@ class UnitTestsBasicOptionParser < Minitest::Test
     )
   end # test_basic_option_parser_user_broker_value_long
 
+  def test_basic_option_parser_default_exit_timer_value
+    default_basic_options_exit_timer = Options::BasicOptionParser.new()
+    default_basic_options_exit_timer.parse([])
+    assert_nil(
+      default_basic_options_exit_timer.options.exit_timer
+    )
+  end # test_basic_option_parser_default_exit_timer_value
+
+  def test_basic_option_parser_user_timeout_value_short_int
+    user_basic_options_timeout_short_int = Options::BasicOptionParser.new()
+    user_basic_options_timeout_short_int.parse(["-t", "7"])
+    assert_equal(
+      7,
+      user_basic_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_short_int
+
+  def test_basic_option_parser_user_timeout_value_long_int
+    user_basic_options_timeout_long_int = Options::BasicOptionParser.new()
+    user_basic_options_timeout_long_int.parse(["--timeout", "11"])
+    assert_equal(
+      11,
+      user_basic_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_long_int
+
+  def test_basic_option_parser_user_timeout_value_short_float
+    user_basic_options_timeout_short_float = Options::BasicOptionParser.new()
+    user_basic_options_timeout_short_float.parse(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_basic_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_short_float
+
+  def test_basic_option_parser_user_timeout_value_long_float
+    user_basic_options_timeout_long_float = Options::BasicOptionParser.new()
+    user_basic_options_timeout_long_float.parse(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_basic_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_basic_option_parser_user_timeout_value_long_float
+
+  def test_basic_option_parser_user_timeout_value_short_raise
+    user_basic_options_timeout_short_raise = Options::BasicOptionParser.new()
+    assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_short_raise.parse(["-t", "raise"])
+    end
+  end # test_basic_option_parser_user_timeout_value_short_raise
+
+  def test_basic_option_parser_user_timeout_value_long_raise
+    user_basic_options_timeout_long_raise = Options::BasicOptionParser.new()
+    assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_long_raise.parse(["--timeout", "raise"])
+    end
+  end # test_basic_option_parser_user_timeout_value_long_raise
+
+  def test_basic_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    user_basic_options_timeout_short_raise_message = \
+      Options::BasicOptionParser.new()
+    exception = assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_short_raise_message.parse(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_timeout_value_short_raise_message
+
+  def test_basic_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    user_basic_options_timeout_long_raise_message = \
+      Options::BasicOptionParser.new()
+    exception = assert_raises OptionParser::InvalidArgument do
+      user_basic_options_timeout_long_raise_message.parse(
+        ["--timeout", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_timeout_value_long_raise_message
+
   def test_basic_option_parser_default_sasl_mechs_value
     default_basic_options_sasl_mechs = Options::BasicOptionParser.new()
     default_basic_options_sasl_mechs.parse([])
@@ -69,6 +155,226 @@ class UnitTestsBasicOptionParser < Minitest::Test
       user_basic_options_sasl_mechs_long.options.sasl_mechs
     )
   end # test_basic_option_parser_user_sasl_mechs_value_long
+
+  def test_basic_option_parser_default_idle_timeout_value
+    default_basic_options_idle_timeout = Options::BasicOptionParser.new()
+    default_basic_options_idle_timeout.parse([])
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_basic_options_idle_timeout.options.idle_timeout
+    )
+  end # test_basic_option_parser_default_idle_timeout_value
+
+  def test_basic_option_parser_user_idle_timeout_value_long
+    user_basic_options_idle_timeout_long = Options::BasicOptionParser.new()
+    user_basic_options_idle_timeout_long.parse(
+      ["--conn-heartbeat", "13"]
+    )
+    assert_equal(
+      13,
+      user_basic_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_basic_option_parser_user_idle_timeout_value_long
+
+  def test_basic_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(["--conn-heartbeat", "raise"])
+    end
+  end # test_basic_option_parser_user_idle_timeout_value_long_raise
+
+  def test_basic_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_idle_timeout_value_long_raise_message
+
+  def test_basic_option_parser_default_max_frame_size_value
+    default_basic_options_max_frame_size = Options::BasicOptionParser.new()
+    default_basic_options_max_frame_size.parse([])
+    assert_equal(
+      Defaults::DEFAULT_MAX_FRAME_SIZE,
+      default_basic_options_max_frame_size.options.max_frame_size
+    )
+  end # test_basic_option_parser_default_max_frame_size_value
+
+  def test_basic_option_parser_user_max_frame_size_value_long
+    user_basic_options_max_frame_size_long = Options::BasicOptionParser.new()
+    user_basic_options_max_frame_size_long.parse(
+      ["--conn-max-frame-size", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_basic_options_max_frame_size_long.options.max_frame_size
+    )
+  end # test_basic_option_parser_user_max_frame_size_value_long
+
+  def test_basic_option_parser_user_max_frame_size_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+  end # test_basic_option_parser_user_max_frame_size_value_long_range_lower_raise
+
+  def test_basic_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_basic_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+
+  def test_basic_option_parser_user_max_frame_size_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+  end # test_basic_option_parser_user_max_frame_size_value_long_range_upper_raise
+
+  def test_basic_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_basic_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+
+  def test_basic_option_parser_user_max_frame_size_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "wrong_value"]
+      )
+    end
+  end # test_basic_option_parser_user_max_frame_size_value_long_wrong_value_raise
+
+  def test_basic_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-max-frame-size", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+
+  def test_basic_option_parser_default_sasl_enabled_value
+    default_basic_options_sasl_enabled = Options::BasicOptionParser.new()
+    default_basic_options_sasl_enabled.parse([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_ENABLED,
+      default_basic_options_sasl_enabled.options.sasl_enabled
+    )
+  end # test_basic_option_parser_default_sasl_enabled_value
+
+  def test_basic_option_parser_user_sasl_enabled_no_value
+    basic_options_user_sasl_enabled_no_value = Options::BasicOptionParser.new()
+    basic_options_user_sasl_enabled_no_value.parse(
+        ["--conn-sasl-enabled"]
+    )
+    assert_equal(
+        true,
+        basic_options_user_sasl_enabled_no_value.options.sasl_enabled
+    )
+  end # test_basic_option_parser_user_sasl_enabled_no_value
+
+  def test_basic_option_parser_user_sasl_enabled_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_basic_options_sasl_enabled_long = Options::BasicOptionParser.new()
+      user_basic_options_sasl_enabled_long.parse(
+        ["--conn-sasl-enabled", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(boolean_value),
+        user_basic_options_sasl_enabled_long.options.sasl_enabled
+      )
+    end
+  end # test_basic_option_parser_user_sasl_enabled_value_long
+
+  def test_basic_option_parser_user_sasl_enabled_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-sasl-enabled", "raise"]
+      )
+    end
+  end # test_basic_option_parser_user_sasl_enabled_value_long_raise
+
+  def test_basic_option_parser_user_sasl_enabled_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--conn-sasl-enabled", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-sasl-enabled #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_sasl_enabled_value_long_raise_message
+
+  def test_basic_option_parser_default_log_lib_value
+    default_basic_options_log_lib = Options::BasicOptionParser.new()
+    default_basic_options_log_lib.parse([])
+    assert_equal(
+      Defaults::DEFAULT_LOG_LIB,
+      default_basic_options_log_lib.options.log_lib
+    )
+  end # test_basic_option_parser_default_log_lib_value
+
+  def test_basic_option_parser_user_log_lib_value_long
+    value = "TRANSPORT_FRM"
+    user_basic_options_log_lib_long = Options::BasicOptionParser.new()
+    user_basic_options_log_lib_long.parse(
+      ["--log-lib", value]
+    )
+    assert_equal(
+      value,
+      user_basic_options_log_lib_long.options.log_lib
+    )
+  end # test_basic_option_parser_user_log_lib_value_long
+
+  def test_basic_option_parser_user_log_lib_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--log-lib", "raise"]
+      )
+    end
+  end # test_basic_option_parser_user_log_lib_value_long_raise
+
+  def test_basic_option_parser_user_log_lib_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::BasicOptionParser.new().parse(
+        ["--log-lib", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --log-lib #{wrong_value}",
+      exception.message
+    )
+  end # test_basic_option_parser_user_log_lib_value_long_raise_message
 
 end # class UnitTestsBasicOptionParser
 

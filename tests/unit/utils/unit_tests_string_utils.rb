@@ -15,6 +15,7 @@
 # limitations under the License.
 #++
 
+require 'digest'
 require 'minitest/autorun'
 
 require_relative '../../../lib/utils/string_utils'
@@ -148,41 +149,91 @@ class UnitTestsStringUtils < Minitest::Test
   # str_to_bool
 
   def test_string_utils_str_to_bool_yes_in_string
-    assert StringUtils.str_to_bool?("yes")
+    assert StringUtils.str_to_bool("yes")
   end
 
   def test_string_utils_str_to_bool_camel_true_in_string
-    assert StringUtils.str_to_bool?("True")
+    assert StringUtils.str_to_bool("True")
   end
 
   def test_string_utils_str_to_bool_lower_true_in_string
-    assert StringUtils.str_to_bool?("yes")
+    assert StringUtils.str_to_bool("yes")
   end
 
   def test_string_utils_str_to_bool_no_in_string
-    refute StringUtils.str_to_bool?("no")
+    refute StringUtils.str_to_bool("no")
   end
 
   def test_string_utils_str_to_bool_camel_false_in_string
-    refute StringUtils.str_to_bool?("False")
+    refute StringUtils.str_to_bool("False")
   end
 
   def test_string_utils_str_to_bool_lower_false_in_string
-    refute StringUtils.str_to_bool?("false")
+    refute StringUtils.str_to_bool("false")
   end
 
   def test_string_utils_str_to_bool_raise_argument_error
     assert_raises ArgumentError do
-      StringUtils.str_to_bool?("string")
+      StringUtils.str_to_bool("string")
     end
   end
 
   def test_string_utils_str_to_bool_raise_argument_error_message
     value = "string"
     exception = assert_raises ArgumentError do
-      StringUtils.str_to_bool?(value)
+      StringUtils.str_to_bool(value)
     end
-    assert_equal("Invalid argument '#{value}'", exception.message)
+    assert_equal("invalid value for Boolean(): \"#{value}\"", exception.message)
+  end
+
+  def test_string_utils_sha1_hash_bool_true_value
+    value = true
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_bool_false_value
+    value = false
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_int_value
+    value = 123
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_float_value
+    value = 3.14
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_range_value
+    value = (1..10)
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_array_value
+    value = [1, 2, 3, 4, 5]
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_hash_value
+    value = {:a => true, :b => false, :c => 1, :d => 2.0, :e => (0..9), :f => [0, 1, 2]}
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_symbol_value
+    value = :my_symbol
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_string_value
+    value = "unit_test_text"
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
+  end
+
+  def test_string_utils_sha1_hash_nil_value
+    value = nil
+    assert_equal(Digest::SHA1.hexdigest(value.to_s), StringUtils.sha1_hash(value))
   end
 
 end # class UnitTestsStringUtils

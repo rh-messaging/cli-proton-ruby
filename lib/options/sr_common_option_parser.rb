@@ -36,17 +36,51 @@ module Options
 
       # Format of message log option
       @options.log_msgs = Defaults::DEFAULT_LOG_MSGS
+      # Hash message content
+      @options.msg_content_hashed = Defaults::DEFAULT_MSG_CONTENT_HASHED
+      # Auto settle off
+      @options.auto_settle_off = Defaults::DEFAULT_AUTO_SETTLE_OFF
 
       # Format of message log
       @opt_parser.on(
         "--log-msgs FORMAT",
-        String,
-        "format of message(s) log (none/body/dict, "+
+        %w(none body dict interop),
+        "format of message(s) log (none/body/dict/interop, "+
         "default: #{Defaults::DEFAULT_LOG_MSGS})"
       ) do |log_msgs|
         @options.log_msgs = log_msgs
       end
-    end # initialize(args)
+
+      # Message content hashed
+      @opt_parser.on(
+        "--msg-content-hashed [HASHED]",
+        Options::BOOLEAN_STRINGS,
+        "display SHA-1 hash of message content in logged messages (true/false) (default: #{Defaults::DEFAULT_MSG_CONTENT_HASHED})"
+      ) do |msg_content_hashed|
+        @options.msg_content_hashed = true
+        @options.msg_content_hashed = \
+          StringUtils.str_to_bool(msg_content_hashed) if msg_content_hashed
+      end
+
+      # Auto settle off
+      @opt_parser.on(
+        "--auto-settle-off [OFF]",
+        Options::BOOLEAN_STRINGS,
+        "disable auto settle mode (default: #{Defaults::DEFAULT_AUTO_SETTLE_OFF})"
+      ) do |auto_settle_off|
+        @options.auto_settle_off = true
+        @options.auto_settle_off = \
+          StringUtils.str_to_bool(auto_settle_off) if auto_settle_off
+      end
+
+      @options.duration = 0
+      @opt_parser.on(
+        "--duration DURATION", Float,
+        "message actions total duration (defines msg-rate together with count, default 0)"
+      ) do |d|
+        @options.duration = d
+      end
+    end # initialize
 
     # Parsing of basic and common options for sender and receiver client
     # ==== Parameters

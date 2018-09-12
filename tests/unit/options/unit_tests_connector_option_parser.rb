@@ -51,9 +51,89 @@ class UnitTestsConnectorOptionParser < Minitest::Test
     )
   end # test_connector_option_parser_user_broker_value_long
 
+  def test_connector_option_parser_default_exit_timer_value
+    default_connector_options_exit_timer = Options::ConnectorOptionParser.new(
+      []
+    )
+    assert_nil(
+      default_connector_options_exit_timer.options.exit_timer
+    )
+  end # test_connector_option_parser_default_exit_timer_value
+
+  def test_connector_option_parser_user_timeout_value_short_int
+    user_connector_options_timeout_short_int = \
+      Options::ConnectorOptionParser.new(["-t", "7"])
+    assert_equal(
+      7,
+      user_connector_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_connector_option_parser_user_timeout_value_short_int
+
+  def test_connector_option_parser_user_timeout_value_long_int
+    user_connector_options_timeout_long_int = \
+      Options::ConnectorOptionParser.new(["--timeout", "11"])
+    assert_equal(
+      11,
+      user_connector_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_connector_option_parser_user_timeout_value_long_int
+
+  def test_connector_option_parser_user_timeout_value_short_float
+    user_connector_options_timeout_short_float = \
+      Options::ConnectorOptionParser.new(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_connector_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_connector_option_parser_user_timeout_value_short_float
+
+  def test_connector_option_parser_user_timeout_value_long_float
+    user_connector_options_timeout_long_float = \
+      Options::ConnectorOptionParser.new(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_connector_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_connector_option_parser_user_timeout_value_long_float
+
+  def test_connector_option_parser_user_timeout_value_short_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["-t", "raise"])
+    end
+  end # test_connector_option_parser_user_timeout_value_short_raise
+
+  def test_connector_option_parser_user_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--timeout", "raise"])
+    end
+  end # test_connector_option_parser_user_timeout_value_long_raise
+
+  def test_connector_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_timeout_value_short_raise_message
+
+  def test_connector_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--timeout", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_timeout_value_long_raise_message
+
   def test_connector_option_parser_default_sasl_mechs_value
-    default_connector_options_sasl_mechs = Options::BasicOptionParser.new()
-    default_connector_options_sasl_mechs.parse([])
+    default_connector_options_sasl_mechs = Options::ConnectorOptionParser.new(
+      []
+    )
     assert_equal(
       Defaults::DEFAULT_SASL_MECHS,
       default_connector_options_sasl_mechs.options.sasl_mechs
@@ -61,8 +141,7 @@ class UnitTestsConnectorOptionParser < Minitest::Test
   end # test_connector_option_parser_default_sasl_mechs_value
 
   def test_connector_option_parser_user_sasl_mechs_value_long
-    user_connector_options_sasl_mechs_long = Options::BasicOptionParser.new()
-    user_connector_options_sasl_mechs_long.parse(
+    user_connector_options_sasl_mechs_long = Options::ConnectorOptionParser.new(
       ["--conn-allowed-mechs", "SASL"]
     )
     assert_equal(
@@ -70,6 +149,42 @@ class UnitTestsConnectorOptionParser < Minitest::Test
       user_connector_options_sasl_mechs_long.options.sasl_mechs
     )
   end # test_connector_option_parser_user_sasl_mechs_value_long
+
+  def test_connector_option_parser_default_idle_timeout_value
+    default_connector_options_idle_timeout = Options::ConnectorOptionParser.new(
+      []
+    )
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_connector_options_idle_timeout.options.idle_timeout
+    )
+  end # test_connector_option_parser_default_idle_timeout_value
+
+  def test_connector_option_parser_user_idle_timeout_value_long
+    user_connector_options_idle_timeout_long = \
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", "13"])
+    assert_equal(
+      13,
+      user_connector_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_connector_option_parser_user_idle_timeout_value_long
+
+  def test_connector_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", "raise"])
+    end
+  end # test_connector_option_parser_user_idle_timeout_value_long_raise
+
+  def test_connector_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_idle_timeout_value_long_raise_message
 
   def test_connector_option_parser_default_count_value
     connector_options_default_count = Options::ConnectorOptionParser.new([])
@@ -92,6 +207,182 @@ class UnitTestsConnectorOptionParser < Minitest::Test
     )
     assert_equal(3, connector_options_user_count_long.options.count)
   end # test_connector_option_parser_user_count_value_long
+
+  def test_connector_option_parser_default_max_frame_size_value
+    default_connector_options_max_frame_size = Options::ConnectorOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MAX_FRAME_SIZE,
+      default_connector_options_max_frame_size.options.max_frame_size
+    )
+  end # test_connector_option_parser_default_max_frame_size_value
+
+  def test_connector_option_parser_user_max_frame_size_value_long
+    user_connector_options_max_frame_size_long = Options::ConnectorOptionParser.new(
+      ["--conn-max-frame-size", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_connector_options_max_frame_size_long.options.max_frame_size
+    )
+  end # test_connector_option_parser_user_max_frame_size_value_long
+
+  def test_connector_option_parser_user_max_frame_size_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+  end # test_connector_option_parser_user_max_frame_size_value_long_range_lower_raise
+
+  def test_connector_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_connector_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+
+  def test_connector_option_parser_user_max_frame_size_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+  end # test_connector_option_parser_user_max_frame_size_value_long_range_upper_raise
+
+  def test_connector_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_connector_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+
+  def test_connector_option_parser_user_max_frame_size_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "wrong_value"]
+      )
+    end
+  end # test_connector_option_parser_user_max_frame_size_value_long_wrong_value_raise
+
+  def test_connector_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-max-frame-size", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+
+  def test_connector_option_parser_default_sasl_enabled_value
+    default_connector_options_sasl_enabled = Options::ConnectorOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_ENABLED,
+      default_connector_options_sasl_enabled.options.sasl_enabled
+    )
+  end # test_connector_option_parser_default_sasl_enabled_value
+
+  def test_connector_option_parser_user_sasl_enabled_no_value
+    connector_options_user_sasl_enabled_no_value = Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled"]
+    )
+    assert_equal(
+        true,
+        connector_options_user_sasl_enabled_no_value.options.sasl_enabled
+    )
+  end # test_connector_option_parser_user_sasl_enabled_no_value
+
+  def test_connector_option_parser_user_sasl_enabled_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_connector_options_sasl_enabled_long = Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(boolean_value),
+        user_connector_options_sasl_enabled_long.options.sasl_enabled
+      )
+    end
+  end # test_connector_option_parser_user_sasl_enabled_value_long
+
+  def test_connector_option_parser_user_sasl_enabled_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", "raise"]
+      )
+    end
+  end # test_connector_option_parser_user_sasl_enabled_value_long_raise
+
+  def test_connector_option_parser_user_sasl_enabled_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--conn-sasl-enabled", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-sasl-enabled #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_sasl_enabled_value_long_raise_message
+
+  def test_connector_option_parser_default_log_lib_value
+    default_connector_options_log_lib = Options::ConnectorOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_LOG_LIB,
+      default_connector_options_log_lib.options.log_lib
+    )
+  end # test_connector_option_parser_default_log_lib_value
+
+  def test_connector_option_parser_user_log_lib_value_long
+    value = "TRANSPORT_FRM"
+    user_connector_options_log_lib_long = Options::ConnectorOptionParser.new(
+      ["--log-lib", value]
+    )
+    assert_equal(
+      value,
+      user_connector_options_log_lib_long.options.log_lib
+    )
+  end # test_connector_option_parser_user_log_lib_value_long
+
+  def test_connector_option_parser_user_log_lib_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--log-lib", "raise"]
+      )
+    end
+  end # test_connector_option_parser_user_log_lib_value_long_raise
+
+  def test_connector_option_parser_user_log_lib_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::ConnectorOptionParser.new(
+        ["--log-lib", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --log-lib #{wrong_value}",
+      exception.message
+    )
+  end # test_connector_option_parser_user_log_lib_value_long_raise_message
 
 end # class UnitTestsConnectorOptionParser
 

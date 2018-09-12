@@ -33,6 +33,7 @@ module Options
   # msg-correlation-id:: message correlation ID
   # msg-reply-to:: address to send reply to
   # msg-group-id:: message group ID
+  # msg-to:: message destination
   class SenderOptionParser < Options::SRCommonOptionParser
 
     # Initialization and parsing of basic, common and specific sender options
@@ -45,11 +46,17 @@ module Options
       @opt_parser.banner = "Usage: <sender_program> [OPTIONS]"
 
       # Sender specific options with default values
-   
+
       # Number of messages option
       @options.count = Defaults::DEFAULT_COUNT
+      # Message property option
+      @options.msg_properties = Defaults::DEFAULT_MSG_PROPERTIES
       # Message content option
       @options.msg_content = Defaults::DEFAULT_MSG_CONTENT
+      # Message content type option
+      @options.msg_content_type = Defaults::DEFAULT_MSG_CONTENT_TYPE
+      # Content type option
+      @options.content_type = Defaults::DEFAULT_CONTENT_TYPE
       # Message durability
       @options.msg_durable = Defaults::DEFAULT_MSG_DURABLE
       # Message TTL
@@ -60,6 +67,22 @@ module Options
       @options.msg_reply_to = Defaults::DEFAULT_MSG_REPLY_TO
       # Message group ID option
       @options.msg_group_id = Defaults::DEFAULT_GROUP_ID
+      # Message priority option
+      @options.msg_priority = Defaults::DEFAULT_MSG_PRIORITY
+      # Message ID option
+      @options.msg_id = Defaults::DEFAULT_MSG_ID
+      # Message user ID option
+      @options.msg_user_id = Defaults::DEFAULT_MSG_USER_ID
+      # Message subject option
+      @options.msg_subject = Defaults::DEFAULT_MSG_SUBJECT
+      # Anonymous producer option
+      @options.anonymous = Defaults::DEFAULT_ANONYMOUS
+      # Message destination
+      @options.msg_to = Defaults::DEFAULT_TO
+
+      # List of blocks executed at the end of parsing
+      # when all other options are already applied
+      @do_last = []
 
       # Number of messages
       @opt_parser.on(
@@ -84,9 +107,58 @@ module Options
           end
         )+")"
       ) do |msg_content|
-        @options.msg_content = msg_content
+        @do_last << Proc.new {
+          @options.msg_content = manual_cast(@options.content_type, msg_content)
+        }
       end
 
+      # Message content from file
+      @opt_parser.on(
+        "--msg-content-from-file FILE",
+        String,
+        "message content from file"
+      ) do |file|
+        @do_last << Proc.new {
+          @options.msg_content = manual_cast(@options.content_type, File.read(file))
+        }
+      end
+
+      # Message content type
+      @opt_parser.on(
+        "--msg-content-type TYPE",
+        String,
+        "AMQP message content type"
+      ) do |msg_content_type|
+        @options.msg_content_type = msg_content_type
+      end
+
+      # Content type
+      @opt_parser.on(
+        "--content-type TYPE",
+        %w(string int long float bool),
+        "cast --msg-content, -list-item, and =values of -map-item" +
+        "and --msg-property to this type (default: #{Defaults::DEFAULT_CONTENT_TYPE})"
+      ) do |content_type|
+        @options.content_type = content_type
+      end
+
+      # Message property
+      @opt_parser.on(
+        "-P",
+        "--msg-property KEY=VALUE",
+        String,
+        "property specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
+      ) do |msg_property|
+        _ = parse_kv(msg_property)  # ensure correct option format
+        @do_last << Proc.new {
+          if @options.msg_properties.nil?
+            @options.msg_properties = {}
+          end
+
+          key, value = parse_kv(msg_property)
+          @options.msg_properties[key] = value
+        }
+      end
       # Message map content
       @opt_parser.on(
         "-M",
@@ -94,25 +166,15 @@ module Options
         String,
         "map item specified as KEY=VALUE (use '~' instead of '=' for auto-casting)"
       ) do |msg_content_map_item|
-        if @options.msg_content.nil?
-          @options.msg_content = {}
-        end
-
-        if msg_content_map_item.include? "="
-          key, value = msg_content_map_item.split("=")
-
-          @options.msg_content[key] = value.nil? ? "" : value
-        elsif msg_content_map_item.include? "~"
-          key, value = msg_content_map_item.split("~")
-
-          if value.include? "."
-            value = value.to_f
-          else
-            value = value.to_i
+        _ = parse_kv(msg_content_map_item)  # ensure correct option format
+        @do_last << Proc.new {
+          if @options.msg_content.nil?
+            @options.msg_content = {}
           end
 
+          key, value = parse_kv(msg_content_map_item)
           @options.msg_content[key] = value
-        end
+        }
       end
 
       # Message list content
@@ -121,33 +183,29 @@ module Options
         "--msg-content-list-item VALUE",
         "list item"
       ) do |msg_content_list_item|
-        if @options.msg_content.nil?
-          @options.msg_content = []
-        end
-
-        if msg_content_list_item.start_with? "~"
-          value = msg_content_list_item[1..-1]
-          
-          if StringUtils.str_is_int?(value)
-            @options.msg_content.push(value.to_i)
-          elsif StringUtils.str_is_float?(value)
-            @options.msg_content.push(value.to_f)
-          else
-            @options.msg_content.push(value)
+        @do_last << Proc.new {
+          if @options.msg_content.nil?
+            @options.msg_content = []
           end
-        else
-          @options.msg_content.push(msg_content_list_item)
-        end
+
+          if msg_content_list_item.start_with? "~"
+            value = msg_content_list_item[1..-1]
+            @options.msg_content.push(auto_cast(value))
+          else
+           @options.msg_content.push(
+                manual_cast(@options.content_type, msg_content_list_item))
+          end
+        }
       end
 
       # Message durability
       @opt_parser.on(
         "--msg-durable DURABILITY",
-        String,
+        BOOLEAN_STRINGS,
         "message durability (yes/no|True/False|true/false, default: "+
         "#{Defaults::DEFAULT_MSG_DURABLE})"
       ) do |msg_durable|
-        @options.msg_durable = StringUtils.str_to_bool?(msg_durable)
+        @options.msg_durable = StringUtils.str_to_bool(msg_durable)
       end
 
       # Message TTL
@@ -186,9 +244,119 @@ module Options
         @options.msg_group_id = msg_group_id
       end
 
+      # Message priority
+      @opt_parser.on(
+        "--msg-priority PRIORITY",
+        Integer,
+        "message priority"
+      ) do |msg_priority|
+        @options.msg_priority = msg_priority
+      end
+
+      # Message ID
+      @opt_parser.on(
+        "--msg-id ID",
+        String,
+        "message ID"
+      ) do |msg_id|
+        @options.msg_id = msg_id
+      end
+
+      # Message user ID
+      @opt_parser.on(
+        "--msg-user-id ID",
+        String,
+        "message user ID"
+      ) do |msg_user_id|
+        @options.msg_user_id = msg_user_id
+      end
+
+      # Message subject
+      @opt_parser.on(
+        "--msg-subject SUBJECT",
+        String,
+        "message subject"
+      ) do |msg_subject|
+        @options.msg_subject = msg_subject
+      end
+
+      # Anonymous producer
+      @opt_parser.on(
+        "--anonymous [ANONYMOUS]",
+        BOOLEAN_STRINGS,
+        "send message by connection level anonymous sender" +
+        " (default: #{Defaults::DEFAULT_ANONYMOUS})"
+      ) do |anonymous|
+        @options.anonymous = true
+        @options.anonymous = StringUtils.str_to_bool(anonymous) if anonymous
+      end
+
+      # Duration mode
+      duration_modes = %w(before-send after-send after-send-tx-action)
+      @options.duration_mode = "before-send"
+      @opt_parser.on(
+        "--duration-mode MODE", duration_modes,
+        "in use with --duration defines where to wait (allowed: #{duration_modes.join(', ')}, default: #{@options.duration_mode})"
+      ) do |d|
+        @options.duration_mode = d
+      end
+
+      # Destination
+      @opt_parser.on(
+        "--msg-to ADDRESS",
+        String,
+        "destination ADDRESS"
+      ) do |msg_to|
+        @options.msg_to = msg_to
+      end
+
       # Parse basic, common and specific options for sender client
       parse(args)
+      # Apply options which need to be applied last
+      @do_last.each { |proc| proc.call }
     end # initialize
+
+    private
+    def parse_kv(key_value)
+      if key_value.include? "="
+        key, value = key_value.split("=")
+        value = "" if value.nil?
+        return key, manual_cast(@options.content_type, value)
+      elsif key_value.include? "~"
+        key, value = key_value.split("~")
+        return key, auto_cast(value)
+      else
+        raise OptionParser::InvalidArgument, "kv pair '#{key_value}' is of invalid format, = or ~ required"
+      end
+    end
+
+    private
+    def auto_cast(value)
+      if StringUtils.str_is_int?(value)
+        return value.to_i
+      elsif StringUtils.str_is_float?(value)
+        return value.to_f
+      elsif StringUtils.str_is_bool?(value)
+        return StringUtils.str_to_bool(value)
+      end
+      return value
+    end
+
+    private
+    def manual_cast(type, value)
+      case type
+      when "int"
+        return Integer(value)
+      when "float"
+        return Float(value)
+      when "long"
+        return Integer(value)
+      when "bool"
+        return StringUtils.str_to_bool(value)
+      else
+        return value
+      end
+    end
 
   end # class SenderOptionParser
 

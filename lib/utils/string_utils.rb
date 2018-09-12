@@ -14,6 +14,8 @@
 # limitations under the License.
 #++
 
+require 'digest'
+
 # Module containing string utilities for cli-proton-ruby clients
 module StringUtils
 
@@ -36,14 +38,27 @@ module StringUtils
   end
 
   # Function to check if string variable is convertible to client bool value
+  # ==== Returns
+  # true if string variable is convertible to client bool value, false otherwise
+  def self.str_is_bool?(value)
+    begin
+      str_to_bool value
+    rescue ArgumentError
+      return false
+    end
+
+    return true
+  end
+
+  # Function to convert string variable to client bool value
   # (yes/no|True/False|true/false)
   # ==== Parameters
   # value:: string variable to convert
   # ==== Returns
-  # true if string variable is convertible to client bool value, false otherwise
+  # bool value of the variable
   # ==== Raises
   # ArgumentError for invalid argument
-  def self.str_to_bool?(value)
+  def self.str_to_bool(value)
     # If positive value
     if ["yes", "True", "true"].include?(value)
       # Return true
@@ -54,7 +69,11 @@ module StringUtils
       return false
     end
     # If value is not convertible, raise ArgumentError
-    raise ArgumentError, "Invalid argument '#{value}'"
+    raise ArgumentError, "invalid value for Boolean(): \"#{value}\""
+  end
+
+  def self.sha1_hash(value)
+    Digest::SHA1.hexdigest value.to_s
   end
 
 end # module StringUtils

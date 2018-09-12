@@ -15,6 +15,8 @@
 #++
 
 require_relative 'sr_common_option_parser'
+require_relative '../constants'
+require_relative '../utils/string_utils'
 
 module Options
 
@@ -44,10 +46,18 @@ module Options
 
       # Number of messages option
       @options.count = Defaults::DEFAULT_COUNT
+      # Credit for messages to be pre-fetched
+      @options.prefetch = Defaults::DEFAULT_PREFETCH
       # Process reply to
       @options.process_reply_to = Defaults::DEFAULT_PROC_REPLY_TO
       # Browse messages
       @options.browse = Defaults::DEFAULT_BROWSE
+      # Filter using selector
+      @options.selector = Defaults::DEFAULT_SELECTOR
+      # Receiver listen
+      @options.recv_listen = Defaults::DEFAULT_RECV_LISTEN
+      # Receiver listen port
+      @options.recv_listen_port = Defaults::DEFAULT_RECV_LISTEN_PORT
 
       # Number of messages
       @opt_parser.on(
@@ -58,6 +68,16 @@ module Options
         "(default: #{Defaults::DEFAULT_COUNT})"
       ) do |count|
         @options.count = count
+      end
+
+      # Prefetch
+      @opt_parser.on(
+        "--reactor-prefetch PREFETCH",
+        Integer,
+        "receiver's prefetch count "+
+        "(default: #{Defaults::DEFAULT_PREFETCH})"
+      ) do |prefetch|
+        @options.prefetch = prefetch
       end
 
       # Process reply to
@@ -75,6 +95,52 @@ module Options
         "browse messages instead of reading",
       ) do |browse|
         @options.browse = browse
+      end
+
+      # Filter messages
+      @opt_parser.on(
+        "--recv-selector SELECTOR",
+        "filter messages using a selector"
+      ) do |selector|
+        @options.selector = selector
+      end
+
+      # Receiver listen
+      @opt_parser.on(
+        "--recv-listen LISTEN",
+        Options::BOOLEAN_STRINGS,
+        "enable receiver listen (P2P) (#{Options::BOOLEAN_STRINGS.join("/")}, "+
+        "default: #{Defaults::DEFAULT_RECV_LISTEN})"
+      ) do |recv_listen|
+        @options.recv_listen = StringUtils.str_to_bool(recv_listen)
+      end
+
+      # Receiver listen port
+      @opt_parser.on(
+        "--recv-listen-port PORT",
+        Integer,
+        "define port for local listening "+
+        "(range: #{Constants::CONST_MIN_PORT_RANGE_VALUE}-"+
+        "#{Constants::CONST_MAX_PORT_RANGE_VALUE}, "+
+        "default: #{Defaults::DEFAULT_RECV_LISTEN_PORT})"
+      ) do |recv_listen_port|
+        if recv_listen_port < Constants::CONST_MIN_PORT_RANGE_VALUE \
+          or recv_listen_port > Constants::CONST_MAX_PORT_RANGE_VALUE
+          raise OptionParser::InvalidArgument, "#{recv_listen_port} "+
+            "(out of range: #{Constants::CONST_MIN_PORT_RANGE_VALUE}-"+
+            "#{Constants::CONST_MAX_PORT_RANGE_VALUE})"
+        end
+        @options.recv_listen_port = recv_listen_port
+      end
+
+      # Duration mode
+      @options.duration_mode = "before-receive"
+      duration_modes = %w(before-receive after-receive after-receive-action after-receive-tx-action)
+      @opt_parser.on(
+        "--duration-mode MODE", duration_modes,
+        "in use with --duration defines where to wait (allowed: #{duration_modes.join(', ')}, default: #{@options.duration_mode})"
+      ) do |d|
+        @options.duration_mode = d
       end
 
       # Parse basic, common and specific options for receiver client

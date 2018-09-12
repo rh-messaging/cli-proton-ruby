@@ -1,5 +1,5 @@
 #--
-# Copyright 2017 Red Hat Inc.
+# Copyright 2018 Red Hat Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,24 +14,39 @@
 # limitations under the License.
 #++
 
-require_relative 'basic_formatter'
+require_relative 'dict_formatter'
 
 module Formatters
 
-  # Formatter of message into dictionary format
-  class DictFormatter < Formatters::BasicFormatter
+  # Formatter of message into interop dictionary format
+  class InteropFormatter < Formatters::DictFormatter
 
-    # Initialization of dictionary formatter
-    # ==== Dictionary formatter arguments
+    # Initialization of interop dictionary formatter
+    # ==== Interop dictionary formatter arguments
     # message:: message to format
     def initialize(message, msg_content_hashed=false)
       super(message, msg_content_hashed)
     end # initialize(message)
 
-    # Format message as dictionary
+    # Format value according to type
+    # ==== Parameters
+    # value:: value to format
     # ==== Returns
-    # message formatted as dictionary
-    def get_as_dictionary()
+    # value formatted as string
+    def format_value(value)
+      case value
+      when Float
+        # ab_diff = [{'content': [[-1.3, -1.2999999523162842]]}]
+        value.round(5)
+      else
+        super
+      end
+    end
+
+    # Format message as interop dictionary
+    # ==== Returns
+    # message formatted as interop dictionary
+    def get_as_interop_dictionary()
       dict_to_return = "" \
       + "'redelivered': #{format_value(
         @message.delivery_count == 0 ? false : true
@@ -46,21 +61,28 @@ module Formatters
       + "'priority': #{format_value(@message.priority)}, "\
       + "'durable': #{format_value(@message.durable)}, "\
       + "'ttl': #{format_value(@message.ttl)}, "\
+      + "'absolute-expiry-time': #{format_value(@message.expires)}, "\
+      + "'address': #{format_value(@message.address)}, "\
+      + "'content-encoding': #{format_value(@message.content_encoding)}, "\
+      + "'delivery-count': #{format_value(@message.delivery_count)}, "\
+      + "'first-acquirer': #{format_value(@message.first_acquirer?)}, "\
+      + "'group-sequence': #{format_value(@message.group_sequence)}, "\
+      + "'reply-to-group-id': #{format_value(@message.reply_to_group_id)}, "\
+      + "'to': #{format_value(@message.to)}, "\
       + "'properties': #{format_value(@message.properties)}, "\
       + "'content': #{
         format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
       }"
       return "{#{dict_to_return}}"
-    end # get_as_dictionary()
+    end # get_as_interop_dictionary()
 
-    # Prints message formatted as dictionary to stdout
+    # Prints message formatted as interop dictionary to stdout
     def print()
       # Print formatted message to stdout
-      puts get_as_dictionary()
+      puts get_as_interop_dictionary()
     end # print()
 
-  end # class DictFormatter
+  end # class InteropFormatter
 
 end # module Formatters
 
-# eof

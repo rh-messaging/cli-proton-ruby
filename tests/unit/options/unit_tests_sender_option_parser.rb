@@ -23,6 +23,8 @@ require_relative '../../../lib/defaults'
 # SenderOptionParser unit tests class
 class UnitTestsSenderOptionParser < Minitest::Test
 
+  def parse(args) Options::SenderOptionParser.new(args); end
+
   def test_sender_option_parser_default_broker_value
     sender_options_default_broker = Options::SenderOptionParser.new([])
     assert_equal(
@@ -51,9 +53,89 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_broker_value_long
 
+  def test_sender_option_parser_default_exit_timer_value
+    default_sender_options_exit_timer = Options::SenderOptionParser.new(
+      []
+    )
+    assert_nil(
+      default_sender_options_exit_timer.options.exit_timer
+    )
+  end # test_sender_option_parser_default_exit_timer_value
+
+  def test_sender_option_parser_user_timeout_value_short_int
+    user_sender_options_timeout_short_int = Options::SenderOptionParser.new(
+      ["-t", "7"]
+    )
+    assert_equal(
+      7,
+      user_sender_options_timeout_short_int.options.exit_timer.timeout
+    )
+  end # test_sender_option_parser_user_timeout_value_short_int
+
+  def test_sender_option_parser_user_timeout_value_long_int
+    user_sender_options_timeout_long_int = Options::SenderOptionParser.new(
+      ["--timeout", "11"]
+    )
+    assert_equal(
+      11,
+      user_sender_options_timeout_long_int.options.exit_timer.timeout
+    )
+  end # test_sender_option_parser_user_timeout_value_long_int
+
+  def test_sender_option_parser_user_timeout_value_short_float
+    user_sender_options_timeout_short_float = \
+      Options::SenderOptionParser.new(["-t", "0.7"])
+    assert_equal(
+      0.7,
+      user_sender_options_timeout_short_float.options.exit_timer.timeout
+    )
+  end # test_sender_option_parser_user_timeout_value_short_float
+
+  def test_sender_option_parser_user_timeout_value_long_float
+    user_sender_options_timeout_long_float = \
+      Options::SenderOptionParser.new(["--timeout", "1.1"])
+    assert_equal(
+      1.1,
+      user_sender_options_timeout_long_float.options.exit_timer.timeout
+    )
+  end # test_sender_option_parser_user_timeout_value_long_float
+
+  def test_sender_option_parser_user_timeout_value_short_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["-t", "raise"])
+    end
+  end # test_sender_option_parser_user_timeout_value_short_raise
+
+  def test_sender_option_parser_user_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--timeout", "raise"])
+    end
+  end # test_sender_option_parser_user_timeout_value_long_raise
+
+  def test_sender_option_parser_user_timeout_value_short_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["-t", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -t #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_timeout_value_short_raise_message
+
+  def test_sender_option_parser_user_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--timeout", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --timeout #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_timeout_value_long_raise_message
+
   def test_sender_option_parser_default_sasl_mechs_value
-    default_sender_options_sasl_mechs = Options::BasicOptionParser.new()
-    default_sender_options_sasl_mechs.parse([])
+    default_sender_options_sasl_mechs = Options::SenderOptionParser.new([])
     assert_equal(
       Defaults::DEFAULT_SASL_MECHS,
       default_sender_options_sasl_mechs.options.sasl_mechs
@@ -61,8 +143,7 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_default_sasl_mechs_value
 
   def test_sender_option_parser_user_sasl_mechs_value_long
-    user_sender_options_sasl_mechs_long = Options::BasicOptionParser.new()
-    user_sender_options_sasl_mechs_long.parse(
+    user_sender_options_sasl_mechs_long = Options::SenderOptionParser.new(
       ["--conn-allowed-mechs", "SASL"]
     )
     assert_equal(
@@ -70,6 +151,42 @@ class UnitTestsSenderOptionParser < Minitest::Test
       user_sender_options_sasl_mechs_long.options.sasl_mechs
     )
   end # test_sender_option_parser_user_sasl_mechs_value_long
+
+  def test_sender_option_parser_default_idle_timeout_value
+    default_sender_options_idle_timeout = Options::SenderOptionParser.new(
+      []
+    )
+    assert_equal(
+      Defaults::DEFAULT_IDLE_TIMEOUT,
+      default_sender_options_idle_timeout.options.idle_timeout
+    )
+  end # test_sender_option_parser_default_idle_timeout_value
+
+  def test_sender_option_parser_user_idle_timeout_value_long
+    user_sender_options_idle_timeout_long = \
+      Options::SenderOptionParser.new(["--conn-heartbeat", "13"])
+    assert_equal(
+      13,
+      user_sender_options_idle_timeout_long.options.idle_timeout
+    )
+  end # test_sender_option_parser_user_idle_timeout_value_long
+
+  def test_sender_option_parser_user_idle_timeout_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--conn-heartbeat", "raise"])
+    end
+  end # test_sender_option_parser_user_idle_timeout_value_long_raise
+
+  def test_sender_option_parser_user_idle_timeout_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--conn-heartbeat", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --conn-heartbeat #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_idle_timeout_value_long_raise_message
 
   def test_sender_option_parser_default_log_msgs_value
     sender_options_default_log_msgs = Options::SenderOptionParser.new([])
@@ -85,6 +202,57 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
     assert_equal("dict", sender_options_user_log_msgs_long.options.log_msgs)
   end # test_sender_option_parser_user_log_msgs_value_long
+
+  def test_sender_option_parser_default_msg_content_hashed_value
+    default_sender_options_msg_content_hashed = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MSG_CONTENT_HASHED,
+      default_sender_options_msg_content_hashed.options.msg_content_hashed
+    )
+  end # test_sender_option_parser_default_msg_content_hashed_value
+
+  def test_sender_option_parser_user_msg_content_hashed_value_long_no_value
+    user_sender_options_msg_content_hashed_long_no_value = Options::SenderOptionParser.new(
+      ["--msg-content-hashed"]
+    )
+    assert_equal(
+      true,
+      user_sender_options_msg_content_hashed_long_no_value.options.msg_content_hashed
+    )
+  end # test_sender_option_parser_user_msg_content_hashed_value_long_no_value
+
+  def test_sender_option_parser_user_msg_content_hashed_value_long
+    Options::BOOLEAN_STRINGS.each do |msg_content_hashed_value_long|
+      user_sender_options_msg_content_hashed_long = Options::SenderOptionParser.new(
+        ["--msg-content-hashed", msg_content_hashed_value_long]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(msg_content_hashed_value_long),
+        user_sender_options_msg_content_hashed_long.options.msg_content_hashed
+      )
+    end
+  end # test_sender_option_parser_user_msg_content_hashed_value_long
+
+  def test_sender_option_parser_user_msg_content_hashed_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--msg-content-hashed", "raise"]
+      )
+    end
+  end # test_sender_option_parser_user_msg_content_hashed_value_long_raise
+
+  def test_sender_option_parser_user_msg_content_hashed_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--msg-content-hashed", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --msg-content-hashed #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_msg_content_hashed_value_long_raise_message
 
   def test_sender_option_parser_default_count_value
     sender_options_default_count = Options::SenderOptionParser.new([])
@@ -108,6 +276,125 @@ class UnitTestsSenderOptionParser < Minitest::Test
     assert_equal(3, sender_options_user_count_long.options.count)
   end # test_sender_option_parser_user_count_value_long
 
+  def test_sender_option_parser_default_msg_property_value
+    sender_options_default_msg_property = Options::SenderOptionParser.new(
+      []
+    )
+    assert_nil(Defaults::DEFAULT_MSG_PROPERTIES)
+    assert_nil(sender_options_default_msg_property.options.msg_properties)
+  end # test_sender_option_parser_default_msg_property_value
+
+  def test_sender_option_parser_user_msg_property_value_short_string
+    sender_options_user_msg_property_short_string = \
+      Options::SenderOptionParser.new(["-P", "key_short=value_short"])
+    assert_equal(
+      {"key_short" => "value_short"},
+      sender_options_user_msg_property_short_string.options.msg_properties
+    )
+    sender_options_user_msg_property_short_string.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_short_string
+
+  def test_sender_option_parser_user_msg_property_value_long_string
+    sender_options_user_msg_property_long_string = \
+      Options::SenderOptionParser.new(["--msg-property", "key_long=value_long"])
+    assert_equal(
+      {"key_long" => "value_long"},
+      sender_options_user_msg_property_long_string.options.msg_properties
+    )
+    sender_options_user_msg_property_long_string.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_long_string
+
+  def test_sender_option_parser_user_msg_property_value_short_int
+    sender_options_user_msg_property_short_int = \
+      Options::SenderOptionParser.new(["-P", "key_short~42"])
+    assert_equal(
+      {"key_short" => 42},
+      sender_options_user_msg_property_short_int.options.msg_properties
+    )
+    sender_options_user_msg_property_short_int.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_short_int
+
+  def test_sender_option_parser_user_msg_property_value_long_int
+    sender_options_user_msg_property_long_int = \
+      Options::SenderOptionParser.new(["--msg-property", "key_long~42"])
+    assert_equal(
+      {"key_long" => 42},
+      sender_options_user_msg_property_long_int.options.msg_properties
+    )
+    sender_options_user_msg_property_long_int.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_long_int
+
+  def test_sender_option_parser_user_msg_property_value_short_float
+    sender_options_user_msg_property_short_float = \
+      Options::SenderOptionParser.new(["-P", "key_short~4.2"])
+    assert_equal(
+      {"key_short" => 4.2},
+      sender_options_user_msg_property_short_float.options.msg_properties
+    )
+    sender_options_user_msg_property_short_float.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_short_float
+
+  def test_sender_option_parser_user_msg_property_value_long_float
+    sender_options_user_msg_property_long_float = \
+      Options::SenderOptionParser.new(["--msg-property", "key_long~4.2"])
+    assert_equal(
+      {"key_long" => 4.2},
+      sender_options_user_msg_property_long_float.options.msg_properties
+    )
+    sender_options_user_msg_property_long_float.options.msg_properties.clear
+  end # test_sender_option_parser_user_msg_property_value_long_float
+
+  def test_sender_option_parser_user_msg_property_value_short_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["-P", "key_short"])
+    end
+  end # test_sender_option_parser_user_msg_property_value_short_raise
+
+  def test_sender_option_parser_user_msg_property_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--msg-property", "key_long"])
+    end
+  end # test_sender_option_parser_user_msg_property_value_long_raise
+
+  def test_sender_option_parser_user_msg_property_value_short_raise_message
+    wrong_value = "key_short"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["-P", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: -P kv pair '#{wrong_value}' is of invalid format, "\
+      "= or ~ required",
+      exception.message
+    )
+  end # test_sender_option_parser_user_msg_property_value_short_raise_message
+
+  def test_sender_option_parser_user_msg_property_value_long_raise_message
+    wrong_value = "key_long"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--msg-property", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --msg-property kv pair '#{wrong_value}' is of "\
+      "invalid format, = or ~ required",
+      exception.message
+    )
+  end # test_sender_option_parser_user_msg_property_value_long_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_property_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      sender_options_user_msg_content_map_item_long = \
+        Options::SenderOptionParser.new([
+          "--msg-property", "key=#{param}", "--content-type", type
+        ])
+      assert_equal(
+          {"key" => expect},
+          sender_options_user_msg_content_map_item_long.options.msg_properties
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_property_values
+
+
   def test_sender_option_parser_default_msg_content_value
     sender_options_default_msg_content = Options::SenderOptionParser.new([])
     assert_nil(
@@ -124,6 +411,208 @@ class UnitTestsSenderOptionParser < Minitest::Test
       sender_options_user_msg_content_long.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_value_long
+
+  def test_sender_option_parser_user_msg_content_from_file_long
+    filename = "tests/unit/options/msg_content_from_file.txt"
+    sender_options_user_msg_content_from_file_long = \
+      Options::SenderOptionParser.new([
+        "--msg-content-from-file", filename
+      ])
+    assert_equal(
+      File.read(filename),
+      sender_options_user_msg_content_from_file_long.options.msg_content
+    )
+  end # test_sender_option_parser_user_msg_content_from_file_long
+
+  def test_sender_option_parser_user_content_type_msg_content_from_file_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      file = Tempfile.new("test_sender_option_parser_user_content_type_msg_content_from_file_values")
+      begin
+        file.write(param)
+        file.flush
+        sender_options_user_msg_content_map_item_long = \
+          Options::SenderOptionParser.new([
+            "--msg-content-from-file", file.path, "--content-type", type
+        ])
+        assert_equal(
+          expect,
+          sender_options_user_msg_content_map_item_long.options.msg_content
+        )
+      ensure
+        file.close
+        file.unlink
+      end
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_from_file_values
+
+  def test_sender_option_parser_user_content_type_msg_content_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                               ["float", "1.1", 1.1], ["bool", "true", true]]
+      assert_equal(
+          expect,
+          Options::SenderOptionParser.new(
+              ["--content-type", type, "--msg-content", param]).options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_values
+
+  def test_sender_option_parser_default_msg_content_type_value
+    sender_options_default_msg_content_type = Options::SenderOptionParser.new(
+      []
+    )
+    assert_nil(
+      sender_options_default_msg_content_type.options.msg_content_type
+    )
+  end # test_sender_option_parser_default_msg_content_type_value
+
+  def test_sender_option_parser_user_msg_content_type_value_long
+    sender_options_user_msg_content_type_long = Options::SenderOptionParser.new(
+      ["--msg-content-type", "type"]
+    )
+    assert_equal(
+      "type",
+      sender_options_user_msg_content_type_long.options.msg_content_type
+    )
+  end # test_sender_option_parser_user_msg_content_type_value_long
+
+  def test_sender_option_parser_default_msg_priority_value
+    sender_options_default_msg_priority = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_priority.options.msg_priority
+    )
+  end # test_sender_option_parser_default_msg_priority_value
+
+  def test_sender_option_parser_user_msg_priority_value_long
+    sender_options_user_msg_priority_long = Options::SenderOptionParser.new(
+      ["--msg-priority", "10"]
+    )
+    assert_equal(
+      10,
+      sender_options_user_msg_priority_long.options.msg_priority
+    )
+  end # test_sender_option_parser_user_msg_priority_value_long
+
+  def test_sender_option_parser_user_msg_priority_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--msg-priority", "1a0"])
+    end
+  end # test_sender_option_parser_user_msg_priority_value_long_raise
+
+  def test_sender_option_parser_user_msg_priority_value_long_raise_message
+    wrong_value = "1a0"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--msg-priority", wrong_value])
+    end
+    assert_equal(
+      "invalid argument: --msg-priority #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_msg_priority_value_long_raise_message
+
+  def test_sender_option_parser_default_msg_id_value
+    sender_options_default_msg_id = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_id.options.msg_id
+    )
+  end # test_sender_option_parser_default_msg_id_value
+
+  def test_sender_option_parser_user_msg_id_value_long
+    value = "msg-id-1357"
+    sender_options_user_msg_id_long = Options::SenderOptionParser.new(
+      ["--msg-id", value]
+    )
+    assert_equal(
+      value,
+      sender_options_user_msg_id_long.options.msg_id
+    )
+  end # test_sender_option_parser_user_msg_id_value_long
+
+  def test_sender_option_parser_default_msg_user_id_value
+    sender_options_default_msg_user_id = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_user_id.options.msg_user_id
+    )
+  end # test_sender_option_parser_default_msg_user_id_value
+
+  def test_sender_option_parser_user_msg_user_id_value_long
+    value = "msg-user-id-02468"
+    sender_options_user_msg_user_id_long = Options::SenderOptionParser.new(
+      ["--msg-user-id", value]
+    )
+    assert_equal(
+      value,
+      sender_options_user_msg_user_id_long.options.msg_user_id
+    )
+  end # test_sender_option_parser_user_msg_user_id_value_long
+
+  def test_sender_option_parser_default_msg_subject_value
+    sender_options_default_msg_subject = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_subject.options.msg_subject
+    )
+  end # test_sender_option_parser_default_msg_subject_value
+
+  def test_sender_option_parser_user_msg_subject_value_long
+    value = "msg-subject-0112358"
+    sender_options_user_msg_subject_long = Options::SenderOptionParser.new(
+      ["--msg-subject", value]
+    )
+    assert_equal(
+      value,
+      sender_options_user_msg_subject_long.options.msg_subject
+    )
+  end # test_sender_option_parser_user_msg_subject_value_long
+
+  def test_sender_option_parser_default_anonymous_value
+    sender_options_default_anonymous = Options::SenderOptionParser.new([])
+    assert_equal(
+        Defaults::DEFAULT_ANONYMOUS,
+        sender_options_default_anonymous.options.anonymous
+    )
+  end # test_sender_option_parser_default_anonymous_value
+
+  def test_sender_option_parser_user_anonymous_no_value
+    sender_options_user_anonymous_no_value = Options::SenderOptionParser.new(
+        ["--anonymous"]
+    )
+    assert_equal(
+        true,
+        sender_options_user_anonymous_no_value.options.anonymous
+    )
+  end # test_sender_option_parser_user_anonymous_no_value
+
+  def test_sender_option_parser_user_anonymous_true_value_long
+    sender_options_user_anonymous_long = Options::SenderOptionParser.new(
+        ["--anonymous", "true"]
+    )
+    assert_equal(
+        true,
+        sender_options_user_anonymous_long.options.anonymous
+    )
+  end # test_sender_option_parser_user_anonymous_true_value_long
+
+  def test_sender_option_parser_user_anonymous_false_value_long
+    sender_options_user_anonymous_long = Options::SenderOptionParser.new(
+        ["--anonymous", "false"]
+    )
+    assert_equal(
+        false,
+        sender_options_user_anonymous_long.options.anonymous
+    )
+  end # test_sender_option_parser_user_anonymous_false_value_long
+
+  def test_sender_option_parser_user_anonymous_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--anonymous", wrong_value])
+    end
+    assert_equal(
+        "invalid argument: --anonymous #{wrong_value}",
+        exception.message
+    )
+  end # test_sender_option_parser_user_anonymous_raise_message
+
 
   def test_sender_option_parser_default_msg_corr_id_value
     sender_options_default_msg_corr_id = Options::SenderOptionParser.new([])
@@ -176,19 +665,37 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_group_id_value_long
 
+  def test_sender_option_parser_default_msg_to_value
+    sender_options_default_msg_to = Options::SenderOptionParser.new([])
+    assert_nil(
+      sender_options_default_msg_to.options.msg_to
+    )
+  end # test_sender_option_parser_default_msg_to_value
+
+  def test_sender_option_parser_user_msg_to_value_long
+    sender_options_user_msg_to_long = Options::SenderOptionParser.new(
+      ["--msg-to", "msg-to-0987654321"]
+    )
+    assert_equal(
+      "msg-to-0987654321",
+      sender_options_user_msg_to_long.options.msg_to
+    )
+  end # test_sender_option_parser_user_msg_to_value_long
+
   def test_sender_option_parser_user_msg_content_map_item_value_short
-    sender_options_user_msg_content_map_item_short = Options::SenderOptionParser.new([
-      "-M", "string=String",
-      "-M", "int~1",
-      "-M", "float~1.0",
-      "-M", "empty_string=",
-      "-M", "negative_float~-1.3",
-      "-M", "string_int=1",
-      "-M", "string_negative_int=-1",
-      "-M", "negative_int~-1",
-      "-M", "string_float=1.0",
-      "-M", "string_retype_operator=~1"
-    ])
+    sender_options_user_msg_content_map_item_short = \
+      Options::SenderOptionParser.new([
+        "-M", "string=String",
+        "-M", "int~1",
+        "-M", "float~1.0",
+        "-M", "empty_string=",
+        "-M", "negative_float~-1.3",
+        "-M", "string_int=1",
+        "-M", "string_negative_int=-1",
+        "-M", "negative_int~-1",
+        "-M", "string_float=1.0",
+        "-M", "string_retype_operator=~1"
+      ])
     assert_equal(
       {
         "string" => 'String',
@@ -207,18 +714,19 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_user_msg_content_map_item_value_short
 
   def test_sender_option_parser_user_msg_content_map_item_value_long
-    sender_options_user_msg_content_map_item_long = Options::SenderOptionParser.new([
-      "--msg-content-map-item", "string=String",
-      "--msg-content-map-item", "int~1",
-      "--msg-content-map-item", "float~1.0",
-      "--msg-content-map-item", "empty_string=",
-      "--msg-content-map-item", "negative_float~-1.3",
-      "--msg-content-map-item", "string_int=1",
-      "--msg-content-map-item", "string_negative_int=-1",
-      "--msg-content-map-item", "negative_int~-1",
-      "--msg-content-map-item", "string_float=1.0",
-      "--msg-content-map-item", "string_retype_operator=~1"
-    ])
+    sender_options_user_msg_content_map_item_long = \
+      Options::SenderOptionParser.new([
+        "--msg-content-map-item", "string=String",
+        "--msg-content-map-item", "int~1",
+        "--msg-content-map-item", "float~1.0",
+        "--msg-content-map-item", "empty_string=",
+        "--msg-content-map-item", "negative_float~-1.3",
+        "--msg-content-map-item", "string_int=1",
+        "--msg-content-map-item", "string_negative_int=-1",
+        "--msg-content-map-item", "negative_int~-1",
+        "--msg-content-map-item", "string_float=1.0",
+        "--msg-content-map-item", "string_retype_operator=~1"
+      ])
     assert_equal(
       {
         "string" => 'String',
@@ -236,20 +744,35 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_content_map_item_value_long
 
+  def test_sender_option_parser_user_content_type_msg_content_map_item_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      sender_options_user_msg_content_map_item_long = \
+        Options::SenderOptionParser.new([
+          "--msg-content-map-item", "key=#{param}", "--content-type", type
+        ])
+      assert_equal(
+        { "key" => expect },
+        sender_options_user_msg_content_map_item_long.options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_map_item_values
+
 
   def test_sender_option_parser_user_msg_content_list_item_value_short
-    sender_options_user_msg_content_list_item_short = Options::SenderOptionParser.new([
-      "-L", "",
-      "-L", "String",
-      "-L", "~1",
-      "-L", "~1.0",
-      "-L", "1",
-      "-L", "1.0",
-      "-L", "~-1",
-      "-L", "~-1.3",
-      "-L", "-1",
-      "-L", "~~1"
-    ])
+    sender_options_user_msg_content_list_item_short = \
+      Options::SenderOptionParser.new([
+        "-L", "",
+        "-L", "String",
+        "-L", "~1",
+        "-L", "~1.0",
+        "-L", "1",
+        "-L", "1.0",
+        "-L", "~-1",
+        "-L", "~-1.3",
+        "-L", "-1",
+        "-L", "~~1"
+      ])
     assert_equal(
       ['', 'String', 1, 1.0, '1', '1.0', -1, -1.3, '-1', '~1'],
       sender_options_user_msg_content_list_item_short.options.msg_content
@@ -257,23 +780,112 @@ class UnitTestsSenderOptionParser < Minitest::Test
   end # test_sender_option_parser_user_msg_content_list_item_value_short
 
   def test_sender_option_parser_user_msg_content_list_item_value_long
-    sender_options_user_msg_content_list_item_long = Options::SenderOptionParser.new([
-      "--msg-content-list-item", "",
-      "--msg-content-list-item", "String",
-      "--msg-content-list-item", "~1",
-      "--msg-content-list-item", "~1.0",
-      "--msg-content-list-item", "1",
-      "--msg-content-list-item", "1.0",
-      "--msg-content-list-item", "~-1",
-      "--msg-content-list-item", "~-1.3",
-      "--msg-content-list-item", "-1",
-      "--msg-content-list-item", "~~1"
-    ])
+    sender_options_user_msg_content_list_item_long = \
+      Options::SenderOptionParser.new([
+        "--msg-content-list-item", "",
+        "--msg-content-list-item", "String",
+        "--msg-content-list-item", "~1",
+        "--msg-content-list-item", "~1.0",
+        "--msg-content-list-item", "1",
+        "--msg-content-list-item", "1.0",
+        "--msg-content-list-item", "~-1",
+        "--msg-content-list-item", "~-1.3",
+        "--msg-content-list-item", "-1",
+        "--msg-content-list-item", "~~1"
+      ])
     assert_equal(
       ['', 'String', 1, 1.0, '1', '1.0', -1, -1.3, '-1', '~1'],
       sender_options_user_msg_content_list_item_long.options.msg_content
     )
   end # test_sender_option_parser_user_msg_content_list_item_value_long
+
+  def test_sender_option_parser_user_content_type_msg_content_list_item_values
+    for type, param, expect in [%w(string 1 1), ["int", "1", 1], ["long", "1", 1],
+                                ["float", "1", 1.0], ["bool", "true", true]]
+      assert_equal(
+          [expect],
+          Options::SenderOptionParser.new(
+              ["-L", param, "--content-type", type]).options.msg_content
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_values
+
+
+  def test_sender_option_parser_user_content_type_msg_content_list_item_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "-L", param])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_list_item_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_content_map_item_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "-M", "key=#{param}"])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_map_item_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_property_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      exception = assert_raises ArgumentError do
+        Options::SenderOptionParser.new(["--content-type", type, "--msg-property", "key=#{param}"])
+      end
+      assert_match(
+          /invalid value for .* "#{param}"/,
+          exception.message
+      )
+    end
+  end # test_sender_option_parser_user_content_type_msg_property_invalid_value_raise_message
+
+  def test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message
+    for type, param in [%w(int 1.1), %w(long 1.1), %w(float raise), %w(bool raise)]
+      file = Tempfile.new('test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message')
+      begin
+        file.write(param)
+        file.flush
+        exception = assert_raises ArgumentError do
+          Options::SenderOptionParser.new(["--content-type", type, "--msg-content-from-file", file.path])
+        end
+        assert_match(
+            /invalid value for .* "#{param}"/,
+            exception.message
+        )
+      ensure
+        file.close
+        file.unlink   # deletes the temp file
+      end
+    end
+  end # test_sender_option_parser_user_content_type_msg_content_from_file_invalid_value_raise_message
+
+  def test_sender_option_parser_default_content_type_values
+    sender_options_default_content_type = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_CONTENT_TYPE,
+      sender_options_default_content_type.options.content_type
+    )
+  end # test_sender_option_parser_default_content_type_value
+
+  def test_sender_option_parser_user_content_type_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(["--content-type", wrong_value])
+    end
+    assert_equal(
+        "invalid argument: --content-type #{wrong_value}",
+        exception.message
+    )
+  end # test_sender_option_parser_user_content_type_raise_message
+
 
   def test_sender_option_parser_default_msg_durable_value
     sender_options_default_msg_durable = Options::SenderOptionParser.new([])
@@ -313,6 +925,240 @@ class UnitTestsSenderOptionParser < Minitest::Test
     )
   end # test_sender_option_parser_user_msg_ttl_value_long
 
+  def test_sender_option_parser_default_max_frame_size_value
+    default_sender_options_max_frame_size = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_MAX_FRAME_SIZE,
+      default_sender_options_max_frame_size.options.max_frame_size
+    )
+  end # test_sender_option_parser_default_max_frame_size_value
+
+  def test_sender_option_parser_user_max_frame_size_value_long
+    user_sender_options_max_frame_size_long = Options::SenderOptionParser.new(
+      ["--conn-max-frame-size", "3331"]
+    )
+    assert_equal(
+      3331,
+      user_sender_options_max_frame_size_long.options.max_frame_size
+    )
+  end # test_sender_option_parser_user_max_frame_size_value_long
+
+  def test_sender_option_parser_user_max_frame_size_value_long_range_lower_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+  end # test_sender_option_parser_user_max_frame_size_value_long_range_lower_raise
+
+  def test_sender_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE-1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_sender_option_parser_user_max_frame_size_value_long_range_lower_raise_msg
+
+  def test_sender_option_parser_user_max_frame_size_value_long_range_upper_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+  end # test_sender_option_parser_user_max_frame_size_value_long_range_upper_raise
+
+  def test_sender_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size " +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE+1} (out of range: " +
+      "#{Defaults::DEFAULT_MIN_MAX_FRAME_SIZE}-" +
+      "#{Defaults::DEFAULT_MAX_MAX_FRAME_SIZE})",
+      exception.message
+    )
+  end # test_sender_option_parser_user_max_frame_size_value_long_range_upper_raise_msg
+
+  def test_sender_option_parser_user_max_frame_size_value_long_wrong_value_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "wrong_value"]
+      )
+    end
+  end # test_sender_option_parser_user_max_frame_size_value_long_wrong_value_raise
+
+  def test_sender_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+    wrong_value = "wrong_value"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-max-frame-size", "#{wrong_value}"]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-max-frame-size #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_max_frame_size_value_long_wrong_value_raise_msg
+
+  def test_sender_option_parser_default_sasl_enabled_value
+    default_sender_options_sasl_enabled = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_SASL_ENABLED,
+      default_sender_options_sasl_enabled.options.sasl_enabled
+    )
+  end # test_sender_option_parser_default_sasl_enabled_value
+
+  def test_sender_option_parser_user_sasl_enabled_no_value
+    sender_options_user_sasl_enabled_no_value = Options::SenderOptionParser.new(
+        ["--conn-sasl-enabled"]
+    )
+    assert_equal(
+        true,
+        sender_options_user_sasl_enabled_no_value.options.sasl_enabled
+    )
+  end # test_sender_option_parser_user_sasl_enabled_no_value
+
+  def test_sender_option_parser_user_sasl_enabled_value_long
+    Options::BOOLEAN_STRINGS.each do |boolean_value|
+      user_sender_options_sasl_enabled_long = Options::SenderOptionParser.new(
+        ["--conn-sasl-enabled", "#{boolean_value}"]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(boolean_value),
+        user_sender_options_sasl_enabled_long.options.sasl_enabled
+      )
+    end
+  end # test_sender_option_parser_user_sasl_enabled_value_long
+
+  def test_sender_option_parser_user_sasl_enabled_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-sasl-enabled", "raise"]
+      )
+    end
+  end # test_sender_option_parser_user_sasl_enabled_value_long_raise
+
+  def test_sender_option_parser_user_sasl_enabled_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--conn-sasl-enabled", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --conn-sasl-enabled #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_sasl_enabled_value_long_raise_message
+
+  def test_sender_option_parser_default_log_lib_value
+    default_sender_options_log_lib = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_LOG_LIB,
+      default_sender_options_log_lib.options.log_lib
+    )
+  end # test_sender_option_parser_default_log_lib_value
+
+  def test_sender_option_parser_user_log_lib_value_long
+    value = "TRANSPORT_FRM"
+    user_sender_options_log_lib_long = Options::SenderOptionParser.new(
+      ["--log-lib", value]
+    )
+    assert_equal(
+      value,
+      user_sender_options_log_lib_long.options.log_lib
+    )
+  end # test_sender_option_parser_user_log_lib_value_long
+
+  def test_sender_option_parser_user_log_lib_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--log-lib", "raise"]
+      )
+    end
+  end # test_sender_option_parser_user_log_lib_value_long_raise
+
+  def test_sender_option_parser_user_log_lib_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--log-lib", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --log-lib #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_log_lib_value_long_raise_message
+
+  def test_sender_option_parser_default_auto_settle_off_value
+    default_sender_options_auto_settle_off = Options::SenderOptionParser.new([])
+    assert_equal(
+      Defaults::DEFAULT_AUTO_SETTLE_OFF,
+      default_sender_options_auto_settle_off.options.auto_settle_off
+    )
+  end # test_sender_option_parser_default_auto_settle_off_value
+
+  def test_sender_option_parser_user_auto_settle_off_value_long_no_value
+    user_sender_options_auto_settle_off_long_no_value = Options::SenderOptionParser.new(
+      ["--auto-settle-off"]
+    )
+    assert_equal(
+      true,
+      user_sender_options_auto_settle_off_long_no_value.options.auto_settle_off
+    )
+  end # test_sender_option_parser_user_auto_settle_off_value_long_no_value
+
+  def test_sender_option_parser_user_auto_settle_off_value_long
+    Options::BOOLEAN_STRINGS.each do |auto_settle_off_value_long|
+      user_sender_options_auto_settle_off_long = Options::SenderOptionParser.new(
+        ["--auto-settle-off", auto_settle_off_value_long]
+      )
+      assert_equal(
+        StringUtils.str_to_bool(auto_settle_off_value_long),
+        user_sender_options_auto_settle_off_long.options.auto_settle_off
+      )
+    end
+  end # test_sender_option_parser_user_auto_settle_off_value_long
+
+  def test_sender_option_parser_user_auto_settle_off_value_long_raise
+    assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--auto-settle-off", "raise"]
+      )
+    end
+  end # test_sender_option_parser_user_auto_settle_off_value_long_raise
+
+  def test_sender_option_parser_user_auto_settle_off_value_long_raise_message
+    wrong_value = "raise"
+    exception = assert_raises OptionParser::InvalidArgument do
+      Options::SenderOptionParser.new(
+        ["--auto-settle-off", wrong_value]
+      )
+    end
+    assert_equal(
+      "invalid argument: --auto-settle-off #{wrong_value}",
+      exception.message
+    )
+  end # test_sender_option_parser_user_auto_settle_off_value_long_raise_message
+
+
+  def test_sender_option_parser_duration_mode
+    assert_equal 12.34, parse(["--duration", "12.34"]).options.duration
+    assert_equal "before-send", parse([]).options.duration_mode
+    assert_equal "after-send", parse(["--duration-mode", "after-send"]).options.duration_mode
+    assert_raises(OptionParser::InvalidArgument) { parse(["--duration-mode", "xxx"]) }
+  end
 end # class UnitTestsSenderOptionParser
 
 # eof

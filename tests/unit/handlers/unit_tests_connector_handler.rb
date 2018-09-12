@@ -26,11 +26,21 @@ class UnitTestsConnectorHandler < Minitest::Test
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @count_value = 1
     @sasl_mechs_value = "SASL"
+    @idle_timeout_value = 85
+    @max_frame_size_value = 8999
+    @sasl_enabled_value = "sasl-enabled"
+    @log_lib_value = "TRANSPORT_DRV"
+    @exit_timer_value = "timeout"
 
     @connector_handler_initialization = Handlers::ConnectorHandler.new(
       @broker_value,
       @count_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @exit_timer_value,
     )
   end # setup
 
@@ -38,7 +48,12 @@ class UnitTestsConnectorHandler < Minitest::Test
     connector_handler_initialization_string = Handlers::ConnectorHandler.new(
       @broker_value_string,
       @count_value,
-      @sasl_mechs_value
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @exit_timer_value,
     )
 
     assert_equal(
@@ -64,6 +79,41 @@ class UnitTestsConnectorHandler < Minitest::Test
       @connector_handler_initialization.sasl_mechs
     )
   end # test_connector_handler_sasl_mechs_argument_initialization
+
+  def test_connector_handler_idle_timeout_argument_initialization
+    assert_equal(
+        @idle_timeout_value,
+        @connector_handler_initialization.idle_timeout
+    )
+  end # test_connector_handler_idle_timeout_argument_initialization
+
+  def test_connector_handler_max_frame_size_argument_initialization
+    assert_equal(
+        @max_frame_size_value,
+        @connector_handler_initialization.max_frame_size
+    )
+  end # test_connector_handler_max_frame_size_argument_initialization
+
+  def test_connector_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @connector_handler_initialization.sasl_enabled
+    )
+  end # test_connector_handler_sasl_enabled_argument_initialization
+
+  def test_connector_handler_log_lib_argument_initialization
+    assert_equal(
+        @log_lib_value,
+        @connector_handler_initialization.log_lib
+    )
+  end # test_connector_handler_log_lib_argument_initialization
+
+  def test_connector_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @connector_handler_initialization.exit_timer
+    )
+  end # test_connector_handler_exit_timer_argument_initialization
 
   def test_connector_handler_connections_initialization
     assert_equal(0, @connector_handler_initialization.connections.length)

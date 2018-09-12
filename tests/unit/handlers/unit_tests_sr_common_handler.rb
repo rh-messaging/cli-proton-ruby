@@ -25,12 +25,26 @@ class UnitTestsSRCommonHandler < Minitest::Test
     @broker_value_string = "127.0.0.1:5672"
     @broker_value = Qpid::Proton.uri(@broker_value_string)
     @log_msgs_value = "dict"
+    @msg_content_hashed_value = true
     @sasl_mechs_value = "SASL"
+    @idle_timeout_value = 85
+    @max_frame_size_value = 6869
+    @sasl_enabled_value = "sasl-enabled"
+    @log_lib_value = "TRANSPORT_DRV"
+    @auto_settle_off_value = "settle"
+    @exit_timer_value = "timeout"
 
     @sr_common_handler_initialization = Handlers::SRCommonHandler.new(
       @broker_value,
       @log_msgs_value,
-      @sasl_mechs_value
+      @msg_content_hashed_value,
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @auto_settle_off_value,
+      @exit_timer_value,
     )
   end # setup
 
@@ -38,7 +52,14 @@ class UnitTestsSRCommonHandler < Minitest::Test
     sr_common_handler_initialization_string = Handlers::SRCommonHandler.new(
       @broker_value_string,
       @log_msgs_value,
-      @sasl_mechs_value
+      @msg_content_hashed_value,
+      @sasl_mechs_value,
+      @idle_timeout_value,
+      @max_frame_size_value,
+      @sasl_enabled_value,
+      @log_lib_value,
+      @auto_settle_off_value,
+      @exit_timer_value,
     )
 
     assert_equal(
@@ -58,12 +79,61 @@ class UnitTestsSRCommonHandler < Minitest::Test
     assert_equal(@log_msgs_value, @sr_common_handler_initialization.log_msgs)
   end # test_sr_common_handler_log_msgs_argument_initialization
 
+  def test_sr_common_handler_msg_content_hashed_argument_initialization
+    assert_equal(
+        @msg_content_hashed_value,
+        @sr_common_handler_initialization.msg_content_hashed
+    )
+  end # test_sr_common_handler_msg_content_hashed_argument_initialization
+
   def test_sr_common_handler_sasl_mechs_argument_initialization
     assert_equal(
       @sasl_mechs_value,
       @sr_common_handler_initialization.sasl_mechs
     )
   end # test_sr_common_handler_sasl_mechs_argument_initialization
+
+  def test_sr_common_handler_idle_timeout_argument_initialization
+    assert_equal(
+        @idle_timeout_value,
+        @sr_common_handler_initialization.idle_timeout
+    )
+  end # test_sr_common_handler_idle_timeout_argument_initialization
+
+  def test_sr_common_handler_max_frame_size_argument_initialization
+    assert_equal(
+        @max_frame_size_value,
+        @sr_common_handler_initialization.max_frame_size
+    )
+  end # test_sr_common_handler_max_frame_size_argument_initialization
+
+  def test_sr_common_handler_sasl_enabled_argument_initialization
+    assert_equal(
+        @sasl_enabled_value,
+        @sr_common_handler_initialization.sasl_enabled
+    )
+  end # test_sr_common_handler_sasl_enabled_argument_initialization
+
+  def test_sr_common_handler_log_lib_argument_initialization
+    assert_equal(
+        @log_lib_value,
+        @sr_common_handler_initialization.log_lib
+    )
+  end # test_sr_common_handler_log_lib_argument_initialization
+
+  def test_sr_common_handler_auto_settle_off_argument_initialization
+    assert_equal(
+        @auto_settle_off_value,
+        @sr_common_handler_initialization.auto_settle_off
+    )
+  end # test_sr_common_handler_auto_settle_off_argument_initialization
+
+  def test_sr_common_handler_exit_timer_argument_initialization
+    assert_equal(
+      @exit_timer_value,
+      @sr_common_handler_initialization.exit_timer
+    )
+  end # test_sr_common_handler_exit_timer_argument_initialization
 
 end # class UnitTestsSRCommonHandler
 

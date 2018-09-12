@@ -4,9 +4,10 @@ require 'rake/testtask'
 # For verbose output: `rake test TESTOPTS=-v`
 # See http://ruby-doc.org/stdlib-2.0.0/libdoc/rake/rdoc/Rake/TestTask.html for more.
 
-task :default => [:test]
+task :default => [:self_test]
 
 task :test => [:unit_tests, :client_tests]
+task :self_test => [:unit_tests, :client_self_tests]
 
 desc 'Run unit tests'
 Rake::TestTask.new(:unit_tests) do |t|
@@ -24,9 +25,9 @@ Rake::TestTask.new(:client_tests) do |t|
   t.warning = true
 end
 
-desc 'Run tests with a self-started test broker.'
-task :self_test => [:unit_tests] do
-  broker = IO.popen([RbConfig.ruby,  File.join("bin", "broker.rb"), "" ], :err=>[:child, :out])
+desc 'Run client tests with a self-started test broker.'
+task :client_self_tests do
+  broker = IO.popen([RbConfig.ruby,  File.join("bin", "broker.rb"), "" ])
   unless (ready = broker.readline) =~ /^Listening on /
     Process.kill :KILL, broker.pid
     raise "broker failed: #{ready}#{broker.read}"

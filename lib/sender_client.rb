@@ -34,14 +34,31 @@ class SenderClient
     sender_handler = Handlers::SenderHandler.new(
       sender_options_parser.options.broker,
       sender_options_parser.options.log_msgs,
+      sender_options_parser.options.msg_content_hashed,
       sender_options_parser.options.count,
+      sender_options_parser.options.msg_properties,
       sender_options_parser.options.msg_content,
+      sender_options_parser.options.msg_content_type,
       sender_options_parser.options.msg_durable,
       sender_options_parser.options.msg_ttl,
       sender_options_parser.options.msg_correlation_id,
       sender_options_parser.options.msg_reply_to,
       sender_options_parser.options.msg_group_id,
-      sender_options_parser.options.sasl_mechs
+      sender_options_parser.options.msg_to,
+      sender_options_parser.options.msg_priority,
+      sender_options_parser.options.msg_id,
+      sender_options_parser.options.msg_user_id,
+      sender_options_parser.options.msg_subject,
+      sender_options_parser.options.anonymous,
+      sender_options_parser.options.sasl_mechs,
+      sender_options_parser.options.idle_timeout,
+      sender_options_parser.options.max_frame_size,
+      sender_options_parser.options.sasl_enabled,
+      sender_options_parser.options.log_lib,
+      sender_options_parser.options.auto_settle_off,
+      sender_options_parser.options.exit_timer,
+      sender_options_parser.options.duration,
+      sender_options_parser.options.duration_mode
     )
     # Run sender client
     Qpid::Proton::Container.new(sender_handler).run
