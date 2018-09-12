@@ -8,5 +8,5 @@ gem install rake
 gem install minitest
 gem install qpid-proton/build/ruby/gem/qpid_proton-*.gem
 cd $PROJECT/tests
-rake unit_tests
+rake unit_tests || rake --trace unit_tests TESTOPTS="-v"
 # rake client_tests
