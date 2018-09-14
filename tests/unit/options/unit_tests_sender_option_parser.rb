@@ -64,38 +64,38 @@ class UnitTestsSenderOptionParser < Minitest::Test
 
   def test_sender_option_parser_user_timeout_value_short_int
     user_sender_options_timeout_short_int = Options::SenderOptionParser.new(
-      ["-t", "7"]
+      ["-t", "789"]
     )
     assert_equal(
-      7,
+      789,
       user_sender_options_timeout_short_int.options.exit_timer.timeout
     )
   end # test_sender_option_parser_user_timeout_value_short_int
 
   def test_sender_option_parser_user_timeout_value_long_int
     user_sender_options_timeout_long_int = Options::SenderOptionParser.new(
-      ["--timeout", "11"]
+      ["--timeout", "123"]
     )
     assert_equal(
-      11,
+      123,
       user_sender_options_timeout_long_int.options.exit_timer.timeout
     )
   end # test_sender_option_parser_user_timeout_value_long_int
 
   def test_sender_option_parser_user_timeout_value_short_float
     user_sender_options_timeout_short_float = \
-      Options::SenderOptionParser.new(["-t", "0.7"])
+      Options::SenderOptionParser.new(["-t", "123.4"])
     assert_equal(
-      0.7,
+      123.4,
       user_sender_options_timeout_short_float.options.exit_timer.timeout
     )
   end # test_sender_option_parser_user_timeout_value_short_float
 
   def test_sender_option_parser_user_timeout_value_long_float
     user_sender_options_timeout_long_float = \
-      Options::SenderOptionParser.new(["--timeout", "1.1"])
+      Options::SenderOptionParser.new(["--timeout", "123.1"])
     assert_equal(
-      1.1,
+      123.1,
       user_sender_options_timeout_long_float.options.exit_timer.timeout
     )
   end # test_sender_option_parser_user_timeout_value_long_float

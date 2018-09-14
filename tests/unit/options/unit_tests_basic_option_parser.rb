@@ -60,36 +60,36 @@ class UnitTestsBasicOptionParser < Minitest::Test
 
   def test_basic_option_parser_user_timeout_value_short_int
     user_basic_options_timeout_short_int = Options::BasicOptionParser.new()
-    user_basic_options_timeout_short_int.parse(["-t", "7"])
+    user_basic_options_timeout_short_int.parse(["-t", "789"])
     assert_equal(
-      7,
+      789,
       user_basic_options_timeout_short_int.options.exit_timer.timeout
     )
   end # test_basic_option_parser_user_timeout_value_short_int
 
   def test_basic_option_parser_user_timeout_value_long_int
     user_basic_options_timeout_long_int = Options::BasicOptionParser.new()
-    user_basic_options_timeout_long_int.parse(["--timeout", "11"])
+    user_basic_options_timeout_long_int.parse(["--timeout", "123"])
     assert_equal(
-      11,
+      123,
       user_basic_options_timeout_long_int.options.exit_timer.timeout
     )
   end # test_basic_option_parser_user_timeout_value_long_int
 
   def test_basic_option_parser_user_timeout_value_short_float
     user_basic_options_timeout_short_float = Options::BasicOptionParser.new()
-    user_basic_options_timeout_short_float.parse(["-t", "0.7"])
+    user_basic_options_timeout_short_float.parse(["-t", "123.4"])
     assert_equal(
-      0.7,
+      123.4,
       user_basic_options_timeout_short_float.options.exit_timer.timeout
     )
   end # test_basic_option_parser_user_timeout_value_short_float
 
   def test_basic_option_parser_user_timeout_value_long_float
     user_basic_options_timeout_long_float = Options::BasicOptionParser.new()
-    user_basic_options_timeout_long_float.parse(["--timeout", "1.1"])
+    user_basic_options_timeout_long_float.parse(["--timeout", "123.1"])
     assert_equal(
-      1.1,
+      123.1,
       user_basic_options_timeout_long_float.options.exit_timer.timeout
     )
   end # test_basic_option_parser_user_timeout_value_long_float
