@@ -62,36 +62,36 @@ class UnitTestsConnectorOptionParser < Minitest::Test
 
   def test_connector_option_parser_user_timeout_value_short_int
     user_connector_options_timeout_short_int = \
-      Options::ConnectorOptionParser.new(["-t", "7"])
+      Options::ConnectorOptionParser.new(["-t", "789"])
     assert_equal(
-      7,
+      789,
       user_connector_options_timeout_short_int.options.exit_timer.timeout
     )
   end # test_connector_option_parser_user_timeout_value_short_int
 
   def test_connector_option_parser_user_timeout_value_long_int
     user_connector_options_timeout_long_int = \
-      Options::ConnectorOptionParser.new(["--timeout", "11"])
+      Options::ConnectorOptionParser.new(["--timeout", "123"])
     assert_equal(
-      11,
+      123,
       user_connector_options_timeout_long_int.options.exit_timer.timeout
     )
   end # test_connector_option_parser_user_timeout_value_long_int
 
   def test_connector_option_parser_user_timeout_value_short_float
     user_connector_options_timeout_short_float = \
-      Options::ConnectorOptionParser.new(["-t", "0.7"])
+      Options::ConnectorOptionParser.new(["-t", "123.4"])
     assert_equal(
-      0.7,
+      123.4,
       user_connector_options_timeout_short_float.options.exit_timer.timeout
     )
   end # test_connector_option_parser_user_timeout_value_short_float
 
   def test_connector_option_parser_user_timeout_value_long_float
     user_connector_options_timeout_long_float = \
-      Options::ConnectorOptionParser.new(["--timeout", "1.1"])
+      Options::ConnectorOptionParser.new(["--timeout", "123.1"])
     assert_equal(
-      1.1,
+      123.1,
       user_connector_options_timeout_long_float.options.exit_timer.timeout
     )
   end # test_connector_option_parser_user_timeout_value_long_float
