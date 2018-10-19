@@ -62,7 +62,7 @@ module Formatters
       + "'durable': #{format_value(@message.durable)}, "\
       + "'ttl': #{format_value(@message.ttl)}, "\
       + "'absolute-expiry-time': #{format_value(@message.expires)}, "\
-      + "'address': #{format_value(@message.address)}, "\
+      + "'address': #{format_value(@message.address.nil? ? nil : @message.address.sub(%r{^topic://}, ''))}, "\
       + "'content-encoding': #{format_value(@message.content_encoding)}, "\
       + "'delivery-count': #{format_value(@message.delivery_count)}, "\
       + "'first-acquirer': #{format_value(@message.first_acquirer?)}, "\
