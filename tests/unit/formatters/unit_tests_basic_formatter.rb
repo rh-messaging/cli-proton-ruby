@@ -222,6 +222,11 @@ class UnitTestsBasicFormatter < Minitest::Test
     assert_equal(hashed_value, $stdout.string)
   end # test_basic_formatter_hashed_content
 
+  def test_escape
+    assert_equal("some message", Formatters::BasicFormatter.escape_chars("some message"))
+    assert_equal("a\\u0000b\\nc", Formatters::BasicFormatter.escape_chars("a\0b\nc"))
+  end # test_basic_formatter_hashed_content
+
 end # class UnitTestsBasicFormatter
 
 # eof
