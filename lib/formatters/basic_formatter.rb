@@ -95,14 +95,7 @@ module Formatters
       if msg_string.nil?
         nil
       else
-        msg_string.each_codepoint.map do |s|
-          # \\\\ because of python eval escaping
-          if s < 32 or s > 126
-            format('\\\\u%04x', s)
-          else
-            s.chr
-          end
-        end.join
+        msg_string.inspect[1..-2] # skip quotes that inspect puts around the string
       end
     end
 
