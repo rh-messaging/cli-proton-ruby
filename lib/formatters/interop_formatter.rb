@@ -73,7 +73,7 @@ module Formatters
       + "'content': #{
         format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
       }"
-      return self.class.escape_chars("{#{dict_to_return}}")
+      return "{#{dict_to_return}}"
     end # get_as_interop_dictionary()
 
     # Prints message formatted as interop dictionary to stdout

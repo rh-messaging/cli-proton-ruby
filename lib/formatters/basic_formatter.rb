@@ -89,16 +89,6 @@ module Formatters
       puts format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
     end # print()
 
-    # Escapes characters which Python's eval() cannot load
-    # that is esp. \0, \r, \n. Use a range, to be safe.
-    def self.escape_chars(msg_string)
-      if msg_string.nil?
-        nil
-      else
-        msg_string.inspect[1..-2] # skip quotes that inspect puts around the string
-      end
-    end
-
   end # class BasicFormatter
 
 end # module Formatters
