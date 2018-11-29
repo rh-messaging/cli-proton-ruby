@@ -89,6 +89,22 @@ module Formatters
       puts format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
     end # print()
 
+    # Escapes characters which Python's eval() cannot load
+    # that is esp. \0, \r, \n. Use a range, to be safe.
+    def self.escape_chars(msg_string)
+      if msg_string.nil?
+        nil
+      else
+        msg_string.each_codepoint.map do |s|
+          if s < 32 || s > 126
+            format('\\u%04x', s)
+          else
+            s.chr
+          end
+        end.join
+      end
+    end
+
   end # class BasicFormatter
 
 end # module Formatters
