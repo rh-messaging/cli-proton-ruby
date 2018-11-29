@@ -50,7 +50,7 @@ module Formatters
       + "'content': #{
         format_value(@msg_content_hashed ? StringUtils.sha1_hash(@message.body) : @message.body)
       }"
-      return "{#{dict_to_return}}"
+      return self.class.escape_chars("{#{dict_to_return}}")
     end # get_as_dictionary()
 
     # Prints message formatted as dictionary to stdout
