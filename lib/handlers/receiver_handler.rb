@@ -14,9 +14,6 @@
 # limitations under the License.
 #++
 
-require_relative '../formatters/basic_formatter'
-require_relative '../formatters/dict_formatter'
-require_relative '../formatters/interop_formatter'
 require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
@@ -156,13 +153,7 @@ module Handlers
       @duration.delay("before-receive") { |d| sleep d }
       exit_timer.reset if exit_timer
       # Print received message
-      if @log_msgs == "body"
-        Formatters::BasicFormatter.new(message, @msg_content_hashed).print
-      elsif @log_msgs == "dict"
-        Formatters::DictFormatter.new(message, @msg_content_hashed).print
-      elsif @log_msgs == "interop"
-        Formatters::InteropFormatter.new(message, @msg_content_hashed).print
-      end
+      print_message(message)
       # If process reply to
       if @process_reply_to and !message.reply_to.nil?
         self.do_process_reply_to(message)

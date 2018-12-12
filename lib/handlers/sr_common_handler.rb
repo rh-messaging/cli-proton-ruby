@@ -16,6 +16,10 @@
 
 require_relative 'basic_handler'
 
+require_relative '../formatters/basic_formatter'
+require_relative '../formatters/dict_formatter'
+require_relative '../formatters/interop_formatter'
+
 module Handlers
 
   # Common events handler for sender and receiver client
@@ -68,6 +72,20 @@ module Handlers
       @msg_content_hashed = msg_content_hashed
       # Save auto settle off
       @auto_settle_off = auto_settle_off
+    end
+
+    # Print of sent/received message
+    # ==== Arguments
+    # msg:: message to print
+    def print_message(msg)
+      case @log_msgs
+      when "body"
+        Formatters::BasicFormatter.new(msg, @msg_content_hashed).print
+      when "dict"
+        Formatters::DictFormatter.new(msg, @msg_content_hashed).print
+      when "interop"
+        Formatters::InteropFormatter.new(msg, @msg_content_hashed).print
+      end
     end
 
     # Default for un-handled errors is to raise an exception

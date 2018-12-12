@@ -14,9 +14,6 @@
 # limitations under the License.
 #++
 
-require_relative '../formatters/basic_formatter'
-require_relative '../formatters/dict_formatter'
-require_relative '../formatters/interop_formatter'
 require_relative '../utils/duration'
 require_relative 'sr_common_handler'
 
@@ -248,13 +245,7 @@ module Handlers
       sender.send(msg)
       # Increase number of sent messages
       @sent = @sent + 1
-      if @log_msgs == "body"
-        Formatters::BasicFormatter.new(msg, @msg_content_hashed).print
-      elsif @log_msgs == "dict"
-        Formatters::DictFormatter.new(msg, @msg_content_hashed).print
-      elsif @log_msgs == "interop"
-        Formatters::InteropFormatter.new(msg, @msg_content_hashed).print
-      end
+      print_message(msg)
     end
 
     # Called when the remote peer accepts an outgoing message,
