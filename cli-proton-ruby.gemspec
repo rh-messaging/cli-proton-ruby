@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cli-proton-ruby'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
   s.date        = '2019-01-03'
   s.summary     = "Qpid Proton Ruby commandline clients"
   s.description = "cli-proton-ruby is a collection of commandline messaging clients suitable for interacting with Message Oriented Middleware."
