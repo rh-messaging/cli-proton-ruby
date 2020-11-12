@@ -43,6 +43,19 @@ module Formatters
       end
     end
 
+    # Remove "ID:" prefix from str if found
+    # ==== Parameters
+    # value:: value to remove prefix
+    # ==== Returns
+    # value without "ID:" prefix
+    def remove_id_prefix(value)
+      if value.kind_of?(String) && value.match(/^ID:/)
+        value = value.delete_prefix("ID:")
+      end
+      return value
+    end
+
+
     # Format message as interop dictionary
     # ==== Returns
     # message formatted as interop dictionary
@@ -54,10 +67,10 @@ module Formatters
       + "'reply-to': #{format_value(@message.reply_to)}, "\
       + "'subject': #{format_value(@message.subject)}, "\
       + "'content-type': #{format_value(@message.content_type)}, "\
-      + "'id': #{format_value(@message.id)}, "\
+      + "'id': #{format_value(remove_id_prefix(@message.id))}, "\
       + "'group-id': #{format_value(@message.group_id)}, "\
       + "'user-id': #{format_value(@message.user_id)}, "\
-      + "'correlation-id': #{format_value(@message.correlation_id)}, "\
+      + "'correlation-id': #{format_value(remove_id_prefix(@message.correlation_id))}, "\
       + "'priority': #{format_value(@message.priority)}, "\
       + "'durable': #{format_value(@message.durable)}, "\
       + "'ttl': #{format_value(@message.ttl)}, "\
