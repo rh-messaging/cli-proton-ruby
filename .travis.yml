@@ -1,5 +1,5 @@
 os: linux
-dist: bionic
+dist: focal
 language: ruby
 # https://docs.travis-ci.com/user/docker/
 services:
