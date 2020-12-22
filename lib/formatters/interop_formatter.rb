@@ -50,7 +50,7 @@ module Formatters
     # value without "ID:" prefix
     def remove_id_prefix(value)
       if value.kind_of?(String) && value.match(/^ID:/)
-        value = value.delete_prefix("ID:")
+        value.sub!(/^ID:/, '')
       end
       return value
     end
