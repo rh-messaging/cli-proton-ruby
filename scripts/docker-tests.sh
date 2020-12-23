@@ -4,8 +4,8 @@
 PROJECT="/mnt"
 
 cd /
-gem install rubygems-update
-sudo update_rubygems
+gem install rubygems-update -v 2.7.11
+update_rubygems
 gem install rake
 gem install minitest
 gem install qpid-proton/build/ruby/gem/qpid_proton-*.gem
